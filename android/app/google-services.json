@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "986054064245",
+    "project_id": "easy-bill-flutter",
+    "storage_bucket": "easy-bill-flutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986054064245:android:f601740cdbb3037d9fe03c",
+        "android_client_info": {
+          "package_name": "com.sar.easy_bill_flutter.profolio.easy_bill_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW62W-dGnAsBWK2Q9ZapQtZpbrocP2yTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
