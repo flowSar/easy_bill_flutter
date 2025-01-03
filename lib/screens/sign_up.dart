@@ -1,4 +1,8 @@
+import 'package:easy_bill_flutter/screens/bottom_nav_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../services/database_service.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -41,6 +45,7 @@ class _SignUpState extends State<SignUp> {
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800),
               ),
               TextField(
+                controller: _email,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'Enter your Email',
@@ -52,6 +57,7 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               TextField(
+                controller: _password,
                 decoration: InputDecoration(
                     hintText: 'Enter your password',
                     border: OutlineInputBorder(
@@ -59,7 +65,17 @@ class _SignUpState extends State<SignUp> {
                     )),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  FireBaseManager firebse = FireBaseManager();
+                  var result =
+                      await firebse.signUp(_email.text, _password.text);
+                  if (result) {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => BottomNavBar()),
+                    // );
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(120, 25),
                   backgroundColor: Colors.blueAccent,
