@@ -1,21 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String? placeholder;
   final Widget? icon;
   final TextEditingController? controller;
   final Function(String value)? onChnaged;
   final Color? bg;
+  final TextInputType? keyType;
 
-  const CustomTextField({
-    super.key,
-    this.placeholder,
-    this.icon,
-    this.controller,
-    this.onChnaged,
-    this.bg,
-  });
+  const CustomTextField(
+      {super.key,
+      this.placeholder,
+      this.icon,
+      this.controller,
+      this.onChnaged,
+      this.bg,
+      this.keyType});
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    widget.controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +37,19 @@ class CustomTextField extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
         decoration: BoxDecoration(
-          color: bg,
+          color: widget.bg,
           borderRadius: BorderRadius.circular(8),
         ),
         child: TextField(
-          controller: controller,
-          onChanged: onChnaged,
+          keyboardType: widget.keyType ?? TextInputType.text,
+          controller: widget.controller,
+          onChanged: widget.onChnaged,
           onTap: () {
             print('click');
           },
           decoration: InputDecoration(
-            hintText: placeholder,
-            icon: icon,
+            hintText: widget.placeholder,
+            icon: widget.icon,
             suffix: Icon(Icons.close),
             border: InputBorder.none,
           ),

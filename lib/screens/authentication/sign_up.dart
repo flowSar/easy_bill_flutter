@@ -2,7 +2,7 @@ import 'package:easy_bill_flutter/screens/bottom_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../services/database_service.dart';
+import '../../services/database_service.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});

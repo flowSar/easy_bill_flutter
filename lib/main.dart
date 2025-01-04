@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'screens/sign_in.dart';
+import 'screens/authentication/sign_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,12 +22,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   home: SafeArea(
-    //       child: Scaffold(
-    //     body: SignIn(),
-    //   )),
-    // );
     return MaterialApp.router(
       routerConfig: appRouter,
     );

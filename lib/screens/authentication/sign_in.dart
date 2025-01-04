@@ -1,7 +1,9 @@
+import 'package:easy_bill_flutter/screens/authentication/sign_up.dart';
 import 'package:easy_bill_flutter/screens/bottom_nav_bar.dart';
-import 'package:easy_bill_flutter/screens/new_bill_screen.dart';
-import 'package:easy_bill_flutter/screens/sign_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -27,6 +29,15 @@ class _SignInState extends State<SignIn> {
     _email.dispose();
     _password.dispose();
     super.dispose();
+  }
+
+  Future signIn() async {
+    try {
+      final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email.text.trim(), password: _password.text.trim());
+    } catch (e) {
+      print('error: $e');
+    }
   }
 
   @override
@@ -63,10 +74,8 @@ class _SignInState extends State<SignIn> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BottomNavBar()),
-                  );
+                  signIn();
+                  context.push('/bottomNaBar');
                 },
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(120, 25),
@@ -81,14 +90,7 @@ class _SignInState extends State<SignIn> {
                   Padding(
                     padding: EdgeInsets.only(left: 20),
                     child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUp(),
-                          ),
-                        );
-                      },
+                      onTap: () => context.push('/signUp'),
                       child: Text(
                         'SingUp',
                         style: TextStyle(

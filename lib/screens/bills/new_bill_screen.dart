@@ -3,8 +3,9 @@ import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/data/clients.dart';
 import 'package:easy_bill_flutter/utilities/scan_bard_code.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../components/select_item_button.dart';
+import '../../components/select_item_button.dart';
 
 class NewBillScreen extends StatefulWidget {
   const NewBillScreen({super.key});
@@ -33,7 +34,9 @@ class _NewBillScreenState extends State<NewBillScreen> {
                   children: [
                     SelectItemButton(
                       label: 'Select Client',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push('/clientListScreen');
+                      },
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -42,7 +45,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
                         CustomTextButton(
                           onPressed: () async {
                             String result = await scanner.scan(context);
-                            print('barCode: $result');
                             setState(() {
                               barCode = result;
                             });
@@ -91,27 +93,28 @@ class _NewBillScreenState extends State<NewBillScreen> {
                 children: [
                   CustomFloatingButton(
                     onPressed: () {},
-                    child: Icon(Icons.save),
+                    child: Icon(
+                      Icons.save,
+                      color: Colors.white,
+                    ),
                   ),
                   CustomFloatingButton(
-                    onPressed: () {},
-                    child: Icon(Icons.barcode_reader),
+                    onPressed: () async {
+                      String result = await scanner.scan(context);
+                      setState(() {
+                        barCode = result;
+                      });
+                    },
+                    child: Icon(
+                      Icons.barcode_reader,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               )
             ],
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () async {
-        //     String result = await scanner.scan(context);
-        //     print('barCode: $result');
-        //     setState(() {
-        //       barCode = result;
-        //     });
-        //   },
-        //   child: Icon(Icons.barcode_reader),
-        // ),
       ),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:easy_bill_flutter/components/custom_Floating_button.dart';
 import 'package:easy_bill_flutter/components/custom_text_field.dart';
 import 'package:easy_bill_flutter/components/empty.dart';
+import 'package:easy_bill_flutter/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ItemsScreen extends StatefulWidget {
   const ItemsScreen({super.key});
@@ -22,7 +24,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
         child: Column(
           children: [
             CustomTextField(
-              bg: Colors.grey[300],
+              bg: kTextInputBg1,
               placeholder: 'Search item name',
               icon: Icon(Icons.search),
             ),
@@ -37,7 +39,9 @@ class _ItemsScreenState extends State<ItemsScreen> {
       ),
       floatingActionButton: CustomFloatingButton(
           w: 120,
-          onPressed: () {},
+          onPressed: () {
+            context.push('/newItemScreen');
+          },
           child: Row(
             children: [
               Icon(

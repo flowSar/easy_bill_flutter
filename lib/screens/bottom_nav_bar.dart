@@ -1,10 +1,11 @@
-import 'package:easy_bill_flutter/screens/clients_screen.dart';
-import 'package:easy_bill_flutter/screens/items_screen.dart';
+import 'package:easy_bill_flutter/screens/clients/clients_screen.dart';
+import 'package:easy_bill_flutter/screens/items/items_screen.dart';
+import 'package:easy_bill_flutter/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'history_screen.dart';
+import 'bills/bills_screen.dart';
 import 'manage_screen.dart';
-import 'new_bill_screen.dart';
+import 'bills/new_bill_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -17,9 +18,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int _screenIndex = 0;
   final List<Widget> screens = [
     NewBillScreen(),
-    HistoryScreen(),
+    BillsScreen(),
     ClientsScreen(),
     ItemsScreen(),
+    SettingsScreen(),
   ];
 
   void _handleItemTaped(int index) {
@@ -50,7 +52,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               icon: Icon(
                 Icons.manage_history,
               ),
-              label: 'History'),
+              label: 'Bills'),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.supervisor_account_outlined,
@@ -61,6 +63,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 Icons.add_shopping_cart_rounded,
               ),
               label: 'Items'),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+              ),
+              label: 'Settings'),
         ],
       ),
     );
