@@ -1,6 +1,4 @@
-import 'package:easy_bill_flutter/screens/authentication/sign_up.dart';
-import 'package:easy_bill_flutter/screens/bottom_nav_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +13,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -29,15 +28,6 @@ class _SignInState extends State<SignIn> {
     _email.dispose();
     _password.dispose();
     super.dispose();
-  }
-
-  Future signIn() async {
-    try {
-      final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _email.text.trim(), password: _password.text.trim());
-    } catch (e) {
-      print('error: $e');
-    }
   }
 
   @override
@@ -55,6 +45,8 @@ class _SignInState extends State<SignIn> {
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800),
               ),
               TextField(
+                readOnly: isLoading,
+                controller: _email,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'Enter your Email',
@@ -66,6 +58,8 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               TextField(
+                readOnly: isLoading,
+                controller: _password,
                 decoration: InputDecoration(
                     hintText: 'Enter your password',
                     border: OutlineInputBorder(
@@ -73,9 +67,21 @@ class _SignInState extends State<SignIn> {
                     )),
               ),
               ElevatedButton(
-                onPressed: () {
-                  signIn();
-                  context.push('/bottomNaBar');
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  final result = await context
+                      .read<AuthProvider>()
+                      .logIn(_email.text.trim(), _password.text.trim());
+                  setState(() {
+                    isLoading = false;
+                  });
+                  if (result) {
+                    context.replace('/bottomNavBar');
+                  } else {
+                    print('Sign-in failed');
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(120, 25),

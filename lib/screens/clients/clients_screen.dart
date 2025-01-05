@@ -19,6 +19,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Manage Clients'),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: EdgeInsets.all(5),

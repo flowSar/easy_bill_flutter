@@ -12,6 +12,24 @@ import '../screens/authentication/welcome_screen.dart';
 import '../screens/bottom_nav_bar.dart';
 
 final GoRouter appRouter = GoRouter(
+  redirect: (context, state) {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final loggedIn = authProvider.isLoggedIn;
+
+    // Redirect to the sign-in screen if not logged in
+    if (!loggedIn &&
+        state.matchedLocation != '/signIn' &&
+        state.matchedLocation != '/signUp') {
+      return '/WelcomeScreen';
+    }
+    // Redirect to the bottom navigation bar if logged in and trying to access sign-in
+    if (loggedIn &&
+        state.matchedLocation == '/signIn' &&
+        state.matchedLocation != '/signUp') {
+      return '/bottomNavBar';
+    }
+    return null; // No redirect
+  },
   initialLocation: '/',
   routes: [
     GoRoute(
@@ -19,17 +37,8 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => WelcomeScreen(),
       routes: [
         GoRoute(
-            path: 'bottomNaBar',
+            path: 'bottomNavBar',
             builder: (BuildContext context, GoRouterState state) {
-              // return Consumer<AuthProvider>(
-              //   builder: (context, autoProvider, child) {
-              //     if (autoProvider.isLoggedIn) {
-              //       return BottomNavBar();
-              //     } else {
-              //       return SignIn();
-              //     }
-              //   },
-              // );
               return BottomNavBar();
             }),
         GoRoute(
@@ -59,6 +68,11 @@ final GoRouter appRouter = GoRouter(
           path: 'clientListScreen',
           builder: (BuildContext context, GoRouterState state) =>
               ClientListScreen(),
+        ),
+        GoRoute(
+          path: 'welcomeScreen',
+          builder: (BuildContext context, GoRouterState state) =>
+              WelcomeScreen(),
         ),
       ],
     ),

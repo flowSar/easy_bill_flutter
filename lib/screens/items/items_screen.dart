@@ -18,6 +18,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Manage Items'),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: EdgeInsets.all(5),

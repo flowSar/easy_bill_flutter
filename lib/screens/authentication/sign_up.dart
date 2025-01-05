@@ -1,8 +1,7 @@
-import 'package:easy_bill_flutter/screens/bottom_nav_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-
-import '../../services/database_service.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -14,6 +13,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -45,6 +45,7 @@ class _SignUpState extends State<SignUp> {
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800),
               ),
               TextField(
+                readOnly: isLoading,
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
@@ -57,6 +58,7 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               TextField(
+                readOnly: isLoading,
                 controller: _password,
                 decoration: InputDecoration(
                     hintText: 'Enter your password',
@@ -65,17 +67,26 @@ class _SignUpState extends State<SignUp> {
                     )),
               ),
               ElevatedButton(
-                onPressed: () async {
-                  FireBaseManager firebse = FireBaseManager();
-                  var result =
-                      await firebse.signUp(_email.text, _password.text);
-                  if (result) {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => BottomNavBar()),
-                    // );
-                  }
-                },
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+
+                        final result = await context
+                            .read<AuthProvider>()
+                            .signUp(_email.text.trim(), _password.text.trim());
+
+                        setState(() {
+                          isLoading = false;
+                        });
+                        if (result) {
+                          context.replace('/bottomNavBar');
+                        } else {
+                          print('sign up failed');
+                        }
+                      },
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(120, 25),
                   backgroundColor: Colors.blueAccent,

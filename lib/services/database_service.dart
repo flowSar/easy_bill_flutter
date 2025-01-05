@@ -12,4 +12,13 @@ class FireBaseManager {
       return null;
     }
   }
+
+  bool isLogged() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
