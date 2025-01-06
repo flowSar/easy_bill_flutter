@@ -1,7 +1,7 @@
 import 'package:easy_bill_flutter/components/CustomBadge.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
+import 'package:easy_bill_flutter/data/clients.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../components/custom_text_field.dart';
@@ -9,8 +9,12 @@ import '../../constants/colors.dart';
 import '../../constants/icons.dart';
 import '../../constants/styles.dart';
 
+final _formKey = GlobalKey<FormState>();
+
 class NewClientScreen extends StatefulWidget {
-  const NewClientScreen({super.key});
+  final Client? client;
+
+  const NewClientScreen({super.key, this.client});
 
   @override
   State<NewClientScreen> createState() => _NewClientScreenState();
@@ -28,6 +32,12 @@ class _NewClientScreenState extends State<NewClientScreen> {
     _address = TextEditingController();
     _email = TextEditingController();
     _phoneNumber = TextEditingController();
+    if (widget.client != null) {
+      _fullName.text = widget.client!.fullName;
+      _address.text = widget.client!.address;
+      _email.text = widget.client!.email;
+      _phoneNumber.text = widget.client!.phoneNumber;
+    }
     super.initState();
   }
 
@@ -57,50 +67,61 @@ class _NewClientScreenState extends State<NewClientScreen> {
         body: Padding(
           padding: EdgeInsets.all(10),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Custombadge(
-                  icon: kUserIcon,
-                  labelIcon: Icons.image,
-                  labelBg: Colors.blueGrey,
-                ),
-                CustomTextField(
-                  controller: _fullName,
-                  placeholder: 'Full Name',
-                  bg: kTextInputBg1,
-                ),
-                CustomTextField(
-                  controller: _address,
-                  placeholder: 'Address',
-                  bg: kTextInputBg1,
-                ),
-                CustomTextField(
-                  controller: _email,
-                  placeholder: 'Email',
-                  bg: kTextInputBg1,
-                ),
-                CustomTextField(
-                  controller: _phoneNumber,
-                  placeholder: 'Phone number',
-                  bg: kTextInputBg1,
-                ),
-                CustomTextButton(
-                  onPressed: () {
-                    print(_fullName.text);
-                    print(_address.text);
-                    print(_email.text);
-                    print(_phoneNumber.text);
-                  },
-                  label: Text(
-                    'save',
-                    style: kTextStyle2b,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Custombadge(
+                    icon: kUserIcon,
+                    labelIcon: Icons.image,
+                    labelBg: Colors.blueGrey,
                   ),
-                  w: 120,
-                  h: 50,
-                  bg: Colors.green,
-                  fg: Colors.white,
-                ),
-              ],
+                  CustomTextField(
+                    controller: _fullName,
+                    placeholder: 'Full Name',
+                    bg: kTextInputBg1,
+                    validator: (name) =>
+                        name!.length < 3 ? 'Please Insert valid Input' : null,
+                  ),
+                  CustomTextField(
+                    controller: _address,
+                    placeholder: 'Address',
+                    bg: kTextInputBg1,
+                  ),
+                  CustomTextField(
+                    controller: _email,
+                    placeholder: 'Email',
+                    bg: kTextInputBg1,
+                  ),
+                  CustomTextField(
+                    controller: _phoneNumber,
+                    placeholder: 'Phone number',
+                    bg: kTextInputBg1,
+                  ),
+                  CustomTextButton(
+                    onPressed: () {
+                      Client client = Client(
+                        fullName: _fullName.text,
+                        address: _address.text,
+                        email: _email.text,
+                        phoNumber: _phoneNumber.text,
+                      );
+                      bool? valid = _formKey.currentState?.validate();
+                      if (valid == true) {
+                        context.pop(client);
+                      }
+                    },
+                    label: Text(
+                      'save',
+                      style: kTextStyle2b,
+                    ),
+                    w: 120,
+                    h: 50,
+                    bg: Colors.green,
+                    fg: Colors.white,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

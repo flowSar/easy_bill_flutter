@@ -1,7 +1,10 @@
+import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
+final _formKey = GlobalKey<FormState>();
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -11,6 +14,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  late final TextEditingController _userName;
   late final TextEditingController _email;
   late final TextEditingController _password;
   bool isLoading = false;
@@ -20,6 +24,7 @@ class _SignUpState extends State<SignUp> {
     // TODO: implement initState
     _email = TextEditingController();
     _password = TextEditingController();
+    _userName = TextEditingController();
     super.initState();
   }
 
@@ -27,95 +32,134 @@ class _SignUpState extends State<SignUp> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    _userName.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isEmailValid(String email) {
+      // Regular expression to validate email addresses
+      final RegExp emailRegex =
+          RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+      return emailRegex.hasMatch(email);
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            spacing: 20,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'SIGN UP',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800),
-              ),
-              TextField(
-                readOnly: isLoading,
-                controller: _email,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: 'Enter your Email',
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(),
-                  ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              spacing: 20,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'SIGN UP',
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800),
                 ),
-              ),
-              TextField(
-                readOnly: isLoading,
-                controller: _password,
-                decoration: InputDecoration(
-                    hintText: 'Enter your password',
+                TextFormField(
+                  readOnly: isLoading,
+                  controller: _userName,
+                  keyboardType: TextInputType.text,
+                  validator: (userName) => userName!.length < 3
+                      ? 'userName is to short < 4 characters'
+                      : null,
+                  autovalidateMode: AutovalidateMode.onUnfocus,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your username',
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(),
-                    )),
-              ),
-              ElevatedButton(
-                onPressed: isLoading
-                    ? null
-                    : () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-
-                        final result = await context
-                            .read<AuthProvider>()
-                            .signUp(_email.text.trim(), _password.text.trim());
-
-                        setState(() {
-                          isLoading = false;
-                        });
-                        if (result) {
-                          context.replace('/bottomNavBar');
-                        } else {
-                          print('sign up failed');
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(120, 25),
-                  backgroundColor: Colors.blueAccent,
-                  foregroundColor: Colors.white,
+                    ),
+                  ),
                 ),
-                child: Text('Sign Up'),
-              ),
-              Row(
-                children: [
-                  Text("I already have an account"),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'SingIn',
-                        style: TextStyle(
-                          color: Colors.deepOrange,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
+                TextFormField(
+                  readOnly: isLoading,
+                  controller: _email,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (email) =>
+                      isEmailValid(email!) ? null : 'Please insert valid Email',
+                  autovalidateMode: AutovalidateMode.onUnfocus,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your Email',
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(),
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  readOnly: isLoading,
+                  controller: _password,
+                  validator: (password) => password!.length < 8
+                      ? 'Password is to short < 8 character'
+                      : null,
+                  autovalidateMode: AutovalidateMode.onUnfocus,
+                  decoration: InputDecoration(
+                      hintText: 'Enter your password',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(),
+                      )),
+                ),
+                ElevatedButton(
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          bool valid = _formKey.currentState!.validate();
+                          if (valid) {
+                            setState(() {
+                              isLoading = true;
+                            });
+
+                            final result = await context
+                                .read<AuthProvider>()
+                                .signUp(
+                                    _email.text.trim(), _password.text.trim());
+
+                            setState(() {
+                              isLoading = false;
+                            });
+                            if (result) {
+                              context.replace('/bottomNavBar');
+                            } else {
+                              print('sign up failed');
+                            }
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(120, 25),
+                    backgroundColor: Colors.blueAccent,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: isLoading ? CustomCircularProgress() : Text('Sign Up'),
+                ),
+                Row(
+                  children: [
+                    Text("I already have an account"),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'SingIn',
+                          style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ],
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

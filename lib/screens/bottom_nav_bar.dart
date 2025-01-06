@@ -4,7 +4,6 @@ import 'package:easy_bill_flutter/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'bills/bills_screen.dart';
-import 'manage_screen.dart';
 import 'bills/new_bill_screen.dart';
 
 class BottomNavBar extends StatefulWidget {

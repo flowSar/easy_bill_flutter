@@ -7,6 +7,8 @@ import 'package:easy_bill_flutter/screens/authentication/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../data/clients.dart';
+import '../data/item.dart';
 import '../screens/authentication/sign_up.dart';
 import '../screens/authentication/welcome_screen.dart';
 import '../screens/bottom_nav_bar.dart';
@@ -51,23 +53,41 @@ final GoRouter appRouter = GoRouter(
         ),
         GoRoute(
           path: 'newBillScreen',
-          builder: (BuildContext context, GoRouterState state) =>
-              NewBillScreen(),
+          builder: (BuildContext context, GoRouterState state) {
+            return NewBillScreen();
+          },
         ),
         GoRoute(
           path: 'newClientScreen',
-          builder: (BuildContext context, GoRouterState state) =>
-              NewClientScreen(),
+          builder: (BuildContext context, GoRouterState state) {
+            final Client? client;
+            if (state.extra != null) {
+              client = state.extra as Client;
+            } else {
+              client = null;
+            }
+            return NewClientScreen(client: client);
+          },
         ),
         GoRoute(
           path: 'newItemScreen',
-          builder: (BuildContext context, GoRouterState state) =>
-              NewItemScreen(),
+          builder: (BuildContext context, GoRouterState state) {
+            final Item? item;
+            if (state.extra != null) {
+              item = state.extra as Item;
+            } else {
+              item = null;
+            }
+            return NewItemScreen(
+              item: item,
+            );
+          },
         ),
         GoRoute(
           path: 'clientListScreen',
-          builder: (BuildContext context, GoRouterState state) =>
-              ClientListScreen(),
+          builder: (BuildContext context, GoRouterState state) {
+            return ClientListScreen();
+          },
         ),
         GoRoute(
           path: 'welcomeScreen',

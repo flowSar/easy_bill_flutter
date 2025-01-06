@@ -1,10 +1,9 @@
 import 'package:easy_bill_flutter/components/custom_Floating_button.dart';
-import 'package:easy_bill_flutter/components/custom_text_button.dart';
-import 'package:easy_bill_flutter/data/clients.dart';
+import 'package:easy_bill_flutter/components/custom_modal_Bottom_sheet.dart';
+import 'package:easy_bill_flutter/components/selected_item_card.dart';
 import 'package:easy_bill_flutter/utilities/scan_bard_code.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../components/select_item_button.dart';
 
 class NewBillScreen extends StatefulWidget {
@@ -16,7 +15,7 @@ class NewBillScreen extends StatefulWidget {
 
 class _NewBillScreenState extends State<NewBillScreen> {
   ScanBarCode scanner = ScanBarCode();
-  late String barCode = 'barcode';
+  late String? barCode;
   late String selectedClient = 'Clients';
   String? _selectedItem;
 
@@ -25,93 +24,71 @@ class _NewBillScreenState extends State<NewBillScreen> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
           child: Column(
+            children: [
+              SelectItemButton(
+                label: 'Select Client',
+                onPressed: () {
+                  context.push('/clientListScreen');
+                },
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                color: Colors.green,
+                child: Text('selected Items'),
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return SelectedItemCard(
+                        onEdite: () {},
+                        onDelete: () {},
+                      );
+                    }),
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          padding: EdgeInsets.all(0),
+          height: 75,
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                child: Column(
-                  children: [
-                    SelectItemButton(
-                      label: 'Select Client',
-                      onPressed: () {
-                        context.push('/clientListScreen');
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(barCode),
-                        CustomTextButton(
-                          onPressed: () async {
-                            String result = await scanner.scan(context);
-                            setState(() {
-                              barCode = result;
-                            });
-                          },
-                          label: Text('Scan'),
-                          bg: Colors.blueAccent,
-                          fg: Colors.white,
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text('quantity'),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Text('product'),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text('price'),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text('total'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              CustomFloatingButton(
+                onPressed: () {},
+                child: Icon(
+                  Icons.save,
+                  color: Colors.white,
                 ),
               ),
-              Expanded(child: Text('hello')),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomFloatingButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.save,
-                      color: Colors.white,
-                    ),
-                  ),
-                  CustomFloatingButton(
-                    onPressed: () async {
-                      String result = await scanner.scan(context);
-                      setState(() {
-                        barCode = result;
-                      });
-                    },
-                    child: Icon(
-                      Icons.barcode_reader,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              )
+              CustomFloatingButton(
+                onPressed: () async {
+                  String result = await scanner.scan(context);
+                  setState(() async {
+                    barCode = result;
+                    if (barCode != '-1') {
+                      String fullName = await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) =>
+                            CustomModalBottomSheet(
+                          barCode: barCode,
+                        ),
+                      );
+                      print('full naming coming from modal: $fullName');
+                    } else {
+                      print('');
+                    }
+                  });
+                },
+                child: Icon(
+                  Icons.barcode_reader,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ),

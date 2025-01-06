@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -8,15 +7,18 @@ class CustomTextField extends StatefulWidget {
   final Function(String value)? onChnaged;
   final Color? bg;
   final TextInputType? keyType;
+  final String? Function(String?)? validator;
 
-  const CustomTextField(
-      {super.key,
-      this.placeholder,
-      this.icon,
-      this.controller,
-      this.onChnaged,
-      this.bg,
-      this.keyType});
+  const CustomTextField({
+    super.key,
+    this.placeholder,
+    this.icon,
+    this.controller,
+    this.onChnaged,
+    this.bg,
+    this.keyType,
+    this.validator,
+  });
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -40,7 +42,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: widget.bg,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: TextField(
+        child: TextFormField(
           keyboardType: widget.keyType ?? TextInputType.text,
           controller: widget.controller,
           onChanged: widget.onChnaged,
@@ -53,6 +55,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             suffix: Icon(Icons.close),
             border: InputBorder.none,
           ),
+          validator: widget.validator,
         ),
       ),
     );

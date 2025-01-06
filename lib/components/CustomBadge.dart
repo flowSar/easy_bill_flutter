@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
-import '../constants/icons.dart';
 
 class Custombadge extends StatelessWidget {
   final IconData icon;

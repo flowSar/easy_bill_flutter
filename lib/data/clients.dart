@@ -1,31 +1,83 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+class Client {
+  final String _fullName;
+  final String _address;
+  final String _email;
+  final String _phoneNumber;
 
-class ClientRow {
-  final String name;
-  final String value;
+  Client({required fullName, address, email, phoNumber})
+      : _fullName = fullName,
+        _address = address,
+        _email = email,
+        _phoneNumber = phoNumber;
 
-  ClientRow({required this.name, required this.value});
+  String get fullName => _fullName;
 
-  DropdownMenuItem getClient() {
-    return DropdownMenuItem(
-      child: Text(name),
-      value: value,
-    );
-  }
+  String get address => _address;
+
+  String get email => _email;
+
+  String get phoneNumber => _phoneNumber;
 }
 
-List<DropdownMenuItem> clients = [
-  ClientRow(name: 'khalid', value: 'khalid').getClient(),
-  ClientRow(name: 'mohammed', value: 'mohammed').getClient(),
-  ClientRow(name: 'yassine', value: 'yassine').getClient(),
-  ClientRow(name: 'rachid', value: 'rachid').getClient(),
-  ClientRow(name: 'ahmed', value: 'ahmed').getClient(),
-  ClientRow(name: 'fatime', value: 'fatime').getClient(),
-  ClientRow(name: 'idrisi', value: 'idrisi').getClient(),
-  ClientRow(name: 'chtibi', value: 'chtibi').getClient(),
-  ClientRow(name: 'othman', value: 'othman').getClient(),
-  ClientRow(name: 'dahoh', value: 'dahoh').getClient(),
-  ClientRow(name: 'said', value: 'said').getClient(),
-  ClientRow(name: 'achraf', value: 'achraf').getClient(),
+List<Client> clients = [
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
+  Client(
+      fullName: 'khalid',
+      address: 'lakmakssa casa blanca',
+      email: 'khalid@gmail.com',
+      phoNumber: '0987654312'),
 ];

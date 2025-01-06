@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 
 class CustomCircularProgress extends StatelessWidget {
-  const CustomCircularProgress({super.key});
+  final double? h;
+  final double? w;
+  final Color? color;
+
+  const CustomCircularProgress({super.key, this.h, this.w = 20, this.color});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 20,
-        width: 20,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+    final double width = MediaQuery.of(context).size.width;
+    return Container(
+      width: width,
+      height: w! + 10,
+      child: Center(
+        child: SizedBox(
+          height: h ?? 20,
+          width: w ?? 20,
+          child: CircularProgressIndicator(
+            strokeWidth: 4,
+            valueColor: AlwaysStoppedAnimation<Color>(color ?? Colors.red),
+          ),
         ),
       ),
     );

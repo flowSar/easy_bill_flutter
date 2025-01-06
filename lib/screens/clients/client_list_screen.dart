@@ -1,3 +1,5 @@
+import 'package:easy_bill_flutter/components/client_card.dart';
+import 'package:easy_bill_flutter/data/clients.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,13 +21,17 @@ class ClientListScreen extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.all(10),
-          child: ListView(
-            children: [
-              ListTile(
-                title: Text('Khalid'),
-              )
-            ],
-          ),
+          child: ListView.builder(
+              itemCount: clients.length,
+              itemBuilder: (context, index) {
+                return ClientCard(
+                  title: clients[index].fullName,
+                  subTitle: clients[index].email,
+                  onEdite: () {},
+                  onDelete: () {},
+                  onTap: () {},
+                );
+              }),
         ),
       ),
     );
