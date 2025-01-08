@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final Color? bg;
   final TextInputType? keyType;
   final String? Function(String?)? validator;
+  final String? initialValue;
 
   const CustomTextField({
     super.key,
@@ -18,6 +19,7 @@ class CustomTextField extends StatefulWidget {
     this.bg,
     this.keyType,
     this.validator,
+    this.initialValue,
   });
 
   @override
@@ -43,6 +45,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: TextFormField(
+          initialValue: widget.initialValue,
           keyboardType: widget.keyType ?? TextInputType.text,
           controller: widget.controller,
           onChanged: widget.onChnaged,

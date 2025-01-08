@@ -5,17 +5,31 @@ import 'package:flutter/material.dart';
 class SelectedItemCard extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onEdite;
+  final String name;
+  final String barCode;
+  final int quantity;
+  final double price;
+  final Color? bg;
 
-  const SelectedItemCard(
-      {super.key, required this.onEdite, required this.onDelete});
+  const SelectedItemCard({
+    super.key,
+    required this.name,
+    required this.barCode,
+    required this.quantity,
+    required this.price,
+    required this.onEdite,
+    required this.onDelete,
+    this.bg,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final double total = price * quantity;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: EdgeInsets.symmetric(vertical: 5),
       height: 70,
       decoration: BoxDecoration(
-          color: kCustomCardBg,
+          color: bg ?? kCustomCardBg,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: kBorderColor,
@@ -23,37 +37,62 @@ class SelectedItemCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 4),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Signal',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    maxLines: 1,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                        maxLines: 1,
+                      ),
+                      Text(
+                        '$quantity X $price',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
-                  Text(
-                    '0000000000000000',
-                    style: TextStyle(fontSize: 12),
-                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        barCode,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      Text(
+                        '$total \$',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )
                 ],
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '4 X 13.5',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  '54 dh',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
+            )
+            // Expanded(
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //
+            //
+            //     ],
+            //   ),
+            // ),
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //
+            //
+            //   ],
+            // ),
+            ,
             Padding(
               padding: EdgeInsets.only(left: 8),
               child:

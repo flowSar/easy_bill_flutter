@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/data/business_info.dart';
 import 'package:easy_bill_flutter/data/clients.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,15 +11,16 @@ class DataProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late List<Client> clients = [];
   late List<Item> items = [];
+  late BusinessInfo? businessInfo;
 
-  // DataProvider() {
-  //   User? user = getCurrentUser();
-  //   if (user != null) {
-  //     // load all item building during the building gof the first screen or when the app get opened
-  //     loadItemsData();
-  //     loadClientsData();
-  //   }
-  // }
+  DataProvider() {
+    User? user = getCurrentUser();
+    if (user != null) {
+      // load all item building during the building gof the first screen or when the app get opened
+      loadItemsData();
+      loadClientsData();
+    }
+  }
 
   User? getCurrentUser() {
     return _auth.currentUser;
@@ -89,12 +91,12 @@ class DataProvider extends ChangeNotifier {
             String description = item['description'] ?? '';
 
             double price = 0.0;
-            int itemUnit = 0;
+            int quantity = 0;
             if (item['price'] != null) {
               price = double.tryParse(item['price'].toString()) ?? 0.0;
             }
-            if (item['itemUnit'] != null) {
-              itemUnit = int.tryParse(item['itemUnit'].toString()) ?? 0;
+            if (item['quantity'] != null) {
+              quantity = int.tryParse(item['quantity'].toString()) ?? 0;
             }
 
             items.add(
@@ -102,7 +104,7 @@ class DataProvider extends ChangeNotifier {
                   barCode: barCode,
                   name: name,
                   price: price,
-                  itemUnit: itemUnit,
+                  quantity: quantity,
                   description: description),
             );
           }
@@ -193,6 +195,46 @@ class DataProvider extends ChangeNotifier {
       }
     } else {
       throw Exception('user is not logged');
+    }
+  }
+
+  Future<void> addBusinessInfo(BusinessInfo businessInfo) async {
+    User? user = getCurrentUser();
+    if (user != null) {
+      try {
+        DatabaseReference businessRef =
+            _database.ref('users/${user.uid}/business');
+        await businessRef.update(businessInfo.toDic());
+        loadBusinessInfo();
+      } catch (e) {
+        throw Exception('insert business info failed');
+      }
+    } else {
+      throw Exception('user is not logged in');
+    }
+  }
+
+  Future<void> loadBusinessInfo() async {
+    User? user = getCurrentUser();
+    if (user != null) {
+      try {
+        DatabaseReference businessRef =
+            _database.ref('users/${user.uid}/business');
+        DataSnapshot snapshot = await businessRef.get();
+        Map<String, dynamic> data =
+            Map<String, dynamic>.from(snapshot.value as Map);
+        businessInfo = BusinessInfo(
+          businessName: data['businessName'],
+          businessAddress: data['businessAddress'],
+          businessEmail: data['businessEmail'],
+          businessPhoneNumber: data['businessPhoneNumber'],
+        );
+        notifyListeners();
+      } catch (e) {
+        throw Exception('load business info failed $e');
+      }
+    } else {
+      throw Exception('user is not logged in');
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../components/custom_text_field.dart';
 import '../../constants/colors.dart';
+import '../../constants/g_constants.dart';
 import '../../constants/icons.dart';
 import '../../constants/styles.dart';
 import 'package:uuid/uuid.dart';
@@ -84,6 +85,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     labelBg: Colors.blueGrey,
                   ),
                   CustomTextField(
+                    keyType: kKeyTextType,
                     controller: _fullName,
                     placeholder: 'Full Name',
                     bg: kTextInputBg1,
@@ -91,16 +93,19 @@ class _NewClientScreenState extends State<NewClientScreen> {
                         name!.length < 3 ? 'Please Insert valid Input' : null,
                   ),
                   CustomTextField(
+                    keyType: kKeyTextType,
                     controller: _address,
                     placeholder: 'Address',
                     bg: kTextInputBg1,
                   ),
                   CustomTextField(
+                    keyType: kKeyEmailType,
                     controller: _email,
                     placeholder: 'Email',
                     bg: kTextInputBg1,
                   ),
                   CustomTextField(
+                    keyType: kKeyPhoneType,
                     controller: _phoneNumber,
                     placeholder: 'Phone number',
                     bg: kTextInputBg1,

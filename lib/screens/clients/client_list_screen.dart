@@ -78,7 +78,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
                           },
                           onDelete: () {},
                           onTap: () {
-                            context.pop();
+                            context.pop(dataProvider.clients[index]);
                           },
                         );
                       },

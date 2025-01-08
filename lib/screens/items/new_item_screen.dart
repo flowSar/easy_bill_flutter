@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../components/custom_Floating_button.dart';
 import '../../components/custom_text_button.dart';
 import '../../components/custom_text_field.dart';
+import '../../constants/g_constants.dart';
 import '../../utilities/scan_bard_code.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -25,7 +26,8 @@ class _NewItemScreenState extends State<NewItemScreen> {
   late final TextEditingController _itemName;
   late final TextEditingController _description;
   late final TextEditingController _price;
-  late final TextEditingController _itemUnit;
+  late final TextEditingController _quantity;
+  late final TextEditingController _tax;
   late String barCode = '000000000000000';
 
   @override
@@ -33,13 +35,14 @@ class _NewItemScreenState extends State<NewItemScreen> {
     _itemName = TextEditingController();
     _description = TextEditingController();
     _price = TextEditingController();
-    _itemUnit = TextEditingController();
+    _quantity = TextEditingController();
+    _tax = TextEditingController();
     if (widget.item != null) {
       barCode = widget.item!.barCode;
       _itemName.text = widget.item!.name ?? '';
       _description.text = widget.item!.description ?? '';
       _price.text = widget.item!.price.toString() ?? '';
-      _itemUnit.text = widget.item!.itemUnit.toString() ?? '';
+      _quantity.text = widget.item!.quantity.toString() ?? '';
     }
     super.initState();
   }
@@ -86,6 +89,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                       )),
                   CustomTextField(
                     controller: _itemName,
+                    keyType: kKeyTextType,
                     placeholder: 'Item name',
                     bg: kTextInputBg1,
                     validator: (name) =>
@@ -93,6 +97,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   ),
                   CustomTextField(
                     controller: _description,
+                    keyType: kKeyTextType,
                     placeholder: 'Description',
                     bg: kTextInputBg1,
                     validator: (name) =>
@@ -100,17 +105,27 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   ),
                   CustomTextField(
                     controller: _price,
+                    keyType: kKeyNumberType,
                     placeholder: 'Price',
                     bg: kTextInputBg1,
                     validator: (price) =>
                         price!.isEmpty ? 'please Insert valid input' : null,
                   ),
                   CustomTextField(
-                    controller: _itemUnit,
-                    placeholder: 'Item unit',
+                    controller: _quantity,
+                    keyType: kKeyNumberType,
+                    placeholder: 'Item quantity',
                     bg: kTextInputBg1,
-                    validator: (unit) =>
-                        unit!.isEmpty ? 'please Insert valid input' : null,
+                    validator: (quantity) =>
+                        quantity!.isEmpty ? 'please Insert valid input' : null,
+                  ),
+                  CustomTextField(
+                    controller: _tax,
+                    keyType: kKeyNumberType,
+                    placeholder: 'Tax Percentage',
+                    bg: kTextInputBg1,
+                    validator: (quantity) =>
+                        quantity!.isEmpty ? 'please Insert valid input' : null,
                   ),
                   CustomTextButton(
                     onPressed: () {
@@ -119,13 +134,13 @@ class _NewItemScreenState extends State<NewItemScreen> {
                         FireBaseManager firebaseManager = FireBaseManager();
                         String itemName = _itemName.text;
                         String price = _price.text.toString();
-                        String unitItem = _itemUnit.text.toString();
+                        String quantity = _quantity.text.toString();
                         Item item = Item(
                           barCode: barCode,
                           name: itemName,
                           description: _description.text,
                           price: double.parse(price),
-                          itemUnit: int.parse(unitItem),
+                          quantity: int.parse(quantity),
                         );
                         firebaseManager.addItem(item);
                         // context.pop(item);

@@ -29,8 +29,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             SelectItemButton(
               label: 'Your Business',
+              elevation: 0,
               onPressed: () {
-                context.push('/clientListScreen');
+                context.push('/businessScreen');
               },
             ),
             InkWell(

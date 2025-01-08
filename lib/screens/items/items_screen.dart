@@ -27,7 +27,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
   //       description: 'Signal Nature Elements Toothbrush with Baking Soda MP 2',
   //       name: 'signal',
   //       price: 12.5,
-  //       itemUnit: 10),
+  //       quantity: 10),
   // ];
   @override
   void initState() {
@@ -40,10 +40,18 @@ class _ItemsScreenState extends State<ItemsScreen> {
     setState(() {
       loading = true;
     });
-    await context.read<DataProvider>().loadItemsData();
-    setState(() {
-      loading = false;
-    });
+
+    try {
+      await context.read<DataProvider>().loadItemsData();
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+    } finally {
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   @override

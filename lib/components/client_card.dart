@@ -10,6 +10,8 @@ class ClientCard extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onEdite;
   final VoidCallback onTap;
+  final double? m;
+  final Color? bg;
 
   const ClientCard({
     super.key,
@@ -19,6 +21,8 @@ class ClientCard extends StatelessWidget {
     required this.onEdite,
     required this.onDelete,
     required this.onTap,
+    this.m,
+    this.bg,
   });
 
   @override
@@ -27,9 +31,9 @@ class ClientCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 70,
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        margin: EdgeInsets.symmetric(horizontal: m ?? 10, vertical: 5),
         decoration: BoxDecoration(
-            color: kCustomCardBg,
+            color: bg ?? kCustomCardBg,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               color: Colors.black38,
