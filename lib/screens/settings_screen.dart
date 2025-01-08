@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../components/select_item_button.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -25,6 +27,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
+            SelectItemButton(
+              label: 'Your Business',
+              onPressed: () {
+                context.push('/clientListScreen');
+              },
+            ),
             InkWell(
               onTap: () async {
                 final bool isLogged =

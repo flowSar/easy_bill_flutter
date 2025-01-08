@@ -1,4 +1,5 @@
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
+import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:easy_bill_flutter/rounters/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +11,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ChangeNotifierProvider(
-    create: (context) => AuthProvider(),
+  // runApp(ChangeNotifierProvider(
+  //   create: (context) => AuthProvider(),
+  //   child: MyApp(),
+  // ));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ChangeNotifierProvider(create: (_) => DataProvider())
+    ],
     child: MyApp(),
   ));
 }

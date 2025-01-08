@@ -26,4 +26,14 @@ class Item {
   double get price => _price;
 
   int get itemUnit => _itemUnit;
+
+  Map toDic() {
+    return {
+      'barCode': _barCode,
+      'name': _name,
+      'description': _description,
+      'price': _price,
+      'itemUnit': _itemUnit,
+    };
+  }
 }

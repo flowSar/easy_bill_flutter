@@ -1,15 +1,19 @@
 import 'package:easy_bill_flutter/components/CustomBadge.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/data/clients.dart';
+import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/custom_text_field.dart';
 import '../../constants/colors.dart';
 import '../../constants/icons.dart';
 import '../../constants/styles.dart';
+import 'package:uuid/uuid.dart';
 
 final _formKey = GlobalKey<FormState>();
+var uuid = Uuid();
 
 class NewClientScreen extends StatefulWidget {
   final Client? client;
@@ -25,6 +29,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
   late final TextEditingController _address;
   late final TextEditingController _email;
   late final TextEditingController _phoneNumber;
+  String? clientId;
 
   @override
   void initState() {
@@ -32,7 +37,9 @@ class _NewClientScreenState extends State<NewClientScreen> {
     _address = TextEditingController();
     _email = TextEditingController();
     _phoneNumber = TextEditingController();
+
     if (widget.client != null) {
+      clientId = widget.client!.clientId;
       _fullName.text = widget.client!.fullName;
       _address.text = widget.client!.address;
       _email.text = widget.client!.email;
@@ -101,6 +108,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                   CustomTextButton(
                     onPressed: () {
                       Client client = Client(
+                        clientId: clientId ?? uuid.v4(),
                         fullName: _fullName.text,
                         address: _address.text,
                         email: _email.text,
@@ -108,7 +116,13 @@ class _NewClientScreenState extends State<NewClientScreen> {
                       );
                       bool? valid = _formKey.currentState?.validate();
                       if (valid == true) {
-                        context.pop(client);
+                        // context.pop(client);
+                        try {
+                          context.read<DataProvider>().addClients(client);
+                        } catch (e) {
+                          print('error: $e');
+                        }
+                        ;
                       }
                     },
                     label: Text(

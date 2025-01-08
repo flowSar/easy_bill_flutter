@@ -1,11 +1,20 @@
+import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:flutter/material.dart';
 
 class Empty extends StatelessWidget {
   final String title;
   final String subTitle;
+  final String? btnLabel;
+  final VoidCallback? onPressed;
 
-  const Empty({super.key, required this.title, required this.subTitle});
+  const Empty({
+    super.key,
+    required this.title,
+    required this.subTitle,
+    this.btnLabel,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +38,15 @@ class Empty extends StatelessWidget {
             style: kTextStyle2,
             textAlign: TextAlign.center,
           ),
+          btnLabel == null
+              ? Text('')
+              : CustomTextButton(
+                  onPressed: onPressed ?? () {},
+                  label: Text(btnLabel!),
+                  w: 150,
+                  bg: Colors.green,
+                  fg: Colors.white,
+                ),
         ],
       ),
     );

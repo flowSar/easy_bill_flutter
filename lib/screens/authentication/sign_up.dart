@@ -14,7 +14,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  late final TextEditingController _userName;
   late final TextEditingController _email;
   late final TextEditingController _password;
   bool isLoading = false;
@@ -24,7 +23,6 @@ class _SignUpState extends State<SignUp> {
     // TODO: implement initState
     _email = TextEditingController();
     _password = TextEditingController();
-    _userName = TextEditingController();
     super.initState();
   }
 
@@ -32,7 +30,6 @@ class _SignUpState extends State<SignUp> {
   void dispose() {
     _email.dispose();
     _password.dispose();
-    _userName.dispose();
     super.dispose();
   }
 
@@ -58,23 +55,6 @@ class _SignUpState extends State<SignUp> {
                 Text(
                   'SIGN UP',
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800),
-                ),
-                TextFormField(
-                  readOnly: isLoading,
-                  controller: _userName,
-                  keyboardType: TextInputType.text,
-                  validator: (userName) => userName!.length < 3
-                      ? 'userName is to short < 4 characters'
-                      : null,
-                  autovalidateMode: AutovalidateMode.onUnfocus,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your username',
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(),
-                    ),
-                  ),
                 ),
                 TextFormField(
                   readOnly: isLoading,

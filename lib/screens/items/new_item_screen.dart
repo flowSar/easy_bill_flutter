@@ -2,6 +2,7 @@ import 'package:easy_bill_flutter/components/text_card.dart';
 import 'package:easy_bill_flutter/constants/colors.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/data/item.dart';
+import 'package:easy_bill_flutter/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/custom_Floating_button.dart';
@@ -34,6 +35,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
     _price = TextEditingController();
     _itemUnit = TextEditingController();
     if (widget.item != null) {
+      barCode = widget.item!.barCode;
       _itemName.text = widget.item!.name ?? '';
       _description.text = widget.item!.description ?? '';
       _price.text = widget.item!.price.toString() ?? '';
@@ -114,6 +116,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     onPressed: () {
                       bool? valid = _formKey.currentState?.validate();
                       if (valid == true) {
+                        FireBaseManager firebaseManager = FireBaseManager();
                         String itemName = _itemName.text;
                         String price = _price.text.toString();
                         String unitItem = _itemUnit.text.toString();
@@ -124,7 +127,8 @@ class _NewItemScreenState extends State<NewItemScreen> {
                           price: double.parse(price),
                           itemUnit: int.parse(unitItem),
                         );
-                        context.pop(item);
+                        firebaseManager.addItem(item);
+                        // context.pop(item);
                       }
                     },
                     label: Text(
