@@ -5,5 +5,6 @@ const kSaveButtonBg1 = Color(0xff40b946ff);
 const kAvatarBg = Color(0xffcecbcbff);
 const kCustomCardBg = Color(0xFFE0E0E0);
 const kBorderColor = Colors.black38;
+const greyLight = Color(0XAAD2D0D0);
 const kGrey1 = Color(0xffc4b1b1ff);
-const kGrey2 = Color(0xFFE4DADA);
+const kGreyRed = Color(0xFFE4DADA);

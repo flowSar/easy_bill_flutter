@@ -133,7 +133,11 @@ class PreviewBillScreen extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(color: Colors.yellowAccent),
+              decoration: BoxDecoration(
+                color: Colors.yellowAccent,
+                border: Border.all(),
+                borderRadius: BorderRadius.circular(6),
+              ),
               child: Padding(
                 padding: EdgeInsets.all(8),
                 child: Text(
@@ -162,7 +166,7 @@ class PreviewBillScreen extends StatelessWidget {
                 child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                     child: Text(
-                      'Save Pdf',
+                      'Save as Pdf',
                       style: TextStyle(
                           color: Colors.blue,
                           fontSize: 16,
