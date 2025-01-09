@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:easy_bill_flutter/components/client_card.dart';
 import 'package:easy_bill_flutter/components/custom_Floating_button.dart';
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
@@ -10,12 +12,15 @@ import 'package:easy_bill_flutter/utilities/scan_bard_code.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../components/select_item_button.dart';
 import '../../components/user_card.dart';
 import '../../constants/colors.dart';
 import '../../data/clients.dart';
 import '../../data/item.dart';
 import '../../providers/data_provider.dart';
+
+var uuid = Uuid();
 
 class NewBillScreen extends StatefulWidget {
   const NewBillScreen({super.key});
@@ -32,7 +37,8 @@ class _NewBillScreenState extends State<NewBillScreen> {
   double billTotal = 0.0;
   List<Item> selectedItems = [];
   Client? client;
-  List<BillRow> billRows = [];
+  List<Map<String, dynamic>> billRows = [];
+  late Bill bill;
 
   @override
   void initState() {
@@ -74,19 +80,28 @@ class _NewBillScreenState extends State<NewBillScreen> {
 
     late double billTotal = getBillTotal();
 
-    void fillDataIntoRows() {
+    void fillDataIntoRows(String billId, billTotal) {
+      billRows = [];
       int index = 0;
       for (var item in selectedItems) {
         double total = item.price * item.quantity;
         billRows.add(BillRow(
-            id: index,
-            name: item.name,
-            quantity: item.quantity,
-            price: item.price,
-            total: total,
-            tax: 0));
+                id: index.toString(),
+                name: item.name,
+                quantity: item.quantity.toString(),
+                price: item.price.toString(),
+                total: total.toString(),
+                tax: '0')
+            .toDic());
         index++;
       }
+      bill = Bill(
+        id: billId,
+        clientName: client?.fullName,
+        billDate: '09/01/25',
+        items: billRows,
+        total: billTotal,
+      );
     }
 
     return SafeArea(
@@ -205,9 +220,28 @@ class _NewBillScreenState extends State<NewBillScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomFloatingButton(
-                onPressed: () {
-                  fillDataIntoRows();
-                  print('bill rows Length: ${billRows.length}');
+                onPressed: () async {
+                  if (selectedItems.isNotEmpty) {
+                    if (client != null) {
+                      try {
+                        String billId = uuid.v4();
+                        fillDataIntoRows(billId, billTotal.toString());
+                        await context.read<DataProvider>().addBill(bill);
+                        setState(
+                          () {
+                            billRows = [];
+                            selectedItems = [];
+                          },
+                        );
+                      } catch (e) {
+                        print('error: $e');
+                      }
+                    } else {
+                      print('please select a client');
+                    }
+                  } else {
+                    print('please select new Item');
+                  }
                 },
                 child: Icon(
                   Icons.save,

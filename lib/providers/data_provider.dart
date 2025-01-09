@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/data/bill_row.dart';
 import 'package:easy_bill_flutter/data/business_info.dart';
 import 'package:easy_bill_flutter/data/clients.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +13,7 @@ class DataProvider extends ChangeNotifier {
   late List<Client> clients = [];
   late List<Item> items = [];
   late BusinessInfo? businessInfo;
+  late List<Bill> bills = [];
 
   DataProvider() {
     User? user = getCurrentUser();
@@ -233,6 +235,67 @@ class DataProvider extends ChangeNotifier {
       } catch (e) {
         throw Exception('load business info failed $e');
       }
+    } else {
+      throw Exception('user is not logged in');
+    }
+  }
+
+  Future<void> addBill(Bill bill) async {
+    User? user = getCurrentUser();
+    if (user != null) {
+      try {
+        DatabaseReference databaseRef =
+            _database.ref('users/${user.uid}/bills/${bill.id}');
+        await databaseRef.update(bill.toDic());
+        loadBills();
+      } catch (e) {
+        throw Exception('pushing bill to database failed: $e');
+      }
+    } else {
+      throw Exception('user is not logged in');
+    }
+  }
+
+  Future<void> loadBills() async {
+    User? user = getCurrentUser();
+    if (user != null) {
+      try {
+        DatabaseReference dataBillsRef =
+            _database.ref('users/${user.uid}/bills');
+
+        DataSnapshot snapshot = await dataBillsRef.get();
+        Map<String, dynamic> billsData =
+            Map<String, dynamic>.from(snapshot.value as Map);
+        for (var entry in billsData.entries) {
+          List<dynamic> rawItems = entry.value['items'] as List<dynamic>;
+          List<Map<String, dynamic>> billItems = rawItems
+              .map((item) => Map<String, dynamic>.from(item as Map))
+              .toList();
+          List<Map<String, dynamic>> billRows = [];
+          for (var row in billItems) {
+            billRows.add(BillRow(
+                    id: 'null',
+                    name: row['name'],
+                    quantity: row['quantity'],
+                    price: row['price'],
+                    total: row['total'],
+                    tax: row['tax'])
+                .toDic());
+          }
+          bills.add(Bill(
+            id: entry.value['id'],
+            clientName: entry.value['clientName'],
+            billDate: entry.value['billDate'],
+            items: billRows,
+            total: entry.value['total'],
+          ));
+          notifyListeners();
+        }
+      } catch (e) {
+        print('loading billFailed $e');
+      }
+
+      // print(bills);
     } else {
       throw Exception('user is not logged in');
     }

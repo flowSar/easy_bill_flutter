@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/components/bill_card.dart';
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_modal_Bottom_sheet.dart';
 import 'package:easy_bill_flutter/components/custom_popup_menu_button.dart';
@@ -20,6 +21,7 @@ class BillsScreen extends StatefulWidget {
 
 class _BillsScreenState extends State<BillsScreen> {
   late TextEditingController _userName;
+  bool loading = false;
 
   @override
   void initState() {
@@ -36,56 +38,38 @@ class _BillsScreenState extends State<BillsScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          body: Column(
-        children: [
-          Form(
-            key: _formKey,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: TextFormField(
-                controller: _userName,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
-                validator: (name) => name!.length < 3 ? 'Please ' : null,
-              ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await context.read<DataProvider>().loadClientsData();
-              print(context.read<DataProvider>().clients[0].fullName);
-              // List<Item> items = context.read<DataProvider>().items;
-              // for (var item in items) {
-              //   print(item.name);
-              // }
-              // _formKey.currentState!.validate();
-              // FireBaseManager firebaseManager = FireBaseManager();
-              // DataSnapshot result = await firebaseManager.loadItemsData();
-              // Map<Object?, Object?> data =
-              //     result.value as Map<Object?, Object?>;
-              // for (var row in data.entries) {
-              //   Map<Object?, Object?> user = row.value as Map<Object?, Object?>;
-              //   print(user);
-              // }
-              //
-              // print('result end');
+        child: Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Bills',
+          textAlign: TextAlign.center,
+        ),
+        leading: Icon(null),
+      ),
+      body: Consumer<DataProvider>(builder: (context, dataProvider, child) {
+        if (loading) {
+          return Center(
+            child: CustomCircularProgress(),
+          );
+        } else {
+          return ListView.builder(
+            itemCount: 6,
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  print('select bill');
+                },
+                child: BillCard(
+                    client: 'khalid',
+                    date: '09/01/2025',
+                    billNumber: '1',
+                    total: '1400'),
+              );
             },
-            child: Text('Save'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CustomModalBottomSheet();
-                  });
-            },
-            child: Text('Open Bottom Sheet'),
-          ),
-        ],
-      )),
-    );
+          );
+        }
+      }),
+    ));
   }
 }

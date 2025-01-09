@@ -1,12 +1,12 @@
 import 'package:easy_bill_flutter/screens/bills/bills_screen.dart';
 
 class BillRow {
-  String _id;
-  String _name;
-  String _quantity;
-  String _price;
-  String _tax;
-  String _total;
+  final String _id;
+  final String _name;
+  final String _quantity;
+  final String _price;
+  final String _tax;
+  final String _total;
 
   BillRow(
       {required id,
@@ -23,6 +23,8 @@ class BillRow {
         _total = total;
 
   String get name => _name;
+
+  String get id => _id;
 
   String get quantity => _quantity;
 
@@ -44,16 +46,23 @@ class BillRow {
 }
 
 class Bill {
-  String _id;
-  String _clientName;
-  String _billDate;
-  List<BillsScreen> _items;
+  final String _id;
+  final String _clientName;
+  final String _billDate;
+  final String _total;
+  final List<Map<String, dynamic>> _items;
 
-  Bill({required id, required clientName, required billDate, required items})
+  Bill(
+      {required id,
+      required clientName,
+      required billDate,
+      required items,
+      required total})
       : _id = id,
         _clientName = clientName,
         _billDate = billDate,
-        _items = items;
+        _items = items,
+        _total = total;
 
   String get clientName => _clientName;
 
@@ -61,13 +70,16 @@ class Bill {
 
   String get billDate => _billDate;
 
-  List<BillsScreen> get items => _items;
+  String get total => _total;
+
+  List<Map<String, dynamic>> get items => _items;
 
   Map<String, dynamic> toDic() {
     return {
       'id': _id,
       'clientName': _clientName,
       'billDate': _billDate,
+      'total': _total,
       'items': _items,
     };
   }
