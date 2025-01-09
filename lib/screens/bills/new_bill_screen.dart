@@ -207,7 +207,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                   vertical: 16,
                 ),
                 child: Text(
-                  'Total: $billTotal \$',
+                  'Total: $billTotal dh',
                   style: kTextStyle2b.copyWith(color: Colors.black),
                   textAlign: TextAlign.center,
                 ),

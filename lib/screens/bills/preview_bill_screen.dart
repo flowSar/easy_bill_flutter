@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:easy_bill_flutter/components/bill_table_row.dart';
+import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/data/bill.dart';
+import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../utilities/generate_pdf.dart';
 
 const kTableHeadTextStyle = TextStyle(fontSize: 15, color: Colors.white);
 
@@ -28,8 +35,18 @@ class PreviewBillScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Business Name'),
-                      Text('Bill#'),
+                      Consumer<DataProvider>(
+                          builder: (context, dataProvider, child) {
+                        return Text(
+                          dataProvider.businessInfo!.businessName,
+                          style: kTextStyle2b.copyWith(fontSize: 26),
+                        );
+                      }),
+                      Text(
+                        'Bill#',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 17),
+                      ),
                     ],
                   ),
                   Row(
@@ -39,10 +56,21 @@ class PreviewBillScreen extends StatelessWidget {
                         spacing: 4,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Bill To'),
-                          Text('${bill?.clientName}'),
-                          Text('${bill?.clientEmail}'),
-                          Text('${bill?.clientPhoneNumber}'),
+                          Text('Bill To',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 18)),
+                          Text(
+                            '${bill?.clientName}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            '${bill?.clientEmail}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            '${bill?.clientPhoneNumber}',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ],
                       ),
                       Column(
@@ -50,7 +78,9 @@ class PreviewBillScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         spacing: 4,
                         children: [
-                          Text('Bill# 001'),
+                          Text(
+                            'Bill# 001',
+                          ),
                           Text('creation date: ${bill?.billDate}'),
                         ],
                       ),
@@ -107,14 +137,40 @@ class PreviewBillScreen extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(8),
                 child: Text(
-                  'Total: ${bill?.total} \$',
+                  'Total: ${bill?.total} dh',
                   textAlign: TextAlign.center,
                   style: kTextStyle2b,
                 ),
               ),
             ),
-            // BillTableRow(),
-            // BillTableRow(),
+            ElevatedButton(
+              onPressed: () async {
+                String? businessName =
+                    context.read<DataProvider>().businessInfo?.businessName;
+                final pdfFile =
+                    await PdfGenerator.generatePdf(bill!, businessName);
+                PdfGenerator.openFile(pdfFile);
+              },
+              style: ElevatedButton.styleFrom(
+                  side: BorderSide(),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  )),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(top: 4),
+                child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    child: Text(
+                      'Save Pdf',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                    )),
+              ),
+            )
           ],
         ),
       ),

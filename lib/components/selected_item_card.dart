@@ -66,7 +66,7 @@ class SelectedItemCard extends StatelessWidget {
                         style: TextStyle(fontSize: 12),
                       ),
                       Text(
-                        '$total \$',
+                        '$total dh',
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w500),
                       ),
@@ -74,25 +74,7 @@ class SelectedItemCard extends StatelessWidget {
                   )
                 ],
               ),
-            )
-            // Expanded(
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //
-            //
-            //     ],
-            //   ),
-            // ),
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //
-            //
-            //   ],
-            // ),
-            ,
+            ),
             Padding(
               padding: EdgeInsets.only(left: 8),
               child:

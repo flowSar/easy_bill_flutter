@@ -1,0 +1,149 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:easy_bill_flutter/data/bill.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:open_file/open_file.dart';
+import 'package:provider/provider.dart';
+
+import '../constants/colors.dart';
+import '../providers/data_provider.dart';
+
+class PdfGenerator {
+  static Future<File> saveDocument(String name, Document pdf) async {
+    final bytes = await pdf.save();
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/$name');
+    await file.writeAsBytes(bytes);
+    return file;
+  }
+
+  static Future openFile(File file) async {
+    final url = file.path;
+    await OpenFile.open(url);
+  }
+
+  static Future<File> generatePdf(Bill bill, String? businessName) async {
+    final fontRegular =
+        pw.Font.ttf(await rootBundle.load('fonts/Roboto-Regular.ttf'));
+    final fontBold =
+        pw.Font.ttf(await rootBundle.load('fonts/Roboto-Bold.ttf'));
+
+    final pdf = Document();
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(
+                businessName ?? 'Anonymous',
+                style:
+                    pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.SizedBox(height: 10),
+              pw.Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          pw.Text('Bill To:',
+                              style: pw.TextStyle(font: fontRegular)),
+                          pw.SizedBox(height: 6),
+                          pw.Text(bill.clientName ?? '',
+                              style: pw.TextStyle(font: fontRegular)),
+                          pw.SizedBox(height: 6),
+                          pw.Text(bill.clientEmail ?? '',
+                              style: pw.TextStyle(font: fontRegular)),
+                          pw.SizedBox(height: 6),
+                          pw.Text(bill.clientPhoneNumber ?? '',
+                              style: pw.TextStyle(font: fontRegular)),
+                        ]),
+                    pw.Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          pw.Text('Bill#: 001',
+                              style: pw.TextStyle(font: fontRegular)),
+                          pw.SizedBox(height: 6),
+                          pw.Text('Date: ${bill.billDate}',
+                              style: pw.TextStyle(font: fontRegular)),
+                        ]),
+                  ]),
+
+              // pw.SizedBox(height: 10),
+
+              pw.Divider(),
+              pw.Table(
+                border: pw.TableBorder.all(),
+                children: [
+                  pw.TableRow(
+                      decoration: BoxDecoration(
+                        color: PdfColor.fromHex('#E4DADA'),
+                      ),
+                      children: [
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(4),
+                          child: pw.Text('Product',
+                              style: pw.TextStyle(font: fontBold)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(4),
+                          child: pw.Text('Quantity',
+                              style: pw.TextStyle(font: fontBold)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(4),
+                          child: pw.Text('Price',
+                              style: pw.TextStyle(font: fontBold)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(4),
+                          child: pw.Text('Total',
+                              style: pw.TextStyle(font: fontBold)),
+                        ),
+                      ]),
+                  ...bill.items.map((item) {
+                    return pw.TableRow(children: [
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(4),
+                        child: pw.Text(item['name'] ?? '',
+                            style: pw.TextStyle(font: fontRegular)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(4),
+                        child: pw.Text(item['quantity'].toString(),
+                            style: pw.TextStyle(font: fontRegular)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(4),
+                        child: pw.Text(item['price'].toString(),
+                            style: pw.TextStyle(font: fontRegular)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(4),
+                        child: pw.Text(item['total'].toString(),
+                            style: pw.TextStyle(font: fontRegular)),
+                      ),
+                    ]);
+                  }).toList(),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Align(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Text(
+                  'Total: ${bill.total} dh',
+                  style: pw.TextStyle(font: fontBold, fontSize: 18),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+    return saveDocument('test-bill.pdf', pdf);
+  }
+}
