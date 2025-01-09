@@ -1,9 +1,11 @@
 import 'package:easy_bill_flutter/components/client_card.dart';
 import 'package:easy_bill_flutter/components/custom_Floating_button.dart';
+import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_modal_Bottom_sheet.dart';
 import 'package:easy_bill_flutter/components/empty.dart';
 import 'package:easy_bill_flutter/components/selected_item_card.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
+import 'package:easy_bill_flutter/data/bill_row.dart';
 import 'package:easy_bill_flutter/utilities/scan_bard_code.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -26,10 +28,28 @@ class _NewBillScreenState extends State<NewBillScreen> {
   ScanBarCode scanner = ScanBarCode();
   late String? barCode;
   late String selectedClient = 'Clients';
-  String? _selectedItem;
+  bool loading = false;
   double billTotal = 0.0;
   List<Item> selectedItems = [];
   Client? client;
+  List<BillRow> billRows = [];
+
+  @override
+  void initState() {
+    loadBusinessInfo();
+    super.initState();
+  }
+
+  Future loadBusinessInfo() async {
+    loading = true;
+    try {
+      await context.read<DataProvider>().loadBusinessInfo();
+      loading = false;
+    } catch (e) {
+      print('loading: $e');
+      loading = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +73,21 @@ class _NewBillScreenState extends State<NewBillScreen> {
     }
 
     late double billTotal = getBillTotal();
+
+    void fillDataIntoRows() {
+      int index = 0;
+      for (var item in selectedItems) {
+        double total = item.price * item.quantity;
+        billRows.add(BillRow(
+            id: index,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            total: total,
+            tax: 0));
+        index++;
+      }
+    }
 
     return SafeArea(
       child: Scaffold(
@@ -93,23 +128,31 @@ class _NewBillScreenState extends State<NewBillScreen> {
                       },
                     ),
               Consumer<DataProvider>(builder: (context, dataProvider, child) {
-                final businessInfo = dataProvider.businessInfo;
-                if (businessInfo != null) {
-                  return UserCard(
-                      onPressed: () {
-                        context.push('/businessScreen');
-                      },
-                      elevation: 2,
-                      title: businessInfo.businessName,
-                      subTitle: businessInfo.businessEmail!);
-                } else {
-                  return SelectItemButton(
-                    elevation: 2,
-                    label: 'Business Info',
-                    onPressed: () {
-                      context.push('/clientListScreen');
-                    },
+                if (loading) {
+                  return CustomCircularProgress(
+                    strokeWidth: 2,
+                    h: 35,
+                    w: 35,
                   );
+                } else {
+                  final businessInfo = dataProvider.businessInfo;
+                  if (businessInfo != null) {
+                    return UserCard(
+                        onPressed: () {
+                          context.push('/businessScreen');
+                        },
+                        elevation: 2,
+                        title: businessInfo.businessName,
+                        subTitle: businessInfo.businessEmail!);
+                  } else {
+                    return SelectItemButton(
+                      elevation: 2,
+                      label: 'Business Info',
+                      onPressed: () {
+                        context.push('/clientListScreen');
+                      },
+                    );
+                  }
                 }
               }),
               Expanded(
@@ -162,7 +205,10 @@ class _NewBillScreenState extends State<NewBillScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomFloatingButton(
-                onPressed: () {},
+                onPressed: () {
+                  fillDataIntoRows();
+                  print('bill rows Length: ${billRows.length}');
+                },
                 child: Icon(
                   Icons.save,
                   color: Colors.white,
