@@ -1,4 +1,4 @@
-import 'package:easy_bill_flutter/data/bill_row.dart';
+import 'package:easy_bill_flutter/data/bill.dart';
 import 'package:easy_bill_flutter/data/business_info.dart';
 import 'package:easy_bill_flutter/data/clients.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -223,15 +223,19 @@ class DataProvider extends ChangeNotifier {
         DatabaseReference businessRef =
             _database.ref('users/${user.uid}/business');
         DataSnapshot snapshot = await businessRef.get();
-        Map<String, dynamic> data =
-            Map<String, dynamic>.from(snapshot.value as Map);
-        businessInfo = BusinessInfo(
-          businessName: data['businessName'],
-          businessAddress: data['businessAddress'],
-          businessEmail: data['businessEmail'],
-          businessPhoneNumber: data['businessPhoneNumber'],
-        );
-        notifyListeners();
+        if (snapshot.exists) {
+          Map<String, dynamic> data =
+              Map<String, dynamic>.from(snapshot.value as Map);
+          businessInfo = BusinessInfo(
+            businessName: data['businessName'],
+            businessAddress: data['businessAddress'],
+            businessEmail: data['businessEmail'],
+            businessPhoneNumber: data['businessPhoneNumber'],
+          );
+          notifyListeners();
+        } else {
+          throw Exception('Nothing was found');
+        }
       } catch (e) {
         throw Exception('load business info failed $e');
       }
@@ -258,43 +262,50 @@ class DataProvider extends ChangeNotifier {
 
   Future<void> loadBills() async {
     User? user = getCurrentUser();
+    // initialize the bill with empty list etch will call this function to load data
+    bills = [];
     if (user != null) {
       try {
         DatabaseReference dataBillsRef =
             _database.ref('users/${user.uid}/bills');
 
         DataSnapshot snapshot = await dataBillsRef.get();
-        Map<String, dynamic> billsData =
-            Map<String, dynamic>.from(snapshot.value as Map);
-        for (var entry in billsData.entries) {
-          List<dynamic> rawItems = entry.value['items'] as List<dynamic>;
-          List<Map<String, dynamic>> billItems = rawItems
-              .map((item) => Map<String, dynamic>.from(item as Map))
-              .toList();
-          List<Map<String, dynamic>> billRows = [];
-          for (var row in billItems) {
-            billRows.add(BillRow(
-                    id: 'null',
-                    name: row['name'],
-                    quantity: row['quantity'],
-                    price: row['price'],
-                    total: row['total'],
-                    tax: row['tax'])
-                .toDic());
+        if (snapshot.exists) {
+          Map<String, dynamic> billsData =
+              Map<String, dynamic>.from(snapshot.value as Map);
+          for (var entry in billsData.entries) {
+            List<dynamic> rawItems = entry.value['items'] as List<dynamic>;
+            List<Map<String, dynamic>> billItems = rawItems
+                .map((item) => Map<String, dynamic>.from(item as Map))
+                .toList();
+            List<Map<String, dynamic>> billRows = [];
+            for (var row in billItems) {
+              billRows.add(BillRow(
+                      id: 'null',
+                      name: row['name'],
+                      quantity: row['quantity'],
+                      price: row['price'],
+                      total: row['total'],
+                      tax: row['tax'])
+                  .toDic());
+            }
+            bills.add(Bill(
+              id: entry.value['id'],
+              clientName: entry.value['clientName'],
+              billDate: entry.value['billDate'],
+              items: billRows,
+              total: entry.value['total'],
+              clientEmail: entry.value['clientEmail'],
+              clientPhoneNumber: entry.value['clientPhoneNumber'],
+            ));
+            notifyListeners();
           }
-          bills.add(Bill(
-            id: entry.value['id'],
-            clientName: entry.value['clientName'],
-            billDate: entry.value['billDate'],
-            items: billRows,
-            total: entry.value['total'],
-          ));
-          notifyListeners();
+        } else {
+          throw Exception('Nothing was found ');
         }
       } catch (e) {
-        print('loading billFailed $e');
+        throw Exception('loading billFailed $e ');
       }
-
       // print(bills);
     } else {
       throw Exception('user is not logged in');

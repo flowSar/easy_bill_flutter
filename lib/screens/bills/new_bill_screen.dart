@@ -7,7 +7,7 @@ import 'package:easy_bill_flutter/components/custom_modal_Bottom_sheet.dart';
 import 'package:easy_bill_flutter/components/empty.dart';
 import 'package:easy_bill_flutter/components/selected_item_card.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
-import 'package:easy_bill_flutter/data/bill_row.dart';
+import 'package:easy_bill_flutter/data/bill.dart';
 import 'package:easy_bill_flutter/utilities/scan_bard_code.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -101,6 +101,8 @@ class _NewBillScreenState extends State<NewBillScreen> {
         billDate: '09/01/25',
         items: billRows,
         total: billTotal,
+        clientEmail: client?.email,
+        clientPhoneNumber: client?.phoneNumber,
       );
     }
 

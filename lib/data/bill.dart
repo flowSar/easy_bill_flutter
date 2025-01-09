@@ -48,21 +48,27 @@ class BillRow {
 class Bill {
   final String _id;
   final String _clientName;
+  final String _clientEmail;
+  final String _clientPhoneNumber;
   final String _billDate;
   final String _total;
   final List<Map<String, dynamic>> _items;
 
-  Bill(
-      {required id,
-      required clientName,
-      required billDate,
-      required items,
-      required total})
-      : _id = id,
+  Bill({
+    required id,
+    required clientName,
+    required billDate,
+    required items,
+    required total,
+    required clientEmail,
+    required clientPhoneNumber,
+  })  : _id = id,
         _clientName = clientName,
         _billDate = billDate,
         _items = items,
-        _total = total;
+        _total = total,
+        _clientEmail = clientEmail,
+        _clientPhoneNumber = clientPhoneNumber;
 
   String get clientName => _clientName;
 
@@ -71,6 +77,10 @@ class Bill {
   String get billDate => _billDate;
 
   String get total => _total;
+
+  String get clientEmail => _clientEmail;
+
+  String get clientPhoneNumber => _clientPhoneNumber;
 
   List<Map<String, dynamic>> get items => _items;
 
@@ -81,6 +91,8 @@ class Bill {
       'billDate': _billDate,
       'total': _total,
       'items': _items,
+      'clientEmail': _clientEmail,
+      'clientPhoneNumber': _clientPhoneNumber,
     };
   }
 }

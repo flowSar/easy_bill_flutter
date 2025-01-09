@@ -1,4 +1,6 @@
+import 'package:easy_bill_flutter/data/bill.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
+import 'package:easy_bill_flutter/screens/bills/preview_bill_screen.dart';
 import 'package:easy_bill_flutter/screens/business_screen.dart';
 import 'package:easy_bill_flutter/screens/clients/client_list_screen.dart';
 import 'package:easy_bill_flutter/screens/bills/new_bill_screen.dart';
@@ -99,6 +101,18 @@ final GoRouter appRouter = GoRouter(
           path: 'businessScreen',
           builder: (BuildContext context, GoRouterState state) =>
               BusinessScreen(),
+        ),
+        GoRoute(
+          path: 'previewBillScreen',
+          builder: (BuildContext context, GoRouterState state) {
+            Bill? bill;
+            if (state.extra != null) {
+              bill = state.extra as Bill;
+            }
+            return PreviewBillScreen(
+              bill: bill,
+            );
+          },
         ),
       ],
     ),
