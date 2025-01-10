@@ -1,6 +1,7 @@
 import 'package:easy_bill_flutter/components/text_card.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -50,6 +51,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: [
                     Text('LogOut'),
                     Icon(Icons.logout),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () async {
+                context.push('/aboutScreen');
+              },
+              child: TextCard(
+                bg: Colors.grey[100],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    Text('About'),
+                    Icon(Icons.info_outline),
                   ],
                 ),
               ),

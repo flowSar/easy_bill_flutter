@@ -1,5 +1,6 @@
 import 'package:easy_bill_flutter/data/bill.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
+import 'package:easy_bill_flutter/screens/about_screen.dart';
 import 'package:easy_bill_flutter/screens/bills/preview_bill_screen.dart';
 import 'package:easy_bill_flutter/screens/business_screen.dart';
 import 'package:easy_bill_flutter/screens/clients/client_list_screen.dart';
@@ -113,6 +114,10 @@ final GoRouter appRouter = GoRouter(
               bill: bill,
             );
           },
+        ),
+        GoRoute(
+          path: '/aboutScreen',
+          builder: (BuildContext context, GoRouterState state) => AboutScreen(),
         ),
       ],
     ),

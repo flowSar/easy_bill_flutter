@@ -204,7 +204,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: EdgeInsets.symmetric(
-                  vertical: 16,
+                  vertical: 12,
                 ),
                 child: Text(
                   'Total: $billTotal dh',
@@ -245,9 +245,22 @@ class _NewBillScreenState extends State<NewBillScreen> {
                     print('please select new Item');
                   }
                 },
-                child: Icon(
-                  Icons.save,
-                  color: Colors.white,
+                w: 90,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Save',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Icon(
+                        Icons.save,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
                 ),
               ),
               CustomFloatingButton(
@@ -286,9 +299,22 @@ class _NewBillScreenState extends State<NewBillScreen> {
                     }
                   });
                 },
-                child: Icon(
-                  Icons.barcode_reader,
-                  color: Colors.white,
+                w: 90,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Scan',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Icon(
+                        Icons.barcode_reader,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],

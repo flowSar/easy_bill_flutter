@@ -1,8 +1,10 @@
+import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/text_card.dart';
 import 'package:easy_bill_flutter/constants/colors.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/data/item.dart';
 import 'package:easy_bill_flutter/services/database_service.dart';
+import 'package:easy_bill_flutter/utilities/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../components/custom_Floating_button.dart';
@@ -28,7 +30,8 @@ class _NewItemScreenState extends State<NewItemScreen> {
   late final TextEditingController _price;
   late final TextEditingController _quantity;
   late final TextEditingController _tax;
-  late String barCode = '000000000000000';
+  late String barCode = 'Scan the bar Code';
+  bool loading = false;
 
   @override
   void initState() {
@@ -124,11 +127,11 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     keyType: kKeyNumberType,
                     placeholder: 'Tax Percentage',
                     bg: kTextInputBg1,
-                    validator: (quantity) =>
-                        quantity!.isEmpty ? 'please Insert valid input' : null,
+                    validator: (tax) =>
+                        tax!.isEmpty ? 'please Insert valid input' : null,
                   ),
                   CustomTextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       bool? valid = _formKey.currentState?.validate();
                       if (valid == true) {
                         FireBaseManager firebaseManager = FireBaseManager();
@@ -141,15 +144,37 @@ class _NewItemScreenState extends State<NewItemScreen> {
                           description: _description.text,
                           price: double.parse(price),
                           quantity: int.parse(quantity),
+                          tax: _tax.text,
                         );
-                        firebaseManager.addItem(item);
+                        try {
+                          setState(() {
+                            loading = true;
+                          });
+                          await firebaseManager.addItem(item);
+                          setState(() {
+                            loading = false;
+                          });
+                          _itemName.text = '';
+                          _description.text = '';
+                          _price.text = '';
+                          _quantity.text = '';
+                          _tax.text = '';
+                          barCode = 'Scan the bar Code';
+                        } catch (e) {
+                          setState(() {
+                            loading = false;
+                          });
+                          print('create new Item failed $e');
+                        }
                         // context.pop(item);
                       }
                     },
-                    label: Text(
-                      'save',
-                      style: kTextStyle2b,
-                    ),
+                    label: loading
+                        ? CustomCircularProgress()
+                        : Text(
+                            'save',
+                            style: kTextStyle2b,
+                          ),
                     w: 120,
                     h: 50,
                     bg: Colors.green,

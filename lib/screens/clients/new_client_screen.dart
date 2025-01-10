@@ -1,4 +1,5 @@
 import 'package:easy_bill_flutter/components/CustomBadge.dart';
+import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/data/clients.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
@@ -31,6 +32,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
   late final TextEditingController _email;
   late final TextEditingController _phoneNumber;
   String? clientId;
+  bool loading = false;
 
   @override
   void initState() {
@@ -85,6 +87,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     labelBg: Colors.blueGrey,
                   ),
                   CustomTextField(
+                    readOnly: loading,
                     keyType: kKeyTextType,
                     controller: _fullName,
                     placeholder: 'Full Name',
@@ -93,25 +96,28 @@ class _NewClientScreenState extends State<NewClientScreen> {
                         name!.length < 3 ? 'Please Insert valid Input' : null,
                   ),
                   CustomTextField(
+                    readOnly: loading,
                     keyType: kKeyTextType,
                     controller: _address,
                     placeholder: 'Address',
                     bg: kTextInputBg1,
                   ),
                   CustomTextField(
+                    readOnly: loading,
                     keyType: kKeyEmailType,
                     controller: _email,
                     placeholder: 'Email',
                     bg: kTextInputBg1,
                   ),
                   CustomTextField(
+                    readOnly: loading,
                     keyType: kKeyPhoneType,
                     controller: _phoneNumber,
                     placeholder: 'Phone number',
                     bg: kTextInputBg1,
                   ),
                   CustomTextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Client client = Client(
                         clientId: clientId ?? uuid.v4(),
                         fullName: _fullName.text,
@@ -123,17 +129,32 @@ class _NewClientScreenState extends State<NewClientScreen> {
                       if (valid == true) {
                         // context.pop(client);
                         try {
-                          context.read<DataProvider>().addClients(client);
+                          setState(() {
+                            loading = true;
+                          });
+                          await context.read<DataProvider>().addClients(client);
+                          setState(() {
+                            loading = false;
+                          });
+                          _fullName.text = '';
+                          _address.text = '';
+                          _email.text = '';
+                          _phoneNumber.text = '';
                         } catch (e) {
+                          setState(() {
+                            loading = false;
+                          });
                           print('error: $e');
                         }
                         ;
                       }
                     },
-                    label: Text(
-                      'save',
-                      style: kTextStyle2b,
-                    ),
+                    label: loading
+                        ? CustomCircularProgress()
+                        : Text(
+                            'save',
+                            style: kTextStyle2b,
+                          ),
                     w: 120,
                     h: 50,
                     bg: Colors.green,

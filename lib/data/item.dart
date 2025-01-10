@@ -4,7 +4,7 @@ class Item {
   final String? _description;
   final double _price;
   final int _quantity;
-  final double? _tax;
+  final String? _tax;
 
   Item({
     required String barCode,
@@ -12,7 +12,7 @@ class Item {
     String? description,
     required double price,
     required int quantity,
-    double? tax,
+    String? tax,
   })  : _barCode = barCode,
         _name = name,
         _description = description,
@@ -30,7 +30,7 @@ class Item {
 
   int get quantity => _quantity;
 
-  double? get tax => _tax;
+  String? get tax => _tax;
 
   Map toDic() {
     return {

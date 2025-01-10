@@ -49,6 +49,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Consumer<DataProvider>(builder: (context, dataProvider, child) {
+      List<Client> clients = dataProvider.clients;
       return Scaffold(
         appBar: AppBar(
           title: Text('Manage Clients'),
@@ -62,6 +63,11 @@ class _ClientsScreenState extends State<ClientsScreen> {
                 bg: kTextInputBg1,
                 placeholder: 'Search client name',
                 icon: Icon(Icons.search),
+                onChnaged: (value) {
+                  setState(() {
+                    dataProvider.flitterLists(value, 'clients');
+                  });
+                },
               ),
               Expanded(
                 child: loading
@@ -70,27 +76,28 @@ class _ClientsScreenState extends State<ClientsScreen> {
                         w: 100,
                         strokeWidth: 6,
                       )
-                    : dataProvider.clients.isNotEmpty
+                    : clients.isNotEmpty
                         ? RefreshIndicator(
                             onRefresh: loadClientsData,
                             child: ListView.builder(
                               padding: EdgeInsets.only(bottom: height * 0.085),
-                              itemCount: dataProvider.clients.length,
+                              itemCount: clients.length,
                               itemBuilder: (context, index) {
                                 return ClientCard(
-                                  title: dataProvider.clients[index].fullName,
-                                  subTitle: dataProvider.clients[index].email,
+                                  title: clients[index].fullName,
+                                  subTitle: clients[index].email,
                                   onEdite: () {
                                     context.push('/newClientScreen',
-                                        extra: dataProvider.clients[index]);
+                                        extra: clients[index]);
                                   },
                                   onDelete: () {
-                                    context.read<DataProvider>().deleteClient(
-                                        dataProvider.clients[index].clientId);
+                                    context
+                                        .read<DataProvider>()
+                                        .deleteClient(clients[index].clientId);
                                   },
                                   onTap: () {
                                     context.push('/newClientScreen',
-                                        extra: dataProvider.clients[index]);
+                                        extra: clients[index]);
                                   },
                                 );
                               },
@@ -114,7 +121,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                   Client client = newClient as Client;
                   print('received: ${client.fullName}');
                   setState(() {
-                    dataProvider.clients.add(client);
+                    clients.add(client);
                   });
                 }
               });

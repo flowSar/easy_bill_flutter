@@ -9,6 +9,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType? keyType;
   final String? Function(String?)? validator;
   final String? initialValue;
+  final bool readOnly;
 
   const CustomTextField({
     super.key,
@@ -20,6 +21,7 @@ class CustomTextField extends StatefulWidget {
     this.keyType,
     this.validator,
     this.initialValue,
+    this.readOnly = false,
   });
 
   @override
@@ -45,6 +47,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: TextFormField(
+          readOnly: widget.readOnly,
           initialValue: widget.initialValue,
           keyboardType: widget.keyType ?? TextInputType.text,
           controller: widget.controller,

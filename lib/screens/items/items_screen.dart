@@ -20,6 +20,7 @@ class ItemsScreen extends StatefulWidget {
 
 class _ItemsScreenState extends State<ItemsScreen> {
   bool loading = false;
+  List<Item> items = [];
 
   // List<Item> items = [
   //   Item(
@@ -37,12 +38,13 @@ class _ItemsScreenState extends State<ItemsScreen> {
   }
 
   Future<void> loadItemsData() async {
-    setState(() {
-      loading = true;
-    });
-
     try {
+      setState(() {
+        loading = true;
+      });
+
       await context.read<DataProvider>().loadItemsData();
+      // List<Item> items = context.read<DataProvider>().items;
     } catch (e) {
       setState(() {
         loading = false;
@@ -58,6 +60,8 @@ class _ItemsScreenState extends State<ItemsScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Consumer<DataProvider>(builder: (context, dataProvider, child) {
+      items = dataProvider.items;
+
       return Scaffold(
         appBar: AppBar(
           title: Text('Manage Items'),
@@ -71,6 +75,11 @@ class _ItemsScreenState extends State<ItemsScreen> {
                 bg: kTextInputBg1,
                 placeholder: 'Search item name',
                 icon: Icon(Icons.search),
+                onChnaged: (value) {
+                  setState(() {
+                    dataProvider.flitterLists(value, 'items');
+                  });
+                },
               ),
               Expanded(
                 child: loading
@@ -79,30 +88,26 @@ class _ItemsScreenState extends State<ItemsScreen> {
                         h: 100,
                         strokeWidth: 6,
                       )
-                    : dataProvider.items.isNotEmpty
+                    : items.isNotEmpty
                         ? RefreshIndicator(
                             onRefresh: loadItemsData,
                             child: ListView.builder(
                                 padding:
                                     EdgeInsets.only(bottom: height * 0.085),
-                                itemCount: dataProvider.items.length,
+                                itemCount: items.length,
                                 itemBuilder: (context, index) {
                                   return ItemCard(
-                                    title: dataProvider.items[index].name,
-                                    subTitle:
-                                        dataProvider.items[index].description,
-                                    tailing: dataProvider.items[index].price
-                                        .toString(),
+                                    title: items[index].name,
+                                    subTitle: items[index].description,
+                                    tailing: items[index].price.toString(),
                                     onTap: () {
-                                      Item currentItem =
-                                          dataProvider.items[index];
+                                      Item currentItem = items[index];
                                       context.push('/newItemScreen',
                                           extra: currentItem);
                                     },
                                     onDelete: () {},
                                     onEdite: () {
-                                      Item currentItem =
-                                          dataProvider.items[index];
+                                      Item currentItem = items[index];
                                       context.push('/newItemScreen',
                                           extra: currentItem);
                                     },
@@ -126,7 +131,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
               if (returnedItem != null) {
                 Item item = returnedItem as Item;
                 setState(() {
-                  dataProvider.items.add(item);
+                  items.add(item);
                 });
               }
             });

@@ -14,6 +14,8 @@ class DataProvider extends ChangeNotifier {
   late List<Item> items = [];
   late BusinessInfo? businessInfo;
   late List<Bill> bills = [];
+  late List<Item> _tempItemsList = [];
+  late List<Client> _tempClientsList = [];
 
   DataProvider() {
     User? user = getCurrentUser();
@@ -110,6 +112,8 @@ class DataProvider extends ChangeNotifier {
                   description: description),
             );
           }
+          // make a copy of the items list to use it for filtering the list
+          _tempItemsList = List.from(items);
           notifyListeners();
         } else {
           throw Exception('No items found');
@@ -152,6 +156,8 @@ class DataProvider extends ChangeNotifier {
                   phoNumber: phoneNumber),
             );
           }
+          // make a copy of the clients list to use it for filtering the list
+          _tempClientsList = List.from(clients);
           notifyListeners();
         } else {
           throw Exception('Nothing was found');
@@ -175,6 +181,7 @@ class DataProvider extends ChangeNotifier {
             .child('clients/${client.clientId}/')
             .update(client.toDic());
         await loadClientsData();
+        notifyListeners();
       } catch (e) {
         throw Exception('adding New client Failed');
       }
@@ -309,6 +316,27 @@ class DataProvider extends ChangeNotifier {
       // print(bills);
     } else {
       throw Exception('user is not logged in');
+    }
+  }
+
+  void flitterLists(String name, String listName) {
+    items = List.from(_tempItemsList);
+    clients = List.from(_tempClientsList);
+    if (listName == 'items') {
+      if (items.isEmpty) {
+        items = List.from(_tempItemsList);
+      } else {
+        items = items.where((item) => item.name.contains(name)).toList();
+        notifyListeners();
+      }
+    } else if (listName == 'clients') {
+      if (clients.isEmpty) {
+        clients = List.from(_tempClientsList);
+      } else {
+        clients =
+            clients.where((client) => client.fullName.contains(name)).toList();
+        notifyListeners();
+      }
     }
   }
 }

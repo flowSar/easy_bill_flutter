@@ -132,13 +132,21 @@ class PdfGenerator {
                 ],
               ),
               pw.SizedBox(height: 20),
-              pw.Align(
-                alignment: pw.Alignment.centerRight,
-                child: pw.Text(
-                  'Total: ${bill.total} dh',
-                  style: pw.TextStyle(font: fontBold, fontSize: 18),
+              pw.Expanded(
+                child: pw.Align(
+                  alignment: pw.Alignment.centerRight,
+                  child: pw.Text(
+                    'Total: ${bill.total} dh',
+                    style: pw.TextStyle(font: fontBold, fontSize: 18),
+                  ),
                 ),
               ),
+              pw.SizedBox(height: 20),
+              pw.Divider(),
+              pw.Container(
+                  child: pw.Row(children: [
+                pw.Text('Email: exsar@gmail.com'),
+              ])),
             ],
           );
         },
