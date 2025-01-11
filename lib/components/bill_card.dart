@@ -9,7 +9,7 @@ final kBillCardText = TextStyle(
   color: Colors.blue,
 );
 
-class BillCard extends StatelessWidget {
+class BillCard extends StatefulWidget {
   final String client;
   final String date;
   final String billNumber;
@@ -22,6 +22,19 @@ class BillCard extends StatelessWidget {
     required this.billNumber,
     required this.total,
   });
+
+  @override
+  State<BillCard> createState() => _BillCardState();
+}
+
+class _BillCardState extends State<BillCard> {
+  bool isDarkMode = false;
+
+  @override
+  void initState() {
+    isDarkMode = context.read<SettingsProvider>().isDarMode;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +51,11 @@ class BillCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    client,
+                    widget.client,
                     style: kBillCardText,
                   ),
                   Text(
-                    'B.N: 0000$billNumber',
+                    'B.N: 0000${widget.billNumber}',
                     style: kBillCardText,
                   ),
                 ],
@@ -52,10 +65,11 @@ class BillCard extends StatelessWidget {
                 children: [
                   Text(
                     'Created',
-                    style: kBillCardText.copyWith(color: Colors.black),
+                    style: kBillCardText.copyWith(
+                        color: isDarkMode ? Colors.white : Colors.black),
                   ),
                   Text(
-                    date,
+                    widget.date,
                     style: kBillCardText,
                   ),
                 ],
@@ -65,10 +79,11 @@ class BillCard extends StatelessWidget {
                 children: [
                   Text(
                     'Total',
-                    style: kBillCardText.copyWith(color: Colors.black),
+                    style: kBillCardText.copyWith(
+                        color: isDarkMode ? Colors.white : Colors.black),
                   ),
                   Text(
-                    '$total $currency',
+                    '${widget.total} $currency',
                     style: kBillCardText,
                   ),
                 ],

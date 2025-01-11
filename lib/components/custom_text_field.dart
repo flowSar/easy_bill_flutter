@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/settings_provider.dart';
 
 class CustomTextField extends StatefulWidget {
   final String? placeholder;
@@ -31,9 +34,16 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
+  bool isDarkMode = false;
+
+  @override
+  void initState() {
+    isDarkMode = context.read<SettingsProvider>().isDarMode;
+    super.initState();
+  }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     widget.controller?.dispose();
     super.dispose();
   }
@@ -45,7 +55,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
         decoration: BoxDecoration(
-          color: widget.bg,
+          color: isDarkMode ? Colors.white : widget.bg,
           borderRadius: BorderRadius.circular(8),
         ),
         child: TextFormField(
@@ -54,6 +64,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           keyboardType: widget.keyType ?? TextInputType.text,
           controller: widget.controller,
           onChanged: widget.onChanged,
+          style: isDarkMode ? TextStyle(color: Colors.red) : null,
           onTap: () {},
           decoration: InputDecoration(
             hintText: widget.placeholder,

@@ -29,6 +29,12 @@ class _ClientsScreenState extends State<ClientsScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // _searchKeyWord.dispose();
+    super.dispose();
+  }
+
   Future<void> loadClientsData() async {
     setState(() {
       loading = true;

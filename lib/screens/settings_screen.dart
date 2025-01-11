@@ -1,6 +1,7 @@
 import 'package:easy_bill_flutter/components/select_card.dart';
 import 'package:easy_bill_flutter/components/text_card.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
+import 'package:easy_bill_flutter/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -21,10 +22,16 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool isLoading = true;
   String selectedCurrency = '\$';
+  late bool _isSwitched;
+
+  @override
+  void initState() {
+    _isSwitched = context.read<SettingsProvider>().isDarMode;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Settings')),
@@ -84,7 +91,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: () {},
                 leftIcon: Icons.nightlight,
                 middleText: 'Night Mode',
-                rightIcon: Icon(Icons.keyboard_arrow_right),
+                p: 11,
+                rightIcon: Switch(
+                  value: _isSwitched,
+                  onChanged: (value) {
+                    setState(() {
+                      _isSwitched = value;
+                      context.read<SettingsProvider>().setDarkMode(value);
+                    });
+                  },
+                  padding: EdgeInsets.zero,
+                ),
               ),
               SelectCard(
                 onTap: () {

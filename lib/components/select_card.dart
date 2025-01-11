@@ -9,14 +9,17 @@ class SelectCard extends StatelessWidget {
   final IconData leftIcon;
   final Widget rightIcon;
   final String middleText;
+  final double? p;
 
-  const SelectCard(
-      {super.key,
-      required this.onTap,
-      this.bg,
-      required this.leftIcon,
-      required this.middleText,
-      required this.rightIcon});
+  const SelectCard({
+    super.key,
+    required this.onTap,
+    this.bg,
+    required this.leftIcon,
+    required this.middleText,
+    required this.rightIcon,
+    this.p,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class SelectCard extends StatelessWidget {
       onTap: onTap,
       child: TextCard(
         bg: bg ?? greyLight,
+        p: p,
         child: Row(
           spacing: 30,
           children: [

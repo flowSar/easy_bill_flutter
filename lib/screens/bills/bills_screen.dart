@@ -30,7 +30,7 @@ class _BillsScreenState extends State<BillsScreen> {
 
   @override
   void dispose() {
-    _userName.dispose();
+    // _userName.dispose();
     super.dispose();
   }
 

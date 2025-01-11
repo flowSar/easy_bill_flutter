@@ -1,6 +1,7 @@
 import 'package:easy_bill_flutter/components/currency_dialog.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/components/custom_text_field.dart';
+import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/data/currency.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +39,7 @@ class _AboutScreenState extends State<AboutScreen> {
     'malika'
   ];
   String selectedCurrency = 'US\$';
+  bool isSwitched = true;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,23 @@ class _AboutScreenState extends State<AboutScreen> {
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
-          children: [],
+          children: [
+            CustomTextButton(
+                onPressed: () {
+                  showErrorDialog(context, 'Error', '');
+                },
+                label: Text('sho error'),
+                bg: Colors.green,
+                fg: Colors.white),
+            Switch(
+              value: isSwitched,
+              onChanged: (value) {
+                setState(() {
+                  isSwitched = value; // Update the state
+                });
+              },
+            ),
+          ],
         ),
       ),
     ));

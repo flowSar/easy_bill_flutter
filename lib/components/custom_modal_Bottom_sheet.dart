@@ -8,6 +8,7 @@ import '../constants/g_constants.dart';
 import '../constants/styles.dart';
 import '../data/item.dart';
 import '../providers/data_provider.dart';
+import '../providers/settings_provider.dart';
 import 'custom_text_button.dart';
 import 'custom_text_field.dart';
 
@@ -28,6 +29,7 @@ class _CustomModalBottomSheetState extends State<CustomModalBottomSheet> {
   late final TextEditingController _price;
   late final TextEditingController _quantity;
   late final TextEditingController _tax;
+  bool isDarkMode = false;
 
   // late Item? foundItem;
 
@@ -44,6 +46,7 @@ class _CustomModalBottomSheetState extends State<CustomModalBottomSheet> {
       _price.text = widget.item!.price.toString();
       _quantity.text = widget.item!.quantity.toString();
     }
+    isDarkMode = context.read<SettingsProvider>().isDarMode;
 
     super.initState();
   }
@@ -59,7 +62,7 @@ class _CustomModalBottomSheetState extends State<CustomModalBottomSheet> {
           child: Column(
             children: [
               TextCard(
-                  bg: kTextInputBg1,
+                  bg: isDarkMode ? Colors.white : kTextInputBg1,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

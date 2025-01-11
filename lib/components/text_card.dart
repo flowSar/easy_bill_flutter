@@ -7,9 +7,16 @@ class TextCard extends StatelessWidget {
   final Color? bg;
   final double? w;
   final double? elevation;
+  final double? p;
 
-  const TextCard(
-      {super.key, required this.child, this.bg, this.w, this.elevation});
+  const TextCard({
+    super.key,
+    required this.child,
+    this.bg,
+    this.w,
+    this.elevation,
+    this.p,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +31,8 @@ class TextCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            padding:
+                EdgeInsets.symmetric(horizontal: p ?? 15, vertical: p ?? 20),
             child: child,
           ),
         ),

@@ -1,4 +1,4 @@
-import 'package:easy_bill_flutter/components/CustomBadge.dart';
+import 'package:easy_bill_flutter/components/custom_badge.dart';
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/data/clients.dart';

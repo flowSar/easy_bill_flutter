@@ -1,10 +1,8 @@
-import 'dart:math';
-
-import 'package:easy_bill_flutter/components/client_card.dart';
 import 'package:easy_bill_flutter/components/custom_Floating_button.dart';
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_modal_Bottom_sheet.dart';
 import 'package:easy_bill_flutter/components/empty.dart';
+import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/components/selected_item_card.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/data/bill.dart';
@@ -55,7 +53,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
       await context.read<DataProvider>().loadBusinessInfo();
       loading = false;
     } catch (e) {
-      print('loading: $e');
       loading = true;
     }
   }
@@ -66,7 +63,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
       List<Item> items = context.read<DataProvider>().items;
       for (var item in items) {
         if (item.barCode == barCode) {
-          print('found: ${item.barCode}');
           return item;
         }
       }
@@ -109,6 +105,10 @@ class _NewBillScreenState extends State<NewBillScreen> {
       );
     }
 
+    void errorDialog(Object e) {
+      showErrorDialog(context, "Error ", 'error: $e');
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -140,7 +140,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
                           if (newClient != null) {
                             setState(() {
                               client = newClient as Client;
-                              print('selected client ${client?.fullName}');
                             });
                           }
                         });
@@ -238,13 +237,15 @@ class _NewBillScreenState extends State<NewBillScreen> {
                           },
                         );
                       } catch (e) {
-                        print('error: $e');
+                        errorDialog(e);
                       }
                     } else {
-                      print('please select a client');
+                      showErrorDialog(
+                          context, "Error ", 'please select the client');
                     }
                   } else {
-                    print('please select new Item');
+                    showErrorDialog(
+                        context, "Error ", 'please select new Item');
                   }
                 },
                 w: 90,
@@ -296,8 +297,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
                             barCode: barCode!, name: '', price: 0, quantity: 0);
                         context.push('/newItemScreen', extra: newItem);
                       }
-                    } else {
-                      print('');
                     }
                   });
                 },
