@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/components/select_card.dart';
 import 'package:easy_bill_flutter/components/text_card.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../components/currency_dialog.dart';
 import '../components/select_item_button.dart';
+import '../constants/colors.dart';
+import '../data/currency.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -16,62 +20,84 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool isLoading = true;
+  String selectedCurrency = '\$';
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Center(child: Text('Settings')),
         automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            SelectItemButton(
-              label: 'Your Business',
-              elevation: 0,
-              onPressed: () {
-                context.push('/businessScreen');
-              },
-            ),
-            InkWell(
-              onTap: () async {
-                final bool isLogged =
-                    await context.read<AuthProvider>().logOut();
-                if (!isLogged) {
-                  context.replace('/signIn');
-                }
-              },
-              child: TextCard(
-                bg: Colors.grey[100],
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    Text('LogOut'),
-                    Icon(Icons.logout),
-                  ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Account & business',
+                  style:
+                      TextStyle(color: Colors.greenAccent[700], fontSize: 20),
                 ),
               ),
-            ),
-            InkWell(
-              onTap: () async {
-                context.push('/aboutScreen');
-              },
-              child: TextCard(
-                bg: Colors.grey[100],
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    Text('About'),
-                    Icon(Icons.info_outline),
-                  ],
+              SelectCard(
+                onTap: () async {
+                  context.push('/businessScreen');
+                },
+                leftIcon: Icons.add,
+                middleText: 'Your Business',
+                rightIcon: Icon(Icons.keyboard_arrow_right),
+              ),
+              SelectCard(
+                onTap: () async {
+                  context.push('/aboutScreen');
+                },
+                leftIcon: Icons.info_outline,
+                middleText: 'About',
+                rightIcon: Icon(Icons.keyboard_arrow_right),
+              ),
+              SelectCard(
+                onTap: () async {
+                  final bool isLogged =
+                      await context.read<AuthProvider>().logOut();
+                  if (!isLogged) {
+                    context.replace('/signIn');
+                  }
+                },
+                leftIcon: Icons.logout,
+                middleText: 'LogOut',
+                rightIcon: Icon(Icons.keyboard_arrow_right),
+              ),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'general',
+                  style:
+                      TextStyle(color: Colors.greenAccent[700], fontSize: 20),
                 ),
               ),
-            ),
-          ],
+              SelectCard(
+                onTap: () {},
+                leftIcon: Icons.nightlight,
+                middleText: 'Night Mode',
+                rightIcon: Icon(Icons.keyboard_arrow_right),
+              ),
+              SelectCard(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => CurrencyDialog());
+                },
+                leftIcon: Icons.currency_exchange,
+                middleText: 'Currency ($selectedCurrency)',
+                rightIcon: Icon(Icons.keyboard_arrow_right),
+              ),
+            ],
+          ),
         ),
       ),
     );

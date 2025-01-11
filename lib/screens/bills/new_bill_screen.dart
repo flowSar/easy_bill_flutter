@@ -8,6 +8,7 @@ import 'package:easy_bill_flutter/components/empty.dart';
 import 'package:easy_bill_flutter/components/selected_item_card.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/data/bill.dart';
+import 'package:easy_bill_flutter/providers/settings_provider.dart';
 import 'package:easy_bill_flutter/utilities/scan_bard_code.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,10 +40,12 @@ class _NewBillScreenState extends State<NewBillScreen> {
   Client? client;
   List<Map<String, dynamic>> billRows = [];
   late Bill bill;
+  late String currency;
 
   @override
   void initState() {
     loadBusinessInfo();
+    currency = context.read<SettingsProvider>().currency;
     super.initState();
   }
 
@@ -124,7 +127,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
                           if (newClient != null) {
                             setState(() {
                               client = newClient as Client;
-                              print('selected client ${client?.fullName}');
                             });
                           }
                         });
@@ -184,7 +186,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                                 selectedItems.removeAt(index);
                               });
                             },
-                            bg: Colors.grey[50],
+                            bg: greyLight,
                             name: selectedItems[index].name,
                             barCode: selectedItems[index].barCode,
                             quantity: selectedItems[index].quantity,
@@ -199,7 +201,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: Colors.grey[50],
+                  color: greyLight,
                   border: Border.all(),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -207,7 +209,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                   vertical: 12,
                 ),
                 child: Text(
-                  'Total: $billTotal dh',
+                  'Total: $billTotal $currency',
                   style: kTextStyle2b.copyWith(color: Colors.black),
                   textAlign: TextAlign.center,
                 ),

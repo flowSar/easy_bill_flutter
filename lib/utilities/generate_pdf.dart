@@ -6,12 +6,14 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
-import 'package:provider/provider.dart';
-
-import '../constants/colors.dart';
-import '../providers/data_provider.dart';
 
 class PdfGenerator {
+  static String currency = 'dh';
+
+  PdfGenerator(String cur) {
+    currency = cur;
+  }
+
   static Future<File> saveDocument(String name, Document pdf) async {
     final bytes = await pdf.save();
     final dir = await getApplicationDocumentsDirectory();
@@ -53,13 +55,13 @@ class PdfGenerator {
                           pw.Text('Bill To:',
                               style: pw.TextStyle(font: fontRegular)),
                           pw.SizedBox(height: 6),
-                          pw.Text(bill.clientName ?? '',
+                          pw.Text(bill.clientName,
                               style: pw.TextStyle(font: fontRegular)),
                           pw.SizedBox(height: 6),
-                          pw.Text(bill.clientEmail ?? '',
+                          pw.Text(bill.clientEmail,
                               style: pw.TextStyle(font: fontRegular)),
                           pw.SizedBox(height: 6),
-                          pw.Text(bill.clientPhoneNumber ?? '',
+                          pw.Text(bill.clientPhoneNumber,
                               style: pw.TextStyle(font: fontRegular)),
                         ]),
                     pw.Column(
@@ -136,7 +138,7 @@ class PdfGenerator {
                 child: pw.Align(
                   alignment: pw.Alignment.centerRight,
                   child: pw.Text(
-                    'Total: ${bill.total} dh',
+                    'Total: ${bill.total} $currency',
                     style: pw.TextStyle(font: fontBold, fontSize: 18),
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
+import 'package:easy_bill_flutter/providers/settings_provider.dart';
 import 'package:easy_bill_flutter/rounters/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,8 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ChangeNotifierProvider(create: (_) => DataProvider())
+      ChangeNotifierProvider(create: (_) => DataProvider()),
+      ChangeNotifierProvider(create: (_) => SettingsProvider()),
     ],
     child: MyApp(),
   ));
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      // theme: ThemeData.dark(),
       routerConfig: appRouter,
     );
   }

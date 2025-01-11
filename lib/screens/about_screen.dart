@@ -1,5 +1,7 @@
+import 'package:easy_bill_flutter/components/currency_dialog.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/components/custom_text_field.dart';
+import 'package:easy_bill_flutter/data/currency.dart';
 import 'package:flutter/material.dart';
 
 class AboutScreen extends StatefulWidget {
@@ -8,6 +10,8 @@ class AboutScreen extends StatefulWidget {
   @override
   State<AboutScreen> createState() => _AboutScreenState();
 }
+
+List<String> options = ['option 1', 'option 2'];
 
 class _AboutScreenState extends State<AboutScreen> {
   List<String> names = [
@@ -33,41 +37,17 @@ class _AboutScreenState extends State<AboutScreen> {
     'fatima',
     'malika'
   ];
+  String selectedCurrency = 'US\$';
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Column(
-        children: [
-          CustomTextField(
-            placeholder: 'Enter name',
-            onChnaged: (value) {
-              names = List.from(originalList);
-              setState(() {
-                names = names.where((name) => name.contains(value)).toList();
-              });
-            },
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: names.length,
-              itemBuilder: (context, index) => Padding(
-                padding: EdgeInsets.all(4),
-                child: Text(
-                  names[index],
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          CustomTextButton(
-            onPressed: () {},
-            label: Text('search'),
-            bg: Colors.green,
-            fg: Colors.white,
-          ),
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [],
+        ),
       ),
     ));
   }

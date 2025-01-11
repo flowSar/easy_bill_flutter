@@ -4,24 +4,26 @@ class CustomTextField extends StatefulWidget {
   final String? placeholder;
   final Widget? icon;
   final TextEditingController? controller;
-  final Function(String value)? onChnaged;
+  final Function(String value)? onChanged;
   final Color? bg;
   final TextInputType? keyType;
   final String? Function(String?)? validator;
   final String? initialValue;
   final bool readOnly;
+  final VoidCallback? onErase;
 
   const CustomTextField({
     super.key,
     this.placeholder,
     this.icon,
     this.controller,
-    this.onChnaged,
+    this.onChanged,
     this.bg,
     this.keyType,
     this.validator,
     this.initialValue,
     this.readOnly = false,
+    this.onErase,
   });
 
   @override
@@ -51,14 +53,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
           initialValue: widget.initialValue,
           keyboardType: widget.keyType ?? TextInputType.text,
           controller: widget.controller,
-          onChanged: widget.onChnaged,
-          onTap: () {
-            print('click');
-          },
+          onChanged: widget.onChanged,
+          onTap: () {},
           decoration: InputDecoration(
             hintText: widget.placeholder,
             icon: widget.icon,
-            suffix: Icon(Icons.close),
+            suffix: GestureDetector(
+              onTap: widget.onErase,
+              child: Icon(
+                Icons.close,
+              ),
+            ),
             border: InputBorder.none,
           ),
           validator: widget.validator,

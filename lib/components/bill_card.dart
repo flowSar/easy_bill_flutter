@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/settings_provider.dart';
 
 final kBillCardText = TextStyle(
   fontSize: 17,
@@ -22,6 +25,7 @@ class BillCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currency = context.read<SettingsProvider>().currency;
     return Card(
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
@@ -47,7 +51,7 @@ class BillCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'due',
+                    'Created',
                     style: kBillCardText.copyWith(color: Colors.black),
                   ),
                   Text(
@@ -64,7 +68,7 @@ class BillCard extends StatelessWidget {
                     style: kBillCardText.copyWith(color: Colors.black),
                   ),
                   Text(
-                    '$total dh',
+                    '$total $currency',
                     style: kBillCardText,
                   ),
                 ],

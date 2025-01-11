@@ -19,6 +19,7 @@ class ItemsScreen extends StatefulWidget {
 }
 
 class _ItemsScreenState extends State<ItemsScreen> {
+  late final TextEditingController _searchKeyWord;
   bool loading = false;
   List<Item> items = [];
 
@@ -33,6 +34,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
   @override
   void initState() {
     // load all item from the database
+    _searchKeyWord = TextEditingController();
     loadItemsData();
     super.initState();
   }
@@ -72,12 +74,19 @@ class _ItemsScreenState extends State<ItemsScreen> {
           child: Column(
             children: [
               CustomTextField(
+                controller: _searchKeyWord,
                 bg: kTextInputBg1,
                 placeholder: 'Search item name',
                 icon: Icon(Icons.search),
-                onChnaged: (value) {
+                onChanged: (value) {
                   setState(() {
                     dataProvider.flitterLists(value, 'items');
+                  });
+                },
+                onErase: () {
+                  dataProvider.flitterLists('', 'clients');
+                  setState(() {
+                    _searchKeyWord.text = '';
                   });
                 },
               ),

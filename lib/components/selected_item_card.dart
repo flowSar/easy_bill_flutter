@@ -1,6 +1,9 @@
 import 'package:easy_bill_flutter/components/custom_popup_menu_button.dart';
 import 'package:easy_bill_flutter/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/settings_provider.dart';
 
 class SelectedItemCard extends StatelessWidget {
   final VoidCallback onDelete;
@@ -24,6 +27,7 @@ class SelectedItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currency = context.read<SettingsProvider>().currency;
     final double total = price * quantity;
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5),
@@ -66,7 +70,7 @@ class SelectedItemCard extends StatelessWidget {
                         style: TextStyle(fontSize: 12),
                       ),
                       Text(
-                        '$total dh',
+                        '$total $currency',
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w500),
                       ),

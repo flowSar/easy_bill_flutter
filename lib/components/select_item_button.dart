@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/colors.dart';
+
 class SelectItemButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String label;
@@ -19,7 +21,7 @@ class SelectItemButton extends StatelessWidget {
       elevation: elevation ?? 6,
       onPressed: onPressed,
       padding: EdgeInsets.all(15),
-      fillColor: Colors.grey[50],
+      fillColor: greyLight,
       constraints:
           BoxConstraints(maxWidth: w ?? MediaQuery.of(context).size.width),
       shape: RoundedRectangleBorder(

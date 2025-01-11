@@ -33,7 +33,7 @@ class ClientCard extends StatelessWidget {
         height: 70,
         margin: EdgeInsets.symmetric(horizontal: m ?? 10, vertical: 5),
         decoration: BoxDecoration(
-            color: bg ?? kCustomCardBg,
+            color: bg ?? greyLight,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               color: Colors.black38,
@@ -41,19 +41,13 @@ class ClientCard extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
                 padding: EdgeInsets.only(right: 10),
-                child: Container(
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white30,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.account_circle_sharp,
-                    size: 50,
-                  ),
+                child: Icon(
+                  Icons.account_circle_sharp,
+                  size: 55,
                 ),
               ),
               Expanded(
@@ -66,7 +60,10 @@ class ClientCard extends StatelessWidget {
                   ],
                 ),
               ),
-              CustomPopupMenuButton(onDelete: onDelete, onEdite: onEdite),
+              CustomPopupMenuButton(
+                onDelete: onDelete,
+                onEdite: onEdite,
+              ),
             ],
           ),
         ),

@@ -8,6 +8,7 @@ import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/settings_provider.dart';
 import '../../utilities/generate_pdf.dart';
 
 const kTableHeadTextStyle = TextStyle(fontSize: 15, color: Colors.white);
@@ -19,6 +20,7 @@ class PreviewBillScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currency = context.read<SettingsProvider>().currency;
     if (bill != null) {
       print(bill?.clientName);
     }
@@ -141,7 +143,7 @@ class PreviewBillScreen extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(8),
                 child: Text(
-                  'Total: ${bill?.total} dh',
+                  'Total: ${bill?.total} $currency',
                   textAlign: TextAlign.center,
                   style: kTextStyle2b,
                 ),
@@ -151,6 +153,7 @@ class PreviewBillScreen extends StatelessWidget {
               onPressed: () async {
                 String? businessName =
                     context.read<DataProvider>().businessInfo?.businessName;
+                PdfGenerator(currency);
                 final pdfFile =
                     await PdfGenerator.generatePdf(bill!, businessName);
                 PdfGenerator.openFile(pdfFile);

@@ -20,9 +20,11 @@ class ClientsScreen extends StatefulWidget {
 
 class _ClientsScreenState extends State<ClientsScreen> {
   bool loading = false;
+  late final TextEditingController _searchKeyWord;
 
   @override
   void initState() {
+    _searchKeyWord = TextEditingController();
     loadClientsData();
     super.initState();
   }
@@ -60,12 +62,19 @@ class _ClientsScreenState extends State<ClientsScreen> {
           child: Column(
             children: [
               CustomTextField(
+                controller: _searchKeyWord,
                 bg: kTextInputBg1,
                 placeholder: 'Search client name',
                 icon: Icon(Icons.search),
-                onChnaged: (value) {
+                onChanged: (value) {
                   setState(() {
                     dataProvider.flitterLists(value, 'clients');
+                  });
+                },
+                onErase: () {
+                  dataProvider.flitterLists('', 'clients');
+                  setState(() {
+                    _searchKeyWord.text = '';
                   });
                 },
               ),

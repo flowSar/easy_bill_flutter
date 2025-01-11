@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/colors.dart';
+
 class UserCard extends StatelessWidget {
   final VoidCallback onPressed;
 
@@ -23,7 +25,7 @@ class UserCard extends StatelessWidget {
       elevation: elevation ?? 6,
       onPressed: onPressed,
       padding: EdgeInsets.all(6),
-      fillColor: Colors.grey[50],
+      fillColor: greyLight,
       constraints: BoxConstraints(
         maxWidth: w ?? MediaQuery.of(context).size.width,
         minHeight: 70,

@@ -31,7 +31,7 @@ class ItemCard extends StatelessWidget {
           width: double.infinity,
           height: 70,
           decoration: BoxDecoration(
-            color: kCustomCardBg,
+            color: greyLight,
             border: Border.all(
               color: Colors.black,
             ),
