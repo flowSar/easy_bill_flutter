@@ -111,6 +111,8 @@ class _ItemsScreenState extends State<ItemsScreen> {
                                     tailing: items[index].price.toString(),
                                     onTap: () {
                                       Item currentItem = items[index];
+                                      print(
+                                          'current item: ${items[index].tax}');
                                       context.push('/newItemScreen',
                                           extra: currentItem);
                                     },

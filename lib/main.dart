@@ -3,6 +3,7 @@ import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:easy_bill_flutter/providers/settings_provider.dart';
 import 'package:easy_bill_flutter/rounters/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -12,18 +13,20 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // runApp(ChangeNotifierProvider(
-  //   create: (context) => AuthProvider(),
-  //   child: MyApp(),
-  // ));
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ChangeNotifierProvider(create: (_) => DataProvider()),
-      ChangeNotifierProvider(create: (_) => SettingsProvider()),
-    ],
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => DataProvider()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
+  // only portrait mode
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 }
 
 class MyApp extends StatelessWidget {

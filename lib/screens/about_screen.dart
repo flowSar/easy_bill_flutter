@@ -4,6 +4,9 @@ import 'package:easy_bill_flutter/components/custom_text_field.dart';
 import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/data/currency.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/data_provider.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -15,29 +18,6 @@ class AboutScreen extends StatefulWidget {
 List<String> options = ['option 1', 'option 2'];
 
 class _AboutScreenState extends State<AboutScreen> {
-  List<String> names = [
-    'khalid',
-    'mohammed',
-    'yassine',
-    'adil',
-    'rachid',
-    'saad',
-    'said',
-    'fatima',
-    'malika'
-  ];
-
-  List<String> originalList = [
-    'khalid',
-    'mohammed',
-    'yassine',
-    'adil',
-    'rachid',
-    'saad',
-    'said',
-    'fatima',
-    'malika'
-  ];
   String selectedCurrency = 'US\$';
   bool isSwitched = true;
 
@@ -49,13 +29,7 @@ class _AboutScreenState extends State<AboutScreen> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            CustomTextButton(
-                onPressed: () {
-                  showErrorDialog(context, 'Error', '');
-                },
-                label: Text('sho error'),
-                bg: Colors.green,
-                fg: Colors.white),
+            TextButton(onPressed: () {}, child: Text('click')),
             Switch(
               value: isSwitched,
               onChanged: (value) {

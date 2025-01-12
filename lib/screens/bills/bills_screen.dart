@@ -18,19 +18,16 @@ class BillsScreen extends StatefulWidget {
 }
 
 class _BillsScreenState extends State<BillsScreen> {
-  late TextEditingController _userName;
   bool loading = false;
 
   @override
   void initState() {
-    _userName = TextEditingController();
     loadBills();
     super.initState();
   }
 
   @override
   void dispose() {
-    // _userName.dispose();
     super.dispose();
   }
 
@@ -95,10 +92,11 @@ class _BillsScreenState extends State<BillsScreen> {
                           print('select bill');
                         },
                         child: BillCard(
-                            client: bills[index].clientName,
-                            date: bills[index].billDate,
-                            billNumber: (index + 1).toString(),
-                            total: bills[index].total),
+                          client: bills[index].clientName,
+                          date: bills[index].billDate,
+                          total: bills[index].total,
+                          billNumber: bills[index].billNumber.toString(),
+                        ),
                       );
                     },
                   );

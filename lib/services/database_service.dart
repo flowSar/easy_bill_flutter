@@ -65,8 +65,6 @@ class FireBaseManager {
     }
   }
 
-  Future<void> updateItem() async {}
-
   Future<DataSnapshot> loadItemsData() async {
     final User? user = getCurrentUser();
     if (user != null) {
@@ -76,6 +74,4 @@ class FireBaseManager {
       throw Exception('user is not logged in');
     }
   }
-
-  Future<void> loadClientsData() async {}
 }

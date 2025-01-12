@@ -3,10 +3,12 @@ import 'package:easy_bill_flutter/components/text_card.dart';
 import 'package:easy_bill_flutter/constants/colors.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/data/item.dart';
+import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:easy_bill_flutter/services/database_service.dart';
 import 'package:easy_bill_flutter/utilities/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../components/custom_Floating_button.dart';
 import '../../components/custom_text_button.dart';
 import '../../components/custom_text_field.dart';
@@ -46,6 +48,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
       _description.text = widget.item!.description ?? '';
       _price.text = widget.item!.price.toString() ?? '';
       _quantity.text = widget.item!.quantity.toString() ?? '';
+      _tax.text = widget.item!.tax!;
     }
     super.initState();
   }
@@ -150,7 +153,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                           setState(() {
                             loading = true;
                           });
-                          await firebaseManager.addItem(item);
+                          await context.read<DataProvider>().addItem(item);
                           setState(() {
                             loading = false;
                           });

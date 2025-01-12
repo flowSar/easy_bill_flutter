@@ -45,6 +45,7 @@ class _CustomModalBottomSheetState extends State<CustomModalBottomSheet> {
       _itemName.text = widget.item!.name;
       _price.text = widget.item!.price.toString();
       _quantity.text = widget.item!.quantity.toString();
+      _tax.text = widget.item!.tax.toString();
     }
     isDarkMode = context.read<SettingsProvider>().isDarMode;
 
@@ -108,6 +109,7 @@ class _CustomModalBottomSheetState extends State<CustomModalBottomSheet> {
                     name: _itemName.text,
                     price: double.parse(_price.text),
                     quantity: int.parse(_quantity.text),
+                    tax: _tax.text,
                   );
                   context.pop(newItem);
                 },

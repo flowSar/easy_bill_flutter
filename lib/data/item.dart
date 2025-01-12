@@ -32,14 +32,14 @@ class Item {
 
   String? get tax => _tax;
 
-  Map toDic() {
+  Map<String, dynamic> toDic() {
     return {
       'barCode': _barCode,
       'name': _name,
       'description': _description,
       'price': _price,
-      'quantity': _quantity,
-      'tax': _tax,
+      'quantity': _quantity ?? '0',
+      'tax': _tax ?? '0',
     };
   }
 }

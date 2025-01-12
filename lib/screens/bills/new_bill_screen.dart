@@ -18,6 +18,7 @@ import '../../constants/colors.dart';
 import '../../data/clients.dart';
 import '../../data/item.dart';
 import '../../providers/data_provider.dart';
+import 'package:intl/intl.dart';
 
 var uuid = Uuid();
 
@@ -39,11 +40,15 @@ class _NewBillScreenState extends State<NewBillScreen> {
   List<Map<String, dynamic>> billRows = [];
   late Bill bill;
   late String currency;
+  DateTime now = DateTime.now();
+  late String date;
 
   @override
   void initState() {
     loadBusinessInfo();
     currency = context.read<SettingsProvider>().currency;
+
+    date = DateFormat('dd/MM/yyyy').format(now);
     super.initState();
   }
 
@@ -59,6 +64,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // we filter all the item by barcode so we can extract the object we need
     Item? filterByBarCode(String? barCode) {
       List<Item> items = context.read<DataProvider>().items;
       for (var item in items) {
@@ -69,42 +75,52 @@ class _NewBillScreenState extends State<NewBillScreen> {
       return null;
     }
 
+    // we calculate the bill total by iterating over the list of items and sum their total
     double getBillTotal() {
       double total = 0.0;
+      double subTotal = 0.0;
       for (var item in selectedItems) {
-        total += item.quantity * item.price;
+        double tax = double.parse(item.tax ?? '0');
+        subTotal = item.quantity * item.price;
+        total += subTotal + (subTotal * tax) / 100;
       }
       return total;
     }
 
     late double billTotal = getBillTotal();
 
+    // we fill data into a list of billRows so we can add this list to the bill
+    // we fill the object( from Bill) that will cary all the data that we will send to the base
     void fillDataIntoRows(String billId, billTotal) {
       billRows = [];
       int index = 0;
       for (var item in selectedItems) {
-        double total = item.price * item.quantity;
+        double tax = double.parse(item.tax!);
+        double subtotal = item.price * item.quantity;
+        double total = subtotal + (subtotal * tax) / 100;
         billRows.add(BillRow(
-                id: index.toString(),
-                name: item.name,
-                quantity: item.quantity.toString(),
-                price: item.price.toString(),
-                total: total.toString(),
-                tax: '0')
-            .toDic());
+          id: index.toString(),
+          name: item.name,
+          quantity: item.quantity.toString(),
+          price: item.price.toString(),
+          total: total.toString(),
+          tax: item.tax,
+        ).toDic());
         index++;
       }
       bill = Bill(
         id: billId,
         clientName: client?.fullName,
-        billDate: '09/01/25',
+        billDate: date,
         items: billRows,
         total: billTotal,
         clientEmail: client?.email,
         clientPhoneNumber: client?.phoneNumber,
+        billNumber: context.read<DataProvider>().bills.length + 1,
       );
     }
 
+    // this function is calling the custom widget for displaying the error
     void errorDialog(Object e) {
       showErrorDialog(context, "Error ", 'error: $e');
     }
@@ -146,6 +162,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                       },
                     ),
               Consumer<DataProvider>(builder: (context, dataProvider, child) {
+                // check is the loading data from database is still ongoing
                 if (loading) {
                   return CustomCircularProgress(
                     strokeWidth: 2,
@@ -190,6 +207,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                             barCode: selectedItems[index].barCode,
                             quantity: selectedItems[index].quantity,
                             price: selectedItems[index].price,
+                            tax: selectedItems[index].tax ?? '0',
                           );
                         })
                     : Empty(

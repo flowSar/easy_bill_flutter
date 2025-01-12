@@ -53,6 +53,7 @@ class Bill {
   final String _billDate;
   final String _total;
   final List<Map<String, dynamic>> _items;
+  final int _billNumber;
 
   Bill({
     required id,
@@ -62,13 +63,15 @@ class Bill {
     required total,
     required clientEmail,
     required clientPhoneNumber,
+    required billNumber,
   })  : _id = id,
         _clientName = clientName,
         _billDate = billDate,
         _items = items,
         _total = total,
         _clientEmail = clientEmail,
-        _clientPhoneNumber = clientPhoneNumber;
+        _clientPhoneNumber = clientPhoneNumber,
+        _billNumber = billNumber;
 
   String get clientName => _clientName;
 
@@ -82,6 +85,8 @@ class Bill {
 
   String get clientPhoneNumber => _clientPhoneNumber;
 
+  int get billNumber => _billNumber;
+
   List<Map<String, dynamic>> get items => _items;
 
   Map<String, dynamic> toDic() {
@@ -91,6 +96,7 @@ class Bill {
       'billDate': _billDate,
       'total': _total,
       'items': _items,
+      'billNumber': _billNumber,
       'clientEmail': _clientEmail,
       'clientPhoneNumber': _clientPhoneNumber,
     };

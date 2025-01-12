@@ -8,6 +8,7 @@ class BillTableRow extends StatelessWidget {
   final String quantity;
   final String price;
   final String total;
+  final String tax;
 
   const BillTableRow({
     super.key,
@@ -15,6 +16,7 @@ class BillTableRow extends StatelessWidget {
     required this.quantity,
     required this.price,
     required this.total,
+    required this.tax,
   });
 
   @override
@@ -26,11 +28,38 @@ class BillTableRow extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 6),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 2,
           children: [
-            Text(product),
-            Text(quantity),
-            Text(price),
-            Text(total),
+            Expanded(
+                flex: 3,
+                child: Text(
+                  product,
+                  maxLines: 1,
+                )),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  quantity,
+                  maxLines: 1,
+                )),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  price,
+                  maxLines: 1,
+                )),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  '$tax%',
+                  maxLines: 1,
+                )),
+            Expanded(
+                flex: 1,
+                child: Text(
+                  total,
+                  maxLines: 1,
+                )),
           ],
         ),
       ),

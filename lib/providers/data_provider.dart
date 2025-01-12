@@ -46,8 +46,9 @@ class DataProvider extends ChangeNotifier {
     if (user != null) {
       try {
         DatabaseReference userRef = _database.ref('users/${user.uid}');
-        await userRef.child('items/${item.barCode}/').set(item.toDic());
+        await userRef.child('items/${item.barCode}/').update(item.toDic());
         await loadItemsData();
+        notifyListeners();
       } catch (e) {
         throw Exception('failed inserting Item to the database: $e');
       }
@@ -93,6 +94,7 @@ class DataProvider extends ChangeNotifier {
             String name = item['name'] ?? '';
             String barCode = item['barCode'] ?? '';
             String description = item['description'] ?? '';
+            String tax = item['tax'] ?? '0';
 
             double price = 0.0;
             int quantity = 0;
@@ -105,11 +107,13 @@ class DataProvider extends ChangeNotifier {
 
             items.add(
               Item(
-                  barCode: barCode,
-                  name: name,
-                  price: price,
-                  quantity: quantity,
-                  description: description),
+                barCode: barCode,
+                name: name,
+                price: price,
+                quantity: quantity,
+                description: description,
+                tax: tax,
+              ),
             );
           }
           // make a copy of the items list to use it for filtering the list
@@ -304,9 +308,11 @@ class DataProvider extends ChangeNotifier {
               total: entry.value['total'],
               clientEmail: entry.value['clientEmail'],
               clientPhoneNumber: entry.value['clientPhoneNumber'],
+              billNumber: entry.value['billNumber'],
             ));
-            notifyListeners();
+            // the bills length + 1 is the bill number of the new bill that will get created
           }
+          notifyListeners();
         } else {
           throw Exception('Nothing was found ');
         }

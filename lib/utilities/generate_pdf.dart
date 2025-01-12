@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_bill_flutter/data/business_info.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:easy_bill_flutter/data/bill.dart';
@@ -27,7 +28,7 @@ class PdfGenerator {
     await OpenFile.open(url);
   }
 
-  static Future<File> generatePdf(Bill bill, String? businessName) async {
+  static Future<File> generatePdf(Bill bill, BusinessInfo? businessInfo) async {
     final fontRegular =
         pw.Font.ttf(await rootBundle.load('fonts/Roboto-Regular.ttf'));
     final fontBold =
@@ -41,7 +42,7 @@ class PdfGenerator {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(
-                businessName ?? 'Anonymous',
+                businessInfo?.businessName ?? 'Anonymous',
                 style:
                     pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold),
               ),
@@ -67,16 +68,13 @@ class PdfGenerator {
                     pw.Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          pw.Text('Bill#: 001',
+                          pw.Text('Bill#: ${bill.billNumber}',
                               style: pw.TextStyle(font: fontRegular)),
                           pw.SizedBox(height: 6),
                           pw.Text('Date: ${bill.billDate}',
                               style: pw.TextStyle(font: fontRegular)),
                         ]),
                   ]),
-
-              // pw.SizedBox(height: 10),
-
               pw.Divider(),
               pw.Table(
                 border: pw.TableBorder.all(),
@@ -103,11 +101,20 @@ class PdfGenerator {
                         ),
                         pw.Padding(
                           padding: pw.EdgeInsets.all(4),
-                          child: pw.Text('Total',
+                          child: pw.Text('Tax',
+                              style: pw.TextStyle(font: fontBold)),
+                        ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.all(4),
+                          child: pw.Text('subTotal',
                               style: pw.TextStyle(font: fontBold)),
                         ),
                       ]),
                   ...bill.items.map((item) {
+                    double subTotal = double.parse(item['price']) *
+                        double.parse(item['quantity']);
+                    double tax = double.parse(item['tax']);
+                    double taxValue = (subTotal * tax) / 100;
                     return pw.TableRow(children: [
                       pw.Padding(
                         padding: pw.EdgeInsets.all(4),
@@ -126,6 +133,11 @@ class PdfGenerator {
                       ),
                       pw.Padding(
                         padding: pw.EdgeInsets.all(4),
+                        child: pw.Text('$taxValue (${item['tax'].toString()}%)',
+                            style: pw.TextStyle(font: fontRegular)),
+                      ),
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(4),
                         child: pw.Text(item['total'].toString(),
                             style: pw.TextStyle(font: fontRegular)),
                       ),
@@ -134,21 +146,20 @@ class PdfGenerator {
                 ],
               ),
               pw.SizedBox(height: 20),
-              pw.Expanded(
-                child: pw.Align(
-                  alignment: pw.Alignment.centerRight,
-                  child: pw.Text(
-                    'Total: ${bill.total} $currency',
-                    style: pw.TextStyle(font: fontBold, fontSize: 18),
-                  ),
+              pw.Align(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Text(
+                  'Total: ${bill.total} $currency',
+                  style: pw.TextStyle(font: fontBold, fontSize: 18),
                 ),
               ),
               pw.SizedBox(height: 20),
               pw.Divider(),
-              pw.Container(
-                  child: pw.Row(children: [
-                pw.Text('Email: exsar@gmail.com'),
-              ])),
+              pw.Row(children: [
+                pw.Text('Email: ${businessInfo?.businessEmail}'),
+                pw.Text(' / phone: ${businessInfo?.businessPhoneNumber}'),
+                pw.Text(' / address: ${businessInfo?.businessAddress}'),
+              ]),
             ],
           );
         },

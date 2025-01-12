@@ -4,6 +4,7 @@ import 'package:easy_bill_flutter/components/bill_table_row.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/data/bill.dart';
+import 'package:easy_bill_flutter/data/business_info.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +82,7 @@ class PreviewBillScreen extends StatelessWidget {
                         spacing: 4,
                         children: [
                           Text(
-                            'Bill# 001',
+                            'Bill# ${bill?.billNumber}',
                           ),
                           Text('creation date: ${bill?.billDate}'),
                         ],
@@ -98,21 +99,41 @@ class PreviewBillScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Product',
-                            style: kTableHeadTextStyle,
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              'Description',
+                              style: kTableHeadTextStyle,
+                              maxLines: 1,
+                            ),
                           ),
-                          Text(
-                            'quantity',
-                            style: kTableHeadTextStyle,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'QTY',
+                              style: kTableHeadTextStyle,
+                            ),
                           ),
-                          Text(
-                            'Price',
-                            style: kTableHeadTextStyle,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'Price',
+                              style: kTableHeadTextStyle,
+                            ),
                           ),
-                          Text(
-                            'total',
-                            style: kTableHeadTextStyle,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'Tax',
+                              style: kTableHeadTextStyle,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'total',
+                              style: kTableHeadTextStyle,
+                            ),
                           ),
                         ],
                       ),
@@ -129,7 +150,8 @@ class PreviewBillScreen extends StatelessWidget {
                         product: bill?.items[index]['name'],
                         quantity: bill?.items[index]['quantity'],
                         price: bill?.items[index]['price'],
-                        total: bill?.items[index]['total']);
+                        total: bill?.items[index]['total'],
+                        tax: bill?.items[index]['tax']);
                   }),
             ),
             Container(
@@ -151,11 +173,11 @@ class PreviewBillScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                String? businessName =
-                    context.read<DataProvider>().businessInfo?.businessName;
+                BusinessInfo? businessInfo =
+                    context.read<DataProvider>().businessInfo;
                 PdfGenerator(currency);
                 final pdfFile =
-                    await PdfGenerator.generatePdf(bill!, businessName);
+                    await PdfGenerator.generatePdf(bill!, businessInfo);
                 PdfGenerator.openFile(pdfFile);
               },
               style: ElevatedButton.styleFrom(
