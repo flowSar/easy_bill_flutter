@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_bill_flutter/components/bill_table_row.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
+import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/data/bill.dart';
 import 'package:easy_bill_flutter/data/business_info.dart';
@@ -21,12 +22,45 @@ class PreviewBillScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String currency = context.read<SettingsProvider>().currency;
-    if (bill != null) {
-      print(bill?.clientName);
+    void returnBack() {
+      Navigator.of(context).pop();
     }
+
+    void showError(Object e) {
+      showErrorDialog(context, 'error', '$e');
+    }
+
+    String currency = context.read<SettingsProvider>().currency;
     return SafeArea(
         child: Scaffold(
+      appBar: AppBar(
+        actions: [
+          InkWell(
+            onTap: () async {
+              try {
+                await context.read<DataProvider>().deleteBill(bill!.id);
+                returnBack();
+              } catch (e) {
+                showError(e);
+              }
+            },
+            borderRadius: BorderRadius.circular(10),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 26,
+                vertical: 12,
+              ),
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         child: Column(
@@ -82,9 +116,9 @@ class PreviewBillScreen extends StatelessWidget {
                         spacing: 4,
                         children: [
                           Text(
-                            'Bill# ${bill?.billNumber}',
+                            'Bill NB: ${bill?.billNumber}',
                           ),
-                          Text('creation date: ${bill?.billDate}'),
+                          Text('created at: ${bill?.billDate}'),
                         ],
                       ),
                     ],
@@ -158,7 +192,7 @@ class PreviewBillScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.yellowAccent,
+                // color: Colors.amber,
                 border: Border.all(),
                 borderRadius: BorderRadius.circular(6),
               ),

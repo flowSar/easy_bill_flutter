@@ -91,6 +91,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     keyType: kKeyTextType,
                     controller: _fullName,
                     placeholder: 'Full Name',
+                    title: 'fullName',
                     bg: kTextInputBg1,
                     validator: (name) =>
                         name!.length < 3 ? 'Please Insert valid Input' : null,
@@ -100,6 +101,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     keyType: kKeyTextType,
                     controller: _address,
                     placeholder: 'Address',
+                    title: 'Address',
                     bg: kTextInputBg1,
                   ),
                   CustomTextField(
@@ -107,6 +109,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     keyType: kKeyEmailType,
                     controller: _email,
                     placeholder: 'Email',
+                    title: 'Email',
                     bg: kTextInputBg1,
                   ),
                   CustomTextField(
@@ -114,6 +117,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     keyType: kKeyPhoneType,
                     controller: _phoneNumber,
                     placeholder: 'Phone number',
+                    title: 'phoneNumber',
                     bg: kTextInputBg1,
                   ),
                   CustomTextButton(

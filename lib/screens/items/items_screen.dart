@@ -77,6 +77,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
                 controller: _searchKeyWord,
                 bg: kTextInputBg1,
                 placeholder: 'Search item name',
+                title: 'Item Name',
                 icon: Icon(Icons.search),
                 onChanged: (value) {
                   setState(() {
@@ -125,11 +126,13 @@ class _ItemsScreenState extends State<ItemsScreen> {
                                   );
                                 }),
                           )
-                        : Empty(
-                            title: 'No Items',
-                            subTitle: 'tap a Button Below to Create New Item',
-                            btnLabel: 'add New item',
-                            onPressed: () => context.push('/newItemScreen'),
+                        : SingleChildScrollView(
+                            child: Empty(
+                              title: 'No Items',
+                              subTitle: 'tap a Button Below to Create New Item',
+                              btnLabel: 'add New item',
+                              onPressed: () => context.push('/newItemScreen'),
+                            ),
                           ),
               )
             ],

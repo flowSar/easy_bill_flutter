@@ -325,6 +325,23 @@ class DataProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteBill(String billId) async {
+    User? user = getCurrentUser();
+    if (user != null) {
+      try {
+        DatabaseReference dbRef =
+            _database.ref('users/${user.uid}/bills/$billId');
+        dbRef.remove();
+        loadBills();
+        notifyListeners();
+      } catch (e) {
+        throw Exception('deleting the bill has failed $e');
+      }
+    } else {
+      throw Exception('user is ot logged in');
+    }
+  }
+
   void flitterLists(String name, String listName) {
     items = List.from(_tempItemsList);
     clients = List.from(_tempClientsList);

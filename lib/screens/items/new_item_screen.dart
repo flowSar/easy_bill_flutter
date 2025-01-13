@@ -75,6 +75,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                 children: [
                   TextCard(
                       bg: kTextInputBg1,
+                      w: 340,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -97,12 +98,14 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     controller: _itemName,
                     keyType: kKeyTextType,
                     placeholder: 'Item name',
+                    title: 'Name: ',
                     bg: kTextInputBg1,
                     validator: (name) =>
                         name!.length < 3 ? 'please Insert valid input' : null,
                   ),
                   CustomTextField(
                     controller: _description,
+                    title: 'Description: ',
                     keyType: kKeyTextType,
                     placeholder: 'Description',
                     bg: kTextInputBg1,
@@ -113,6 +116,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     controller: _price,
                     keyType: kKeyNumberType,
                     placeholder: 'Price',
+                    title: 'Price: ',
                     bg: kTextInputBg1,
                     validator: (price) =>
                         price!.isEmpty ? 'please Insert valid input' : null,
@@ -121,6 +125,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     controller: _quantity,
                     keyType: kKeyNumberType,
                     placeholder: 'Item quantity',
+                    title: 'Quantity: ',
                     bg: kTextInputBg1,
                     validator: (quantity) =>
                         quantity!.isEmpty ? 'please Insert valid input' : null,
@@ -129,6 +134,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     controller: _tax,
                     keyType: kKeyNumberType,
                     placeholder: 'Tax Percentage',
+                    title: 'Tax %: ',
                     bg: kTextInputBg1,
                     validator: (tax) =>
                         tax!.isEmpty ? 'please Insert valid input' : null,

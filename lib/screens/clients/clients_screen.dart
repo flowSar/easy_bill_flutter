@@ -71,6 +71,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
                 controller: _searchKeyWord,
                 bg: kTextInputBg1,
                 placeholder: 'Search client name',
+                title: 'Client Name',
                 icon: Icon(Icons.search),
                 onChanged: (value) {
                   setState(() {
@@ -118,11 +119,14 @@ class _ClientsScreenState extends State<ClientsScreen> {
                               },
                             ),
                           )
-                        : Empty(
-                            title: 'No clients',
-                            subTitle: 'tap a Button Below to Create New client',
-                            btnLabel: 'add New client',
-                            onPressed: () => context.push('/newClientScreen'),
+                        : SingleChildScrollView(
+                            child: Empty(
+                              title: 'No clients',
+                              subTitle:
+                                  'tap a Button Below to Create New client',
+                              btnLabel: 'add New client',
+                              onPressed: () => context.push('/newClientScreen'),
+                            ),
                           ),
               )
             ],
