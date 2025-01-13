@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:easy_bill_flutter/data/bill.dart';
 import 'package:easy_bill_flutter/data/business_info.dart';
 import 'package:easy_bill_flutter/data/clients.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 
 import '../data/item.dart';
@@ -10,12 +13,14 @@ import '../data/item.dart';
 class DataProvider extends ChangeNotifier {
   final FirebaseDatabase _database = FirebaseDatabase.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
   late List<Client> clients = [];
   late List<Item> items = [];
   late BusinessInfo? businessInfo;
   late List<Bill> bills = [];
   late List<Item> _tempItemsList = [];
   late List<Client> _tempClientsList = [];
+  File? signature;
 
   DataProvider() {
     User? user = getCurrentUser();
@@ -360,6 +365,43 @@ class DataProvider extends ChangeNotifier {
             clients.where((client) => client.fullName.contains(name)).toList();
         notifyListeners();
       }
+    }
+  }
+
+  Future<void> addSignature(String url) async {
+    User? user = getCurrentUser();
+    if (user != null) {
+      try {
+        // Reference storageRef = _storage.ref('users/${user.uid}/signature');
+        DatabaseReference dbRef = _database.ref('users/${user.uid}/');
+        dbRef.child('signature/').set(url);
+        notifyListeners();
+      } catch (e) {
+        throw Exception('failed signature $e');
+      }
+    }
+  }
+
+  Future<void> loadSignature() async {
+    User? user = getCurrentUser();
+    if (user != null) {
+      try {
+        // Reference storageRef = _storage.ref('users/${user.uid}/signature');
+        DatabaseReference dbRef = _database.ref('users/${user.uid}/signature');
+        DataSnapshot snapshot = await dbRef.get();
+        if (snapshot.exists) {
+          String filePath = snapshot.value.toString();
+          File file = File(filePath);
+          signature = file;
+          notifyListeners();
+        } else {
+          throw Exception('file does not exist');
+        }
+      } catch (e) {
+        throw Exception('failed signature $e');
+      }
+    } else {
+      throw Exception('use is not logged in ');
     }
   }
 }

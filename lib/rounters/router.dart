@@ -8,6 +8,7 @@ import 'package:easy_bill_flutter/screens/bills/new_bill_screen.dart';
 import 'package:easy_bill_flutter/screens/clients/new_client_screen.dart';
 import 'package:easy_bill_flutter/screens/items/new_item_screen.dart';
 import 'package:easy_bill_flutter/screens/authentication/sign_in.dart';
+import 'package:easy_bill_flutter/screens/signature_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -118,6 +119,11 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/aboutScreen',
           builder: (BuildContext context, GoRouterState state) => AboutScreen(),
+        ),
+        GoRoute(
+          path: '/signatureScreen',
+          builder: (BuildContext context, GoRouterState state) =>
+              SignatureScreen(),
         ),
       ],
     ),

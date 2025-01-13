@@ -113,6 +113,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 middleText: 'Currency ($selectedCurrency)',
                 rightIcon: Icon(Icons.keyboard_arrow_right),
               ),
+              SelectCard(
+                onTap: () {
+                  context.push('/signatureScreen');
+                },
+                leftIcon: Icons.padding_sharp,
+                middleText: 'Signature',
+                rightIcon: Icon(Icons.keyboard_arrow_right),
+              ),
             ],
           ),
         ),

@@ -209,9 +209,10 @@ class PreviewBillScreen extends StatelessWidget {
               onPressed: () async {
                 BusinessInfo? businessInfo =
                     context.read<DataProvider>().businessInfo;
+                File? signatureFile = context.read<DataProvider>().signature;
                 PdfGenerator(currency);
-                final pdfFile =
-                    await PdfGenerator.generatePdf(bill!, businessInfo);
+                final pdfFile = await PdfGenerator.generatePdf(
+                    bill!, businessInfo, signatureFile!);
                 PdfGenerator.openFile(pdfFile);
               },
               style: ElevatedButton.styleFrom(

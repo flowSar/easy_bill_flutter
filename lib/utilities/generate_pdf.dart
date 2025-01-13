@@ -28,13 +28,21 @@ class PdfGenerator {
     await OpenFile.open(url);
   }
 
-  static Future<File> generatePdf(Bill bill, BusinessInfo? businessInfo) async {
+  static Future<File> generatePdf(
+      Bill bill, BusinessInfo? businessInfo, File signatureFile) async {
     final fontRegular =
         pw.Font.ttf(await rootBundle.load('fonts/Roboto-Regular.ttf'));
     final fontBold =
         pw.Font.ttf(await rootBundle.load('fonts/Roboto-Bold.ttf'));
 
     final pdf = Document();
+    Future<Uint8List> getFileBytes(String path) async {
+      final file = File(path);
+      return await file.readAsBytes();
+    }
+
+    final Uint8List imageBytes = await signatureFile.readAsBytes();
+    final signatureImage = pw.MemoryImage(imageBytes);
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
@@ -160,6 +168,22 @@ class PdfGenerator {
                 pw.Text(' / phone: ${businessInfo?.businessPhoneNumber}'),
                 pw.Text(' / address: ${businessInfo?.businessAddress}'),
               ]),
+              pw.SizedBox(height: 14),
+              pw.Padding(
+                padding: pw.EdgeInsets.symmetric(
+                  horizontal: 30,
+                ),
+                child: pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.end,
+                  children: [
+                    Column(children: [
+                      pw.Text('Signature'),
+                      pw.SizedBox(height: 10),
+                      pw.Image(signatureImage, height: 40, width: 40),
+                    ])
+                  ],
+                ),
+              ),
             ],
           );
         },
