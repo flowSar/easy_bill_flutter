@@ -1,13 +1,8 @@
-import 'package:easy_bill_flutter/components/currency_dialog.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
-import 'package:easy_bill_flutter/components/custom_text_field.dart';
-import 'package:easy_bill_flutter/components/error_dialog.dart';
-import 'package:easy_bill_flutter/constants/colors.dart';
-import 'package:easy_bill_flutter/data/currency.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:async_preferences/async_preferences.dart';
 
-import '../providers/data_provider.dart';
+final preferences = AsyncPreferences();
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -37,72 +32,46 @@ class _AboutScreenState extends State<AboutScreen> {
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 4,
           children: [
-            TextButton(onPressed: () {}, child: Text('click')),
-            Switch(
-              value: isSwitched,
-              onChanged: (value) {
-                setState(() {
-                  isSwitched = value; // Update the state
-                });
-              },
+            // Image.asset(
+            //   'images/EasyBill.webp',
+            //   width: 200,
+            // ),
+            // Text('version 1.0.0'),
+            // Text(
+            //   'EasyBill is a powerful app designed to streamline the billing and invoicing process',
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(
+            //       fontSize: 17,
+            //       color: Colors.blue[900],
+            //       fontWeight: FontWeight.w500),
+            // ),
+            Text(
+              '0',
+              style: TextStyle(fontSize: 26),
             ),
-            AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: isSwitched ? 1.0 : 0.0,
-              child: Text(
-                'Enter your text',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blue,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomTextButton(
+                  onPressed: () async {
+                    bool? result = await preferences.getBool('isDark');
+                    print('isDrkMode $result');
+                  },
+                  label: Text('increment'),
+                  bg: Colors.purple,
+                  fg: Colors.white,
                 ),
-              ),
+                CustomTextButton(
+                  onPressed: () {},
+                  label: Text('decrement'),
+                  bg: Colors.purple,
+                  fg: Colors.white,
+                ),
+              ],
             ),
-            CustomTextButton(
-                onPressed: () async {
-                  final result = await showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          insetPadding: EdgeInsets.symmetric(horizontal: 10),
-                          title: Text('Helo'),
-                          content: SizedBox(
-                            height: 440,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  CustomTextField(
-                                    bg: Colors.redAccent[100],
-                                  ),
-                                  CustomTextField(
-                                    bg: Colors.redAccent[100],
-                                  ),
-                                  CustomTextField(
-                                    bg: Colors.redAccent[100],
-                                  ),
-                                  CustomTextField(
-                                    bg: Colors.redAccent[100],
-                                  ),
-                                  CustomTextField(
-                                    bg: Colors.redAccent[100],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      });
-                  print('result: $result');
-                },
-                label: Text('show DIlog'),
-                bg: Colors.redAccent,
-                fg: Colors.white),
-            CustomTextButton(
-                onPressed: () {},
-                label: Text('modal'),
-                bg: Colors.blue,
-                fg: Colors.white)
           ],
         ),
       ),

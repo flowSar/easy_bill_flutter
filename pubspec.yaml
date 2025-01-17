@@ -49,6 +49,7 @@ dependencies:
   intl: ^0.20.1
   signature: ^5.5.0
   firebase_storage: ^12.4.0
+  async_preferences: ^1.0.1
   
 
 

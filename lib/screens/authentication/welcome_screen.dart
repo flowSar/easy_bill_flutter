@@ -14,7 +14,7 @@ class WelcomeScreen extends StatelessWidget {
           spacing: 10,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(image: AssetImage('images/EasyBill.webp')),
+            Image(image: AssetImage('images/EasyBill.png')),
             Text(
               'With EasyBill, you can manage and browse your bills/invoices anytime, anywhere, across multiple devices.',
               style: TextStyle(),

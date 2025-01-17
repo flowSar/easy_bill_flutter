@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-void showErrorDialog(BuildContext context, title, errorMsg) {
+void showErrorDialog(BuildContext context, title, errorMsg,
+    {double height = 30}) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -13,7 +14,7 @@ void showErrorDialog(BuildContext context, title, errorMsg) {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           title: Text(title),
           content: SizedBox(
-            height: 86,
+            height: height,
             child: Center(
               child: Text(
                 errorMsg,

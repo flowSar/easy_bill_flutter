@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
+import 'package:easy_bill_flutter/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -21,11 +22,13 @@ class _SignatureScreenState extends State<SignatureScreen> {
 
   String? imagePath;
   File? fileImage;
+  bool isDarkMode = false;
 
   @override
   void initState() {
+    isDarkMode = context.read<SettingsProvider>().isDarMode;
     controller = SignatureController(
-      penColor: Colors.black,
+      penColor: isDarkMode ? Colors.white : Colors.black,
       penStrokeWidth: 3,
     );
     loadSignature();
@@ -104,7 +107,11 @@ class _SignatureScreenState extends State<SignatureScreen> {
                 ),
               ],
             ),
-            if (fileImage != null) Image.file(fileImage!),
+            if (fileImage != null)
+              Image.file(
+                fileImage!,
+                color: isDarkMode ? Colors.white : Colors.black,
+              ),
             Padding(
                 padding: EdgeInsets.symmetric(vertical: 25),
                 child: Text('this signature is saved locally'))

@@ -1,16 +1,11 @@
 import 'package:easy_bill_flutter/components/select_card.dart';
-import 'package:easy_bill_flutter/components/text_card.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:easy_bill_flutter/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import '../components/currency_dialog.dart';
-import '../components/select_item_button.dart';
-import '../constants/colors.dart';
-import '../data/currency.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -52,6 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               SelectCard(
+                p: 14,
                 onTap: () async {
                   context.push('/businessScreen');
                 },
@@ -60,6 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 rightIcon: Icon(Icons.keyboard_arrow_right),
               ),
               SelectCard(
+                p: 14,
                 onTap: () async {
                   context.push('/aboutScreen');
                 },
@@ -68,6 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 rightIcon: Icon(Icons.keyboard_arrow_right),
               ),
               SelectCard(
+                p: 14,
                 onTap: () async {
                   final bool isLogged =
                       await context.read<AuthProvider>().logOut();
@@ -91,7 +89,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: () {},
                 leftIcon: Icons.nightlight,
                 middleText: 'Night Mode',
-                p: 11,
+                p: 9,
                 rightIcon: Switch(
                   value: _isSwitched,
                   onChanged: (value) {
@@ -104,6 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               SelectCard(
+                p: 14,
                 onTap: () {
                   showDialog(
                       context: context,
@@ -114,11 +113,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 rightIcon: Icon(Icons.keyboard_arrow_right),
               ),
               SelectCard(
+                p: 14,
                 onTap: () {
                   context.push('/signatureScreen');
                 },
-                leftIcon: Icons.padding_sharp,
+                leftIcon: FontAwesomeIcons.fileSignature,
                 middleText: 'Signature',
+                rightIcon: Icon(
+                  Icons.keyboard_arrow_right,
+                ),
+              ),
+              SelectCard(
+                p: 14,
+                onTap: () {},
+                leftIcon: Icons.code,
+                middleText: 'Version 1.0.0',
                 rightIcon: Icon(Icons.keyboard_arrow_right),
               ),
             ],

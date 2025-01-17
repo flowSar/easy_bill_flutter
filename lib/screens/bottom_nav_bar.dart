@@ -2,7 +2,7 @@ import 'package:easy_bill_flutter/screens/clients/clients_screen.dart';
 import 'package:easy_bill_flutter/screens/items/items_screen.dart';
 import 'package:easy_bill_flutter/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'bills/bills_screen.dart';
 import 'bills/new_bill_screen.dart';
 
@@ -49,17 +49,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
               label: 'New Bill'),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.manage_history,
+                FontAwesomeIcons.fileInvoice,
               ),
               label: 'Bills'),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.supervisor_account_outlined,
+                FontAwesomeIcons.users,
               ),
               label: 'Clients'),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.add_shopping_cart_rounded,
+                FontAwesomeIcons.list,
               ),
               label: 'Items'),
           BottomNavigationBarItem(
