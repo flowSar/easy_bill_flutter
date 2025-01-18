@@ -2,7 +2,7 @@ import 'package:easy_bill_flutter/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data/currency.dart';
+import '../modules/currency.dart';
 
 class CurrencyDialog extends StatefulWidget {
   const CurrencyDialog({super.key});
@@ -72,7 +72,7 @@ class _CurrencyDialogState extends State<CurrencyDialog> {
             Navigator.of(context).pop(selectedCurrency); // Close the dialog
           },
           child: Text(
-            'Cancel',
+            'Save',
             style: TextStyle(fontSize: 16, color: Colors.greenAccent[700]),
           ),
         ),

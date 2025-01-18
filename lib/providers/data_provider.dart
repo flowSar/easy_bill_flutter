@@ -1,13 +1,13 @@
 import 'dart:io';
-import 'package:easy_bill_flutter/data/bill.dart';
-import 'package:easy_bill_flutter/data/business_info.dart';
-import 'package:easy_bill_flutter/data/clients.dart';
+import 'package:easy_bill_flutter/modules/bill.dart';
+import 'package:easy_bill_flutter/modules/business_info.dart';
+import 'package:easy_bill_flutter/modules/clients.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 
-import '../data/item.dart';
+import '../modules/item.dart';
 
 class DataProvider extends ChangeNotifier {
   final FirebaseDatabase _database = FirebaseDatabase.instance;

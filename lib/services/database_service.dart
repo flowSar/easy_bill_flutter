@@ -1,4 +1,4 @@
-import 'package:easy_bill_flutter/data/item.dart';
+import 'package:easy_bill_flutter/modules/item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 

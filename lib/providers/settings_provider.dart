@@ -7,15 +7,29 @@ class SettingsProvider extends ChangeNotifier {
   final preferences = AsyncPreferences();
 
   SettingsProvider() {
-    updateThemeState();
+    loadThemeState();
+    loadCurrency();
     _currency = 'dh';
   }
 
-  void updateThemeState() async {
+  void loadThemeState() async {
     try {
       bool? result = await preferences.getBool('isDark');
       if (result == true) {
         _isDarkMode = true;
+        notifyListeners();
+      }
+    } catch (e) {
+      throw Exception('dark theme is not found $e');
+    }
+  }
+
+  void loadCurrency() async {
+    try {
+      String? result = await preferences.getString('currency');
+      if (result != null) {
+        _currency = result;
+        notifyListeners();
       }
     } catch (e) {
       throw Exception('dark theme is not found $e');
@@ -28,6 +42,7 @@ class SettingsProvider extends ChangeNotifier {
 
   void setCurrency(String newCurrency) {
     _currency = newCurrency;
+    preferences.setString('currency', newCurrency);
     notifyListeners();
   }
 

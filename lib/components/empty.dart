@@ -26,7 +26,7 @@ class Empty extends StatelessWidget {
         children: [
           Icon(
             Icons.search,
-            size: 120,
+            size: 100,
             color: Colors.grey[600],
           ),
           Text(

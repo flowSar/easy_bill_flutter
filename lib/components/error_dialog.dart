@@ -12,15 +12,18 @@ void showErrorDialog(BuildContext context, title, errorMsg,
           scrollable: true,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          title: Text(title),
-          content: SizedBox(
-            height: height,
-            child: Center(
-              child: Text(
-                errorMsg,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+          title: Text(
+            title,
+            style: TextStyle(
+              fontSize: 20,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+          content: Center(
+            child: Text(
+              errorMsg,
+              style: TextStyle(
+                fontSize: 16,
               ),
             ),
           ),

@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
-import '../../data/bill.dart';
+import '../../modules/bill.dart';
 
 class BillsScreen extends StatefulWidget {
   const BillsScreen({super.key});

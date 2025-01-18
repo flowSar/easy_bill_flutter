@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/components/client_Image.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:async_preferences/async_preferences.dart';
@@ -52,26 +53,7 @@ class _AboutScreenState extends State<AboutScreen> {
               '0',
               style: TextStyle(fontSize: 26),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomTextButton(
-                  onPressed: () async {
-                    bool? result = await preferences.getBool('isDark');
-                    print('isDrkMode $result');
-                  },
-                  label: Text('increment'),
-                  bg: Colors.purple,
-                  fg: Colors.white,
-                ),
-                CustomTextButton(
-                  onPressed: () {},
-                  label: Text('decrement'),
-                  bg: Colors.purple,
-                  fg: Colors.white,
-                ),
-              ],
-            ),
+            ClientImage(cName: 'Khalid')
           ],
         ),
       ),

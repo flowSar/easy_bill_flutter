@@ -4,7 +4,7 @@ import 'package:easy_bill_flutter/components/custom_text_field.dart';
 import 'package:easy_bill_flutter/components/empty.dart';
 import 'package:easy_bill_flutter/components/item_card.dart';
 import 'package:easy_bill_flutter/constants/colors.dart';
-import 'package:easy_bill_flutter/data/item.dart';
+import 'package:easy_bill_flutter/modules/item.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

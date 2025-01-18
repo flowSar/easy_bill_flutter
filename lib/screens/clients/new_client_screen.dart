@@ -1,7 +1,7 @@
 import 'package:easy_bill_flutter/components/custom_badge.dart';
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
-import 'package:easy_bill_flutter/data/clients.dart';
+import 'package:easy_bill_flutter/modules/clients.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

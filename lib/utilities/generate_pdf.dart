@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:easy_bill_flutter/data/business_info.dart';
+import 'package:easy_bill_flutter/modules/business_info.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:easy_bill_flutter/data/bill.dart';
+import 'package:easy_bill_flutter/modules/bill.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:pdf/widgets.dart' as pw;

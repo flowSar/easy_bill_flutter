@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/components/client_Image.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
@@ -37,9 +38,10 @@ class UserCard extends StatelessWidget {
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         spacing: 10,
         children: [
-          Icon(
-            Icons.account_circle_sharp,
-            size: 50,
+          ClientImage(
+            cName: title,
+            w: 48,
+            h: 48,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

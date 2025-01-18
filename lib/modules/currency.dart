@@ -90,7 +90,7 @@ class Currency {
     Currency(country: 'Mexico', symbol: 'MX\$'),
     Currency(country: 'Moldova', symbol: 'MDL'),
     Currency(country: 'Mongolia', symbol: 'MNT'),
-    Currency(country: 'Morocco', symbol: 'MAD'),
+    Currency(country: 'Morocco', symbol: 'dh'),
     Currency(country: 'Mozambique', symbol: 'MZN'),
     Currency(country: 'Myanmar', symbol: 'MMK'),
     Currency(country: 'Namibia', symbol: 'NAD'),

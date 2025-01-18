@@ -105,8 +105,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 p: 14,
                 onTap: () {
                   showDialog(
-                      context: context,
-                      builder: (BuildContext context) => CurrencyDialog());
+                          context: context,
+                          builder: (BuildContext context) => CurrencyDialog())
+                      .then((currency) {
+                    if (currency != null) {
+                      setState(() {
+                        selectedCurrency = currency.toString();
+                      });
+                    }
+                  });
                 },
                 leftIcon: Icons.currency_exchange,
                 middleText: 'Currency ($selectedCurrency)',
@@ -122,6 +129,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 rightIcon: Icon(
                   Icons.keyboard_arrow_right,
                 ),
+              ),
+              SelectCard(
+                p: 14,
+                onTap: () {
+                  context.push('/customerSupportScreen');
+                },
+                leftIcon: Icons.contact_support_outlined,
+                middleText: 'Customer support',
+                rightIcon: Icon(Icons.keyboard_arrow_right),
               ),
               SelectCard(
                 p: 14,

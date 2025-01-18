@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/components/client_Image.dart';
 import 'package:easy_bill_flutter/components/custom_popup_menu_button.dart';
 import 'package:flutter/material.dart';
 
@@ -45,9 +46,10 @@ class ClientCard extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(right: 10),
-                child: Icon(
-                  Icons.account_circle_sharp,
-                  size: 55,
+                child: ClientImage(
+                  cName: title,
+                  w: 55,
+                  h: 55,
                 ),
               ),
               Expanded(

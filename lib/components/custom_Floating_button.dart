@@ -20,8 +20,12 @@ class CustomFloatingButton extends StatelessWidget {
       padding: EdgeInsets.all(10),
       child: RawMaterialButton(
         elevation: 6,
-        fillColor: Colors.blue,
-        constraints: BoxConstraints.tightFor(width: w ?? 60, height: h ?? 50),
+        fillColor: Colors.purple[700],
+        // fillColor: Color(0xff4CAF50),
+        constraints: BoxConstraints.tightFor(
+          width: w ?? 60,
+          height: h ?? 50,
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         onPressed: onPressed,
         child: child,

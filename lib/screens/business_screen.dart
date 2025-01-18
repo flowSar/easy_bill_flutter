@@ -5,7 +5,7 @@ import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/components/custom_text_field.dart';
 import 'package:easy_bill_flutter/constants/colors.dart';
 import 'package:easy_bill_flutter/constants/g_constants.dart';
-import 'package:easy_bill_flutter/data/business_info.dart';
+import 'package:easy_bill_flutter/modules/business_info.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -98,6 +98,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
                 child: Column(
                   children: [
                     CustomTextField(
+                      title: 'Business Name',
                       keyType: kKeyTextType,
                       // initialValue: 'sar',
                       controller: _businessName,
@@ -108,18 +109,21 @@ class _BusinessScreenState extends State<BusinessScreen> {
                           : null,
                     ),
                     CustomTextField(
+                      title: 'Address',
                       keyType: kKeyTextType,
                       controller: _businessAddress,
                       bg: kTextInputBg1,
                       placeholder: 'Business address',
                     ),
                     CustomTextField(
+                      title: 'Email',
                       keyType: kKeyEmailType,
                       controller: _businessEmail,
                       bg: kTextInputBg1,
                       placeholder: 'Business email address',
                     ),
                     CustomTextField(
+                      title: 'Phone Number',
                       keyType: kKeyNumberType,
                       controller: _businessPhoneNumber,
                       bg: kTextInputBg1,

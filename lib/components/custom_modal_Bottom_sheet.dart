@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../constants/colors.dart';
 import '../constants/g_constants.dart';
 import '../constants/styles.dart';
-import '../data/item.dart';
+import '../modules/item.dart';
 import '../providers/data_provider.dart';
 import '../providers/settings_provider.dart';
 import 'custom_text_button.dart';

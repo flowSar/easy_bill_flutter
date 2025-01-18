@@ -1,4 +1,4 @@
-import 'package:easy_bill_flutter/data/bill.dart';
+import 'package:easy_bill_flutter/modules/bill.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:easy_bill_flutter/screens/about_screen.dart';
 import 'package:easy_bill_flutter/screens/bills/preview_bill_screen.dart';
@@ -8,12 +8,13 @@ import 'package:easy_bill_flutter/screens/bills/new_bill_screen.dart';
 import 'package:easy_bill_flutter/screens/clients/new_client_screen.dart';
 import 'package:easy_bill_flutter/screens/items/new_item_screen.dart';
 import 'package:easy_bill_flutter/screens/authentication/sign_in.dart';
+import 'package:easy_bill_flutter/screens/settings/customer_support_screen.dart';
 import 'package:easy_bill_flutter/screens/signature_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../data/clients.dart';
-import '../data/item.dart';
+import '../modules/clients.dart';
+import '../modules/item.dart';
 import '../screens/authentication/sign_up.dart';
 import '../screens/authentication/welcome_screen.dart';
 import '../screens/bottom_nav_bar.dart';
@@ -124,6 +125,11 @@ final GoRouter appRouter = GoRouter(
           path: '/signatureScreen',
           builder: (BuildContext context, GoRouterState state) =>
               SignatureScreen(),
+        ),
+        GoRoute(
+          path: '/customerSupportScreen',
+          builder: (BuildContext context, GoRouterState state) =>
+              CustomerSupportScreen(),
         ),
       ],
     ),
