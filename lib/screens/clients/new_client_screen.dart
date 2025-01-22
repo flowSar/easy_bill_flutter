@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/components/client_Image.dart';
 import 'package:easy_bill_flutter/components/custom_badge.dart';
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
@@ -29,6 +30,7 @@ class NewClientScreen extends StatefulWidget {
 
 class _NewClientScreenState extends State<NewClientScreen> {
   late final TextEditingController _fullName;
+  late String fullName = '';
   late final TextEditingController _address;
   late final TextEditingController _email;
   late final TextEditingController _phoneNumber;
@@ -52,6 +54,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
     super.initState();
   }
 
+  // display Error dialog
   void displayErrorDialog(Object error) {
     showErrorDialog(context, 'Error', error);
   }
@@ -86,11 +89,18 @@ class _NewClientScreenState extends State<NewClientScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  Custombadge(
-                    icon: kUserIcon,
-                    labelIcon: Icons.image,
-                    labelBg: Colors.blueGrey,
-                  ),
+                  // change the icons of the client based on the client fullName
+                  fullName == ''
+                      ? Custombadge(
+                          icon: kUserIcon,
+                          labelIcon: Icons.image,
+                          labelBg: Colors.blueGrey,
+                        )
+                      : ClientImage(
+                          cName: fullName,
+                          w: 90,
+                          h: 90,
+                        ),
                   CustomTextField(
                     readOnly: loading,
                     keyType: kKeyTextType,
@@ -100,6 +110,11 @@ class _NewClientScreenState extends State<NewClientScreen> {
                     bg: kTextInputBg1,
                     validator: (name) =>
                         name!.length < 3 ? 'Please Insert valid Input' : null,
+                    onChanged: (value) {
+                      setState(() {
+                        fullName = value;
+                      });
+                    },
                   ),
                   CustomTextField(
                     readOnly: loading,
@@ -134,13 +149,14 @@ class _NewClientScreenState extends State<NewClientScreen> {
                         email: _email.text,
                         phoNumber: _phoneNumber.text,
                       );
+                      // validate use input
                       bool? valid = _formKey.currentState?.validate();
                       if (valid == true) {
-                        // context.pop(client);
                         try {
                           setState(() {
                             loading = true;
                           });
+                          // add client to the database
                           await context.read<DataProvider>().addClients(client);
                           setState(() {
                             loading = false;

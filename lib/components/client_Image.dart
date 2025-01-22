@@ -25,16 +25,17 @@ class ClientImage extends StatelessWidget {
       width: w,
       height: h,
       decoration: BoxDecoration(
-        color: bg ?? Colors.red[300],
+        color: bg ?? Colors.blueGrey,
         shape: BoxShape.circle,
       ),
       child: Center(
         child: Text(
           cName[0],
           style: TextStyle(
-              color: fg ?? Colors.white,
-              fontSize: (w! / 2.5),
-              fontWeight: FontWeight.w500),
+            color: fg ?? Colors.white,
+            fontSize: (w! / 2.5),
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );

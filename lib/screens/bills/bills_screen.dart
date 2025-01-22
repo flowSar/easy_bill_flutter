@@ -32,14 +32,19 @@ class _BillsScreenState extends State<BillsScreen> {
     super.dispose();
   }
 
+  // load all bills from database
   Future loadBills() async {
     try {
+      // set loading state to true when this function called
       setState(() {
         loading = true;
       });
+      // start loading data from database
       await context.read<DataProvider>().loadBills();
+      // set loading to false data after data loading finished
       loading = false;
     } catch (e) {
+      // set loading to false if loading failed and display the error
       displayErrorDialog('loading the bills failed try again');
       setState(() {
         loading = false;
@@ -47,6 +52,7 @@ class _BillsScreenState extends State<BillsScreen> {
     }
   }
 
+  // function for calling error dialog
   void displayErrorDialog(Object error) {
     showErrorDialog(context, 'Error', error);
   }
@@ -76,6 +82,7 @@ class _BillsScreenState extends State<BillsScreen> {
             child:
                 Consumer<DataProvider>(builder: (context, dataProvider, child) {
               List<Bill> bills = dataProvider.bills;
+              // if loading = true , display loading widget
               if (loading) {
                 return Center(
                   child: CustomCircularProgress(
@@ -85,6 +92,7 @@ class _BillsScreenState extends State<BillsScreen> {
                   ),
                 );
               } else {
+                // if the bills 1= []display bills
                 if (bills.isNotEmpty) {
                   return ListView.builder(
                     itemCount: bills.length,
