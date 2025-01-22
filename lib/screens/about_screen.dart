@@ -36,24 +36,19 @@ class _AboutScreenState extends State<AboutScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 4,
           children: [
-            // Image.asset(
-            //   'images/EasyBill.webp',
-            //   width: 200,
-            // ),
-            // Text('version 1.0.0'),
-            // Text(
-            //   'EasyBill is a powerful app designed to streamline the billing and invoicing process',
-            //   textAlign: TextAlign.center,
-            //   style: TextStyle(
-            //       fontSize: 17,
-            //       color: Colors.blue[900],
-            //       fontWeight: FontWeight.w500),
-            // ),
-            Text(
-              '0',
-              style: TextStyle(fontSize: 26),
+            Image.asset(
+              'images/EasyBill.png',
+              width: 200,
             ),
-            ClientImage(cName: 'Khalid')
+            Text('version 1.0.0'),
+            Text(
+              'EasyBill is a powerful app designed to streamline the billing and invoicing process',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 17,
+                  color: Colors.blue[900],
+                  fontWeight: FontWeight.w500),
+            ),
           ],
         ),
       ),

@@ -249,12 +249,15 @@ class DataProvider extends ChangeNotifier {
           );
           notifyListeners();
         } else {
+          businessInfo = null;
           throw Exception('Nothing was found');
         }
       } catch (e) {
+        businessInfo = null;
         throw Exception('load business info failed $e');
       }
     } else {
+      businessInfo = null;
       throw Exception('user is not logged in');
     }
   }

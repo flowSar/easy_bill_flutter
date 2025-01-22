@@ -53,12 +53,18 @@ class _NewBillScreenState extends State<NewBillScreen> {
   }
 
   Future loadBusinessInfo() async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
     try {
       await context.read<DataProvider>().loadBusinessInfo();
-      loading = false;
+      setState(() {
+        loading = false;
+      });
     } catch (e) {
-      loading = true;
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -170,21 +176,22 @@ class _NewBillScreenState extends State<NewBillScreen> {
                     w: 35,
                   );
                 } else {
-                  final businessInfo = dataProvider.businessInfo;
-                  if (businessInfo != null) {
+                  loadBusinessInfo();
+                  final bInfo = dataProvider.businessInfo;
+                  if (bInfo != null) {
                     return UserCard(
                         onPressed: () {
                           context.push('/businessScreen');
                         },
                         elevation: 2,
-                        title: businessInfo.businessName,
-                        subTitle: businessInfo.businessEmail!);
+                        title: bInfo.businessName,
+                        subTitle: bInfo.businessEmail!);
                   } else {
                     return SelectItemButton(
                       elevation: 2,
                       label: 'Business Info',
                       onPressed: () {
-                        context.push('/clientListScreen');
+                        context.push('/businessScreen');
                       },
                     );
                   }

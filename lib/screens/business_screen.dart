@@ -39,13 +39,18 @@ class _BusinessScreenState extends State<BusinessScreen> {
   }
 
   Future loadBusinessInfo() async {
-    loading = true;
+    setState(() {
+      loading = true;
+    });
     try {
       await context.read<DataProvider>().loadBusinessInfo();
+      setState(() {
+        loading = false;
+      });
     } catch (e) {
-      loading = false;
-    } finally {
-      loading = false;
+      setState(() {
+        loading = false;
+      });
     }
   }
 
