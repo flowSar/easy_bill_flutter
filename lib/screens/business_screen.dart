@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../components/error_dialog.dart';
+
 final _formKey = GlobalKey<FormState>();
 
 class BusinessScreen extends StatefulWidget {
@@ -52,6 +54,10 @@ class _BusinessScreenState extends State<BusinessScreen> {
         loading = false;
       });
     }
+  }
+
+  void displayErrorDialog(Object e) {
+    showErrorDialog(context, 'Error', e.toString());
   }
 
   @override
@@ -152,7 +158,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
                                   .addBusinessInfo(businessInfo);
                             }
                           } catch (e) {
-                            print('add business failed');
+                            displayErrorDialog(e);
                           }
                         },
                         label: Text('Save'),

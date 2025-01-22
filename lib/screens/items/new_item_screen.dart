@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../components/custom_Floating_button.dart';
 import '../../components/custom_text_button.dart';
 import '../../components/custom_text_field.dart';
+import '../../components/error_dialog.dart';
 import '../../constants/g_constants.dart';
 import '../../utilities/scan_bard_code.dart';
 
@@ -53,6 +54,10 @@ class _NewItemScreenState extends State<NewItemScreen> {
   }
 
   ScanBarCode scanner = ScanBarCode();
+
+  void displayErrorDialog(Object e) {
+    showErrorDialog(context, 'Error', e.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +177,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                           setState(() {
                             loading = false;
                           });
-                          print('create new Item failed $e');
+                          displayErrorDialog(e);
                         }
                         // context.pop(item);
                       }

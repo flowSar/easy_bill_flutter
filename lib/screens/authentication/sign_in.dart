@@ -1,4 +1,5 @@
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
+import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +32,10 @@ class _SignInState extends State<SignIn> {
     _email.dispose();
     _password.dispose();
     super.dispose();
+  }
+
+  void displayErrorDialog(Object e) {
+    showErrorDialog(context, 'Sign in error', e.toString());
   }
 
   @override
@@ -93,17 +98,20 @@ class _SignInState extends State<SignIn> {
                             setState(() {
                               isLoading = true;
                             });
-                            final result = await context
-                                .read<AuthProvider>()
-                                .logIn(
-                                    _email.text.trim(), _password.text.trim());
+                            bool result = false;
+                            try {
+                              result = await context.read<AuthProvider>().logIn(
+                                  _email.text.trim(), _password.text.trim());
+                            } catch (e) {
+                              displayErrorDialog(e);
+                            }
                             setState(() {
                               isLoading = false;
                             });
                             if (result) {
                               context.replace('/bottomNavBar');
                             } else {
-                              print('Sign-in failed');
+                              displayErrorDialog('Sign in failed');
                             }
                           }
                         },

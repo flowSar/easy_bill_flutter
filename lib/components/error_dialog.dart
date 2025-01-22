@@ -6,7 +6,7 @@ void showErrorDialog(BuildContext context, title, errorMsg,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
           titlePadding: EdgeInsets.only(top: 10, left: 10),
           actionsPadding: EdgeInsets.zero,
           scrollable: true,
@@ -16,7 +16,6 @@ void showErrorDialog(BuildContext context, title, errorMsg,
             title,
             style: TextStyle(
               fontSize: 20,
-              decoration: TextDecoration.underline,
             ),
           ),
           content: Center(

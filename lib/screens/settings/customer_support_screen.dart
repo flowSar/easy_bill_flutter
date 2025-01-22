@@ -125,7 +125,6 @@ class _CustomerSupportScreenState extends State<CustomerSupportScreen> {
                   CustomTextButton(
                       onPressed: () {
                         bool? result = _formKey.currentState?.validate();
-                        print('result: $result');
                         if (result == true) {
                           _launchEmail(_subject.text, _msgText.text);
                         } else {

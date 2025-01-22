@@ -1,4 +1,5 @@
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
+import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +32,10 @@ class _SignUpState extends State<SignUp> {
     _email.dispose();
     _password.dispose();
     super.dispose();
+  }
+
+  void displayDialogError(Object e) {
+    showErrorDialog(context, 'Sign up Error', e.toString());
   }
 
   @override
@@ -94,19 +99,22 @@ class _SignUpState extends State<SignUp> {
                             setState(() {
                               isLoading = true;
                             });
-
-                            final result = await context
-                                .read<AuthProvider>()
-                                .signUp(
-                                    _email.text.trim(), _password.text.trim());
-
+                            bool result = false;
+                            try {
+                              result = await context
+                                  .read<AuthProvider>()
+                                  .signUp(_email.text.trim(),
+                                      _password.text.trim());
+                            } catch (e) {
+                              displayDialogError(e);
+                            }
                             setState(() {
                               isLoading = false;
                             });
                             if (result) {
                               context.replace('/bottomNavBar');
                             } else {
-                              print('sign up failed');
+                              displayDialogError('sign up failed');
                             }
                           }
                         },

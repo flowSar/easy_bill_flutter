@@ -1,6 +1,7 @@
 import 'package:easy_bill_flutter/components/custom_badge.dart';
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
+import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/modules/clients.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,10 @@ class _NewClientScreenState extends State<NewClientScreen> {
       _phoneNumber.text = widget.client!.phoneNumber;
     }
     super.initState();
+  }
+
+  void displayErrorDialog(Object error) {
+    showErrorDialog(context, 'Error', error);
   }
 
   // i get error after I leas this screen saying the TextField is being used after beign disposed.
@@ -148,7 +153,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                           setState(() {
                             loading = false;
                           });
-                          print('error: $e');
+                          displayErrorDialog(e);
                         }
                         ;
                       }

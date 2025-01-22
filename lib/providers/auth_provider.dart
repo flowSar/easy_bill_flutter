@@ -28,12 +28,16 @@ class AuthProvider extends ChangeNotifier {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       final user = FirebaseAuth.instance.currentUser;
+
       if (user != null) {
         _isLoggedIn = true;
       }
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       _isLoggedIn = false;
-      print('sign up error $e');
+      if (e.code == 'email-already-in-use') {
+        throw Exception('email-already-in-use');
+      }
+      throw Exception('Sign Up failed: $e');
     }
     notifyListeners();
     return _isLoggedIn;
@@ -48,9 +52,9 @@ class AuthProvider extends ChangeNotifier {
         _isLoggedIn = true;
         userUid = user.uid;
       } else {}
-    } catch (e) {
-      print('error: $e');
+    } on FirebaseAuthException catch (e) {
       _isLoggedIn = false;
+      throw Exception('Sign In Failed ${e.code}');
     }
     notifyListeners();
     return _isLoggedIn;

@@ -39,7 +39,6 @@ class _CustomModalBottomSheetState extends State<CustomModalBottomSheet> {
     _price = TextEditingController();
     _quantity = TextEditingController();
     _tax = TextEditingController();
-    print('found: ${widget.item}');
 
     if (widget.item != null) {
       _itemName.text = widget.item!.name;

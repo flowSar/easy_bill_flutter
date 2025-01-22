@@ -1,5 +1,6 @@
 import 'package:easy_bill_flutter/components/client_card.dart';
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
+import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -34,7 +35,7 @@ class _ClientListScreenState extends State<ClientListScreen> {
     try {
       await context.read<DataProvider>().loadClientsData();
     } catch (e) {
-      print('error: $e');
+      displayErrorDialog(e);
       setState(() {
         loading = false;
       });
@@ -42,6 +43,10 @@ class _ClientListScreenState extends State<ClientListScreen> {
     setState(() {
       loading = false;
     });
+  }
+
+  void displayErrorDialog(Object e) {
+    showErrorDialog(context, 'Error', e.toString());
   }
 
   @override

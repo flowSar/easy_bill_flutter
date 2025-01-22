@@ -13,7 +13,6 @@ class FireBaseManager {
       User? newUser = userCredential.user;
       return newUser;
     } catch (e) {
-      print('error: $e');
       return null;
     }
   }

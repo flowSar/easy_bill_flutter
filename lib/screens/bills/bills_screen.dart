@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/error_dialog.dart';
 import '../../constants/colors.dart';
 import '../../modules/bill.dart';
 
@@ -39,11 +40,15 @@ class _BillsScreenState extends State<BillsScreen> {
       await context.read<DataProvider>().loadBills();
       loading = false;
     } catch (e) {
-      print('error: $e');
+      displayErrorDialog('loading the bills failed try again');
       setState(() {
         loading = false;
       });
     }
+  }
+
+  void displayErrorDialog(Object error) {
+    showErrorDialog(context, 'Error', error);
   }
 
   @override
@@ -89,7 +94,6 @@ class _BillsScreenState extends State<BillsScreen> {
                         onTap: () {
                           context.push('/previewBillScreen',
                               extra: bills[index]);
-                          print('select bill');
                         },
                         child: BillCard(
                           client: bills[index].clientName,

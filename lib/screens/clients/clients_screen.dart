@@ -138,7 +138,6 @@ class _ClientsScreenState extends State<ClientsScreen> {
               context.push('/newClientScreen').then((newClient) {
                 if (newClient != null) {
                   Client client = newClient as Client;
-                  print('received: ${client.fullName}');
                   setState(() {
                     clients.add(client);
                   });
