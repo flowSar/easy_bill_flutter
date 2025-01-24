@@ -19,7 +19,6 @@ import '../../modules/clients.dart';
 import '../../modules/item.dart';
 import '../../providers/data_provider.dart';
 import 'package:intl/intl.dart';
-
 import '../items/new_item_screen.dart';
 
 var uuid = Uuid();
@@ -145,12 +144,22 @@ class _NewBillScreenState extends State<NewBillScreen> {
       showErrorDialog(context, "Error ", 'error: $e');
     }
 
+    // function for navigating to NewItemScreen
     void navigateTo(Item newItem) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => NewItemScreen(item: newItem),
         ),
+      );
+    }
+
+    // display error dialog
+    void displayDialogError(Object e) {
+      showErrorDialog(
+        context,
+        'Error',
+        e.toString(),
       );
     }
 
@@ -327,7 +336,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
                       if (item != null) {
                         // if the item exist open the bottomSheetModal
                         Item? newItem = await displayBottomModal(item);
-                        ;
 
                         if (newItem != null) {
                           setState(() {
@@ -350,11 +358,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                       }
                     }
                   } catch (e) {
-                    showErrorDialog(
-                      context,
-                      'Error',
-                      e.toString(),
-                    );
+                    displayDialogError(e);
                   }
                 },
                 w: 90,

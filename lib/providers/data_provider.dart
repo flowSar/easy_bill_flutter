@@ -4,7 +4,6 @@ import 'package:easy_bill_flutter/modules/business_info.dart';
 import 'package:easy_bill_flutter/modules/clients.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 
 import '../modules/item.dart';
@@ -12,7 +11,6 @@ import '../modules/item.dart';
 class DataProvider extends ChangeNotifier {
   final FirebaseDatabase _database = FirebaseDatabase.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
   late List<Client> clients = [];
   late List<Item> items = [];
   late BusinessInfo? businessInfo;
@@ -33,16 +31,6 @@ class DataProvider extends ChangeNotifier {
 
   User? getCurrentUser() {
     return _auth.currentUser;
-  }
-
-  Future<void> addData(String userName) async {
-    final user = getCurrentUser();
-
-    if (user != null) {
-      DatabaseReference userRef = _database.ref('users/${user.uid}');
-    } else {
-      throw Exception('user not logged in');
-    }
   }
 
   // this function will add new item to the database and load all data users/userId/items

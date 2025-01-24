@@ -1,4 +1,4 @@
-import 'package:easy_bill_flutter/screens/bills/bills_screen.dart';
+import 'package:uuid/uuid.dart';
 
 class BillRow {
   final String _id;
@@ -46,6 +46,7 @@ class BillRow {
 }
 
 class Bill {
+  var uuid = Uuid();
   final String _id;
   final String _clientName;
   final String _clientEmail;

@@ -77,6 +77,14 @@ class _NewClientScreenState extends State<NewClientScreen> {
       snackBar(context, msg);
     }
 
+    // clear user input
+    void clearUserInput() {
+      _fullName.clear();
+      _address.clear();
+      _email.clear();
+      _phoneNumber.clear();
+    }
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -167,10 +175,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                             loading = false;
                           });
                           displaySnackBar('The client was added successfully');
-                          _fullName.text = '';
-                          _address.text = '';
-                          _email.text = '';
-                          _phoneNumber.text = '';
+                          clearUserInput();
                         } catch (e) {
                           setState(() {
                             loading = false;

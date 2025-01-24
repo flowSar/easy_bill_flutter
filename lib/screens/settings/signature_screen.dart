@@ -69,6 +69,11 @@ class _SignatureScreenState extends State<SignatureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // this function will add signature image path to the database
+    void addSignaturePath(String path) {
+      context.read<DataProvider>().addSignature(path);
+    }
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -101,10 +106,11 @@ class _SignatureScreenState extends State<SignatureScreen> {
                   onPressed: () async {
                     Uint8List? signature = await controller.toPngBytes();
                     try {
-                      // get the image path fater saving it to the device
+                      // get the image path after saving it to the device
                       imagePath = await saveImage(signature!);
                       // add the image path to the database and ake it available on the app with provider
-                      context.read<DataProvider>().addSignature(imagePath!);
+                      // context.read<DataProvider>().addSignature(imagePath!);
+                      addSignaturePath(imagePath!);
                       // get the image file from the imagePath
                       fileImage = File(imagePath!);
                     } catch (e) {

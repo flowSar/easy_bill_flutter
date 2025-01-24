@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:easy_bill_flutter/components/custom_circular_progress.dart';
 import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/components/custom_text_field.dart';
@@ -86,7 +84,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
         BusinessInfo? businessInfo = dataProvider.businessInfo;
         if (businessInfo != null) {
           _businessEmail.text = businessInfo.businessEmail!;
-          _businessName.text = businessInfo.businessName!;
+          _businessName.text = businessInfo.businessName;
           _businessAddress.text = businessInfo.businessAddress!;
           _businessPhoneNumber.text = businessInfo.businessPhoneNumber!;
         }

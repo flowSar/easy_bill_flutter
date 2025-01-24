@@ -39,10 +39,10 @@ class PdfGenerator {
         pw.Font.ttf(await rootBundle.load('fonts/Roboto-Bold.ttf'));
 
     final pdf = Document();
-    Future<Uint8List> getFileBytes(String path) async {
-      final file = File(path);
-      return await file.readAsBytes();
-    }
+    // Future<Uint8List> getFileBytes(String path) async {
+    //   final file = File(path);
+    //   return await file.readAsBytes();
+    // }
 
     final Uint8List imageBytes = await signatureFile.readAsBytes();
     final signatureImage = pw.MemoryImage(imageBytes);

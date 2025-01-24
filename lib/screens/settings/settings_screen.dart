@@ -31,6 +31,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void replaceCurrentScreen() {
+      context.replace('/signIn');
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Settings')),
@@ -74,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   final bool isLogged =
                       await context.read<AuthProvider>().logOut();
                   if (!isLogged) {
-                    context.replace('/signIn');
+                    replaceCurrentScreen();
                   }
                 },
                 leftIcon: Icons.logout,

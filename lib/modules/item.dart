@@ -38,7 +38,7 @@ class Item {
       'name': _name,
       'description': _description,
       'price': _price,
-      'quantity': _quantity ?? '0',
+      'quantity': _quantity,
       'tax': _tax ?? '0',
     };
   }

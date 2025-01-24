@@ -47,6 +47,10 @@ class _SignInState extends State<SignIn> {
       return emailRegex.hasMatch(email);
     }
 
+    void replaceScreen() {
+      context.replace('/bottomNavBar');
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -109,7 +113,7 @@ class _SignInState extends State<SignIn> {
                               isLoading = false;
                             });
                             if (result) {
-                              context.replace('/bottomNavBar');
+                              replaceScreen();
                             } else {
                               displayErrorDialog('Sign in failed');
                             }

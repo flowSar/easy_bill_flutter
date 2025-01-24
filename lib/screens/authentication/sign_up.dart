@@ -47,6 +47,10 @@ class _SignUpState extends State<SignUp> {
       return emailRegex.hasMatch(email);
     }
 
+    void replaceCurrentScreen() {
+      context.replace('/bottomNavBar');
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -113,7 +117,7 @@ class _SignUpState extends State<SignUp> {
                               isLoading = false;
                             });
                             if (result) {
-                              context.replace('/bottomNavBar');
+                              replaceCurrentScreen();
                             } else {
                               displayDialogError('sign up failed');
                             }

@@ -6,8 +6,6 @@ import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import '../../components/error_dialog.dart';
 import '../../constants/colors.dart';
 import '../../modules/bill.dart';
 
