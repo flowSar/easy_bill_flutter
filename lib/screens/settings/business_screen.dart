@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../components/error_dialog.dart';
+import '../../components/error_dialog.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -45,6 +45,7 @@ class _BusinessScreenState extends State<BusinessScreen> {
       loading = true;
     });
     try {
+      // load business info from database and make this info available through the app
       await context.read<DataProvider>().loadBusinessInfo();
       setState(() {
         loading = false;
@@ -63,8 +64,6 @@ class _BusinessScreenState extends State<BusinessScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<DataProvider>(builder: (context, dataProvider, child) {
-      // print('info: ${dataProvider.businessInfo.businessName}');
-
       if (loading) {
         return Scaffold(
           appBar: AppBar(

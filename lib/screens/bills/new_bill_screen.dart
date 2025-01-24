@@ -20,6 +20,8 @@ import '../../modules/item.dart';
 import '../../providers/data_provider.dart';
 import 'package:intl/intl.dart';
 
+import '../items/new_item_screen.dart';
+
 var uuid = Uuid();
 
 class NewBillScreen extends StatefulWidget {
@@ -31,7 +33,7 @@ class NewBillScreen extends StatefulWidget {
 
 class _NewBillScreenState extends State<NewBillScreen> {
   ScanBarCode scanner = ScanBarCode();
-  late String? barCode;
+  late String barCode;
   late String selectedClient = 'Clients';
   bool loading = false;
   double billTotal = 0.0;
@@ -53,10 +55,10 @@ class _NewBillScreenState extends State<NewBillScreen> {
   }
 
   Future loadBusinessInfo() async {
-    setState(() {
-      loading = true;
-    });
     try {
+      setState(() {
+        loading = true;
+      });
       await context.read<DataProvider>().loadBusinessInfo();
       setState(() {
         loading = false;
@@ -66,6 +68,18 @@ class _NewBillScreenState extends State<NewBillScreen> {
         loading = false;
       });
     }
+  }
+
+  // this function will call the bottomSheetModal and pass the item data to it
+  Future<Item?> displayBottomModal(Item item) async {
+    Item? newItem = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints.expand(height: 500),
+      builder: (BuildContext context) =>
+          CustomModalBottomSheet(barCode: barCode, item: item),
+    );
+    return newItem;
   }
 
   @override
@@ -131,6 +145,15 @@ class _NewBillScreenState extends State<NewBillScreen> {
       showErrorDialog(context, "Error ", 'error: $e');
     }
 
+    void navigateTo(Item newItem) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NewItemScreen(item: newItem),
+        ),
+      );
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -176,7 +199,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
                     w: 35,
                   );
                 } else {
-                  loadBusinessInfo();
                   final bInfo = dataProvider.businessInfo;
                   if (bInfo != null) {
                     return UserCard(
@@ -293,37 +315,47 @@ class _NewBillScreenState extends State<NewBillScreen> {
               ),
               CustomFloatingButton(
                 onPressed: () async {
-                  String result = await scanner.scan(context);
-                  setState(() async {
+                  try {
+                    // scan bar code
+                    String result = await scanner.scan(context);
                     barCode = result;
-                    // check is the code bar scanned and the return value is not -1
+                    // check if the barcode was scanned
                     if (barCode != '-1') {
-                      // filter the item and check if the codeBar is in database
-                      Item? item = filterByBarCode(barCode?.trim());
-                      // if the item is found navigate to the
+                      // check if the item with this barCode exist in database
+                      Item? item = filterByBarCode(barCode.trim());
+                      // check if the item was found and not null
                       if (item != null) {
-                        Item? newItem = await showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (BuildContext context) =>
-                              CustomModalBottomSheet(
-                            barCode: barCode,
-                            item: item,
-                          ),
-                        );
+                        // if the item exist open the bottomSheetModal
+                        Item? newItem = await displayBottomModal(item);
+                        ;
+
                         if (newItem != null) {
                           setState(() {
                             selectedItems.add(newItem);
                           });
                         }
                       } else {
-                        // if the code bar was not found create navigate to screen where you can add this new item
+                        // Navigate to add new item screen
                         Item newItem = Item(
-                            barCode: barCode!, name: '', price: 0, quantity: 0);
-                        context.push('/newItemScreen', extra: newItem);
+                          barCode: barCode,
+                          name: '',
+                          price: 0,
+                          quantity: 0,
+                          tax: '0',
+                        );
+                        // if the item with the bar code that we scanned not exist in database we automatically
+                        // navigate the use to the newItemScreen so he can add this new Item
+                        navigateTo(newItem);
+                        // context.push('/newItemScreen', extra: newItem);
                       }
                     }
-                  });
+                  } catch (e) {
+                    showErrorDialog(
+                      context,
+                      'Error',
+                      e.toString(),
+                    );
+                  }
                 },
                 w: 90,
                 child: Padding(

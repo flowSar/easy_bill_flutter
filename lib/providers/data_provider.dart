@@ -27,6 +27,7 @@ class DataProvider extends ChangeNotifier {
       // load all item building during the building gof the first screen or when the app get opened
       loadItemsData();
       loadClientsData();
+      loadSignature();
     }
   }
 

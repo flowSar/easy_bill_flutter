@@ -44,9 +44,8 @@ class _ItemsScreenState extends State<ItemsScreen> {
       setState(() {
         loading = true;
       });
-
+      // load all item from database
       await context.read<DataProvider>().loadItemsData();
-      // List<Item> items = context.read<DataProvider>().items;
     } catch (e) {
       setState(() {
         loading = false;
@@ -112,12 +111,14 @@ class _ItemsScreenState extends State<ItemsScreen> {
                                     tailing: items[index].price.toString(),
                                     onTap: () {
                                       Item currentItem = items[index];
-                                      print(
-                                          'current item: ${items[index].tax}');
                                       context.push('/newItemScreen',
                                           extra: currentItem);
                                     },
-                                    onDelete: () {},
+                                    onDelete: () {
+                                      context
+                                          .read<DataProvider>()
+                                          .deleteItem(items[index].barCode);
+                                    },
                                     onEdite: () {
                                       Item currentItem = items[index];
                                       context.push('/newItemScreen',

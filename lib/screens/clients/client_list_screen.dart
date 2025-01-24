@@ -33,9 +33,9 @@ class _ClientListScreenState extends State<ClientListScreen> {
       loading = true;
     });
     try {
+      // load clients data from database
       await context.read<DataProvider>().loadClientsData();
     } catch (e) {
-      displayErrorDialog(e);
       setState(() {
         loading = false;
       });

@@ -9,7 +9,7 @@ class SettingsProvider extends ChangeNotifier {
   SettingsProvider() {
     loadThemeState();
     loadCurrency();
-    _currency = 'dh';
+    _currency = '\$';
   }
 
   void loadThemeState() async {

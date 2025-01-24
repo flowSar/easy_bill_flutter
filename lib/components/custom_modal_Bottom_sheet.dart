@@ -56,75 +56,88 @@ class _CustomModalBottomSheetState extends State<CustomModalBottomSheet> {
     late String? barCode = widget.barCode;
     return SingleChildScrollView(
       child: SizedBox(
-        height: 600,
         child: Padding(
-          padding: EdgeInsets.all(10),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextCard(
-                    bg: isDarkMode ? Colors.white : kTextInputBg1,
-                    w: 340,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'barCode: $barCode',
-                          style: kTextStyle2,
-                        ),
-                      ],
-                    )),
-                CustomTextField(
-                  controller: _itemName,
-                  placeholder: 'Item name',
-                  bg: kTextInputBg1,
-                  validator: (name) =>
-                      name!.length < 3 ? 'please Insert valid input' : null,
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            children: [
+              TextCard(
+                  bg: isDarkMode ? Colors.white : kTextInputBg1,
+                  w: 340,
+                  p: 18,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'barCode: $barCode',
+                        style: kTextStyle2,
+                      ),
+                    ],
+                  )),
+              CustomTextField(
+                title: 'Full name',
+                readOnly: true,
+                controller: _itemName,
+                keyType: kKeyTextType,
+                placeholder: 'Item name',
+                bg: kTextInputBg1,
+                validator: (name) =>
+                    name!.length < 3 ? 'please Insert valid input' : null,
+              ),
+              CustomTextField(
+                title: 'Price',
+                readOnly: true,
+                controller: _price,
+                keyType: kKeyNumberType,
+                placeholder: 'Price',
+                bg: kTextInputBg1,
+                validator: (price) =>
+                    price!.isEmpty ? 'please Insert valid input' : null,
+              ),
+              CustomTextField(
+                title: 'Quantity',
+                controller: _quantity,
+                keyType: kKeyNumberType,
+                placeholder: 'Item quantity',
+                bg: kTextInputBg1,
+                validator: (quantity) =>
+                    quantity!.isEmpty ? 'please Insert valid input' : null,
+              ),
+              // CustomTextField(
+              //   title: 'Tax',
+              //   readOnly: true,
+              //   controller: _tax,
+              //   keyType: kKeyNumberType,
+              //   placeholder: 'Tax Percentage',
+              //   bg: kTextInputBg1,
+              //   validator: (quantity) =>
+              //       quantity!.isEmpty ? 'please Insert valid input' : null,
+              // ),
+              CustomTextButton(
+                onPressed: () {
+                  Item newItem = Item(
+                    barCode: widget.barCode!,
+                    name: _itemName.text,
+                    price: double.parse(_price.text),
+                    quantity: int.parse(_quantity.text),
+                    tax: _tax.text,
+                  );
+                  context.pop(newItem);
+                },
+                label: Text(
+                  'add',
+                  style: kTextStyle2b,
                 ),
-                CustomTextField(
-                  controller: _price,
-                  placeholder: 'Price',
-                  bg: kTextInputBg1,
-                  validator: (price) =>
-                      price!.isEmpty ? 'please Insert valid input' : null,
-                ),
-                CustomTextField(
-                  controller: _quantity,
-                  placeholder: 'Item quantity',
-                  bg: kTextInputBg1,
-                  validator: (quantity) =>
-                      quantity!.isEmpty ? 'please Insert valid input' : null,
-                ),
-                CustomTextField(
-                  controller: _tax,
-                  keyType: kKeyNumberType,
-                  placeholder: 'Tax Percentage',
-                  bg: kTextInputBg1,
-                  validator: (quantity) =>
-                      quantity!.isEmpty ? 'please Insert valid input' : null,
-                ),
-                CustomTextButton(
-                  onPressed: () {
-                    Item newItem = Item(
-                      barCode: widget.barCode!,
-                      name: _itemName.text,
-                      price: double.parse(_price.text),
-                      quantity: int.parse(_quantity.text),
-                      tax: _tax.text,
-                    );
-                    context.pop(newItem);
-                  },
-                  label: Text(
-                    'add',
-                    style: kTextStyle2b,
-                  ),
-                  w: 120,
-                  h: 50,
-                  bg: Colors.green,
-                  fg: Colors.white,
-                ),
-              ],
-            ),
+                w: 120,
+                h: 50,
+                bg: Colors.green,
+                fg: Colors.white,
+              ),
+            ],
           ),
         ),
       ),

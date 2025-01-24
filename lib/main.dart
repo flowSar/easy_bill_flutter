@@ -14,6 +14,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
+    // make the multi provider available through the app
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      // load the theme / dark or light from the app settings
       theme: context.watch<SettingsProvider>().isDarMode
           ? ThemeData.dark()
           : ThemeData.light(),

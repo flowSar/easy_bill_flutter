@@ -37,17 +37,20 @@ class _ClientsScreenState extends State<ClientsScreen> {
 
   Future<void> loadClientsData() async {
     setState(() {
+      // set loading to true when this function called
       loading = true;
     });
 
     try {
+      // load client from database
       await context.read<DataProvider>().loadClientsData();
-    } catch (e) {
       setState(() {
+        // set loading to false if the loading finished
         loading = false;
       });
-    } finally {
+    } catch (e) {
       setState(() {
+        // set loading gto loading it loading failed
         loading = false;
       });
     }

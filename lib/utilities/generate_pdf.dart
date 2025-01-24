@@ -8,13 +8,15 @@ import 'package:pdf/widgets.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 
+// this class will generate a pdf bill from the data that will be provide to him
 class PdfGenerator {
-  static String currency = 'dh';
+  static String currency = '\$';
 
   PdfGenerator(String cur) {
     currency = cur;
   }
 
+  // save the paf file to the device so we can use external app to display it
   static Future<File> saveDocument(String name, Document pdf) async {
     final bytes = await pdf.save();
     final dir = await getApplicationDocumentsDirectory();
@@ -23,6 +25,7 @@ class PdfGenerator {
     return file;
   }
 
+  // open the pdf file externally
   static Future openFile(File file) async {
     final url = file.path;
     await OpenFile.open(url);

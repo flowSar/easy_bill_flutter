@@ -8,13 +8,14 @@ import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import '../../components/custom_text_field.dart';
 import '../../constants/colors.dart';
 import '../../constants/g_constants.dart';
 import '../../constants/icons.dart';
 import '../../constants/styles.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../utilities/functions.dart';
 
 final _formKey = GlobalKey<FormState>();
 var uuid = Uuid();
@@ -59,7 +60,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
     showErrorDialog(context, 'Error', error);
   }
 
-  // i get error after I leas this screen saying the TextField is being used after beign disposed.
+  // i get error after I leas this screen saying the TextField is being used after being disposed.
   // that why I removed the dispose from here and I did add it to the CustomTextField component
   // @override
   // void dispose() {
@@ -72,6 +73,10 @@ class _NewClientScreenState extends State<NewClientScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void displaySnackBar(String msg) {
+      snackBar(context, msg);
+    }
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -161,6 +166,7 @@ class _NewClientScreenState extends State<NewClientScreen> {
                           setState(() {
                             loading = false;
                           });
+                          displaySnackBar('The client was added successfully');
                           _fullName.text = '';
                           _address.text = '';
                           _email.text = '';
@@ -171,7 +177,6 @@ class _NewClientScreenState extends State<NewClientScreen> {
                           });
                           displayErrorDialog(e);
                         }
-                        ;
                       }
                     },
                     label: loading

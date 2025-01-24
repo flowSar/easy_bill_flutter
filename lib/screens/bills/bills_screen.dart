@@ -45,16 +45,10 @@ class _BillsScreenState extends State<BillsScreen> {
       loading = false;
     } catch (e) {
       // set loading to false if loading failed and display the error
-      displayErrorDialog('loading the bills failed try again');
       setState(() {
         loading = false;
       });
     }
-  }
-
-  // function for calling error dialog
-  void displayErrorDialog(Object error) {
-    showErrorDialog(context, 'Error', error);
   }
 
   @override

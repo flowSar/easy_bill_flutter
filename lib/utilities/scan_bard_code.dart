@@ -4,6 +4,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 class ScanBarCode {
   late String barcode;
 
+  // bar code scanner
   Future<String> scan(BuildContext context) async {
     // Future<void> scanBarcode() async {
     String? res = await SimpleBarcodeScanner.scanBarcode(

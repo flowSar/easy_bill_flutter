@@ -5,6 +5,7 @@ import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/modules/item.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:easy_bill_flutter/services/database_service.dart';
+import 'package:easy_bill_flutter/utilities/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -42,25 +43,34 @@ class _NewItemScreenState extends State<NewItemScreen> {
     _price = TextEditingController();
     _quantity = TextEditingController();
     _tax = TextEditingController();
+
+    // check if the item is not null this mean that item was passed to the screen
+    // so assign this item data to each TextField as a default data
     if (widget.item != null) {
       barCode = widget.item!.barCode;
       _itemName.text = widget.item!.name ?? '';
       _description.text = widget.item!.description ?? '';
       _price.text = widget.item!.price.toString() ?? '';
       _quantity.text = widget.item!.quantity.toString() ?? '';
-      _tax.text = widget.item!.tax!;
+      _tax.text = widget.item!.tax! ?? '0';
     }
     super.initState();
   }
 
+  // create instance from the barCode class so we can call its function to scan the barfCode
   ScanBarCode scanner = ScanBarCode();
 
+  // function for displaying the error dialog
   void displayErrorDialog(Object e) {
     showErrorDialog(context, 'Error', e.toString());
   }
 
   @override
   Widget build(BuildContext context) {
+    void displaySnackBar(String msg) {
+      snackBar(context, msg);
+    }
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -106,6 +116,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     bg: kTextInputBg1,
                     validator: (name) =>
                         name!.length < 3 ? 'please Insert valid input' : null,
+                    onErase: () => _itemName.clear(),
                   ),
                   CustomTextField(
                     controller: _description,
@@ -115,6 +126,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     bg: kTextInputBg1,
                     validator: (name) =>
                         name!.length < 3 ? 'please Insert valid input' : null,
+                    onErase: () => _description.clear(),
                   ),
                   CustomTextField(
                     controller: _price,
@@ -124,6 +136,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     bg: kTextInputBg1,
                     validator: (price) =>
                         price!.isEmpty ? 'please Insert valid input' : null,
+                    onErase: () => _price.clear(),
                   ),
                   CustomTextField(
                     controller: _quantity,
@@ -133,6 +146,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     bg: kTextInputBg1,
                     validator: (quantity) =>
                         quantity!.isEmpty ? 'please Insert valid input' : null,
+                    onErase: () => _quantity.clear(),
                   ),
                   CustomTextField(
                     controller: _tax,
@@ -142,6 +156,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     bg: kTextInputBg1,
                     validator: (tax) =>
                         tax!.isEmpty ? 'please Insert valid input' : null,
+                    onErase: () => _tax.clear(),
                   ),
                   CustomTextButton(
                     onPressed: () async {
@@ -167,6 +182,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                           setState(() {
                             loading = false;
                           });
+                          displaySnackBar('the Item was added successfully');
                           _itemName.text = '';
                           _description.text = '';
                           _price.text = '';

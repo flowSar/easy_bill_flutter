@@ -1,6 +1,6 @@
 import 'package:easy_bill_flutter/screens/clients/clients_screen.dart';
 import 'package:easy_bill_flutter/screens/items/items_screen.dart';
-import 'package:easy_bill_flutter/screens/settings_screen.dart';
+import 'package:easy_bill_flutter/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'bills/bills_screen.dart';

@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:easy_bill_flutter/components/bill_table_row.dart';
-import 'package:easy_bill_flutter/components/custom_text_button.dart';
 import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/modules/bill.dart';
@@ -9,7 +7,6 @@ import 'package:easy_bill_flutter/modules/business_info.dart';
 import 'package:easy_bill_flutter/providers/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/settings_provider.dart';
 import '../../utilities/generate_pdf.dart';
 
@@ -22,12 +19,19 @@ class PreviewBillScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // pop up when this function called
     void returnBack() {
       Navigator.of(context).pop();
     }
 
+    // display error dialog
     void showError(Object e) {
-      showErrorDialog(context, 'error', '$e');
+      showErrorDialog(context, 'Error', '$e');
+    }
+
+    // display error dialog
+    void displayErrorDialog(String e) {
+      showErrorDialog(context, 'Error', e);
     }
 
     String currency = context.read<SettingsProvider>().currency;
@@ -207,13 +211,25 @@ class PreviewBillScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                BusinessInfo? businessInfo =
-                    context.read<DataProvider>().businessInfo;
-                File? signatureFile = context.read<DataProvider>().signature;
-                PdfGenerator(currency);
-                final pdfFile = await PdfGenerator.generatePdf(
-                    bill!, businessInfo, signatureFile!);
-                PdfGenerator.openFile(pdfFile);
+                try {
+                  BusinessInfo? businessInfo =
+                      context.read<DataProvider>().businessInfo;
+                  File? signatureFile = context.read<DataProvider>().signature;
+                  PdfGenerator(currency);
+
+                  if (signatureFile == null) {
+                    displayErrorDialog('Please add Your signature');
+                  } else {
+                    final pdfFile = await PdfGenerator.generatePdf(
+                      bill!,
+                      businessInfo,
+                      signatureFile,
+                    );
+                    PdfGenerator.openFile(pdfFile);
+                  }
+                } catch (e) {
+                  displayErrorDialog(e.toString());
+                }
               },
               style: ElevatedButton.styleFrom(
                   side: BorderSide(),

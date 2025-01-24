@@ -80,6 +80,7 @@ class _SignUpState extends State<SignUp> {
                 TextFormField(
                   readOnly: isLoading,
                   controller: _password,
+                  obscureText: true,
                   validator: (password) => password!.length < 8
                       ? 'Password is to short < 8 character'
                       : null,

@@ -26,35 +26,43 @@ class _SignatureScreenState extends State<SignatureScreen> {
 
   @override
   void initState() {
+    // load the them mode
     isDarkMode = context.read<SettingsProvider>().isDarMode;
+    // signature controller
     controller = SignatureController(
       penColor: isDarkMode ? Colors.white : Colors.black,
       penStrokeWidth: 3,
     );
     loadSignature();
+    // assign the image signature path to the fileImage
     fileImage = context.read<DataProvider>().signature;
     super.initState();
   }
 
   Future loadSignature() async {
+    // load signature path from db
     await context.read<DataProvider>().loadSignature();
   }
 
   @override
   void dispose() {
     controller.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
+  // save the signature image to the deice and return its path
   Future<String> saveImage(Uint8List signature) async {
+    // get the current path of the app on the device
     final directory = await getApplicationDocumentsDirectory();
+    // generate file signature path
     final filePath = '${directory.path}/saved_image.png';
+    // create the image on the device
     File file = File(filePath);
     file.writeAsBytes(signature);
     return filePath;
   }
 
+  // function for displaying custom error dialog
   void displayError(Object e) {
     showErrorDialog(context, 'signature error', '$e');
   }
@@ -93,13 +101,15 @@ class _SignatureScreenState extends State<SignatureScreen> {
                   onPressed: () async {
                     Uint8List? signature = await controller.toPngBytes();
                     try {
+                      // get the image path fater saving it to the device
                       imagePath = await saveImage(signature!);
+                      // add the image path to the database and ake it available on the app with provider
                       context.read<DataProvider>().addSignature(imagePath!);
+                      // get the image file from the imagePath
                       fileImage = File(imagePath!);
                     } catch (e) {
                       displayError(e);
                     }
-                    setState(() {});
                   },
                   label: Text('save'),
                   bg: Colors.green,
