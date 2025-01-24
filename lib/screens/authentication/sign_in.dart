@@ -130,7 +130,7 @@ class _SignInState extends State<SignIn> {
                   children: [
                     Text("Don't have an account"),
                     Padding(
-                      padding: EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 16),
                       child: InkWell(
                         onTap: () => context.push('/signUp'),
                         child: Text(

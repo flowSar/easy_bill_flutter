@@ -1,5 +1,7 @@
 import 'package:easy_bill_flutter/components/custom_popup_menu_button.dart';
+import 'package:easy_bill_flutter/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart';
 
@@ -61,12 +63,23 @@ class ItemCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 3),
-                  child: Text(
-                    tailing!,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                Row(
+                  spacing: 2,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 3),
+                      child: Text(
+                        tailing!,
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Consumer<SettingsProvider>(
+                        builder: (context, settingsProvider, child) => Text(
+                              '${settingsProvider.currency}',
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            )),
+                  ],
                 ),
                 CustomPopupMenuButton(onDelete: onDelete, onEdite: onEdite),
               ],

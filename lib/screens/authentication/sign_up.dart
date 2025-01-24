@@ -134,7 +134,7 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     Text("I already have an account"),
                     Padding(
-                      padding: EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 16),
                       child: InkWell(
                         onTap: () {
                           Navigator.pop(context);
