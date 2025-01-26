@@ -10,6 +10,7 @@ class Currency {
 
   String get symbol => _symbol;
 
+  // list of all world counties with their currency symbol
   static final List<Currency> currencies = [
     Currency(country: 'Afghanistan', symbol: '؋'),
     Currency(country: 'Albania', symbol: 'Lek'),

@@ -51,7 +51,7 @@ dependencies:
   firebase_storage: ^12.4.0
   async_preferences: ^1.0.1
   url_launcher: ^6.3.1
-  
+
 
 
 dev_dependencies:
@@ -79,6 +79,13 @@ flutter:
     - images/
     - fonts/Roboto-Regular.ttf
     - fonts/Roboto-Bold.ttf
+  fonts:
+    - family: Roboto-Regular
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+    - family: Roboto-bold
+      fonts:
+        - asset: fonts/Roboto-Bold.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
