@@ -1,3 +1,4 @@
+import 'package:easy_bill_flutter/constants/g_constants.dart';
 import 'package:easy_bill_flutter/screens/clients/clients_screen.dart';
 import 'package:easy_bill_flutter/screens/items/items_screen.dart';
 import 'package:easy_bill_flutter/screens/settings/settings_screen.dart';
@@ -19,7 +20,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
     NewBillScreen(),
     BillsScreen(),
     ClientsScreen(),
-    ItemsScreen(),
+    ItemsScreen(
+      mode: ScreenMode.navigate,
+    ),
     SettingsScreen(),
   ];
 

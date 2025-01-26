@@ -1,5 +1,7 @@
+import 'package:easy_bill_flutter/constants/g_constants.dart';
 import 'package:easy_bill_flutter/modules/bill.dart';
 import 'package:easy_bill_flutter/providers/auth_provider.dart';
+import 'package:easy_bill_flutter/screens/items/items_screen.dart';
 import 'package:easy_bill_flutter/screens/settings/about_screen.dart';
 import 'package:easy_bill_flutter/screens/bills/preview_bill_screen.dart';
 import 'package:easy_bill_flutter/screens/settings/business_screen.dart';
@@ -76,6 +78,17 @@ final GoRouter appRouter = GoRouter(
           },
         ),
         GoRoute(
+            path: 'itemsScreen',
+            builder: (BuildContext context, GoRouterState state) {
+              final ScreenMode? mode;
+              if (state.extra != null) {
+                mode = state.extra as ScreenMode;
+              } else {
+                mode = ScreenMode.navigate;
+              }
+              return ItemsScreen(mode: mode);
+            }),
+        GoRoute(
           path: 'newItemScreen',
           builder: (BuildContext context, GoRouterState state) {
             final Item? item;
@@ -118,16 +131,16 @@ final GoRouter appRouter = GoRouter(
           },
         ),
         GoRoute(
-          path: '/aboutScreen',
+          path: 'aboutScreen',
           builder: (BuildContext context, GoRouterState state) => AboutScreen(),
         ),
         GoRoute(
-          path: '/signatureScreen',
+          path: 'signatureScreen',
           builder: (BuildContext context, GoRouterState state) =>
               SignatureScreen(),
         ),
         GoRoute(
-          path: '/customerSupportScreen',
+          path: 'customerSupportScreen',
           builder: (BuildContext context, GoRouterState state) =>
               CustomerSupportScreen(),
         ),

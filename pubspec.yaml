@@ -51,6 +51,7 @@ dependencies:
   firebase_storage: ^12.4.0
   async_preferences: ^1.0.1
   url_launcher: ^6.3.1
+  dotted_border: ^2.1.0
 
 
 

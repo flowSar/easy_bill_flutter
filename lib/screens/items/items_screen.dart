@@ -4,6 +4,7 @@ import 'package:easy_bill_flutter/components/custom_text_field.dart';
 import 'package:easy_bill_flutter/components/empty.dart';
 import 'package:easy_bill_flutter/components/item_card.dart';
 import 'package:easy_bill_flutter/constants/colors.dart';
+import 'package:easy_bill_flutter/constants/g_constants.dart';
 import 'package:easy_bill_flutter/modules/item.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +13,9 @@ import 'package:provider/provider.dart';
 import '../../providers/data_provider.dart';
 
 class ItemsScreen extends StatefulWidget {
-  const ItemsScreen({super.key});
+  final ScreenMode mode;
+
+  const ItemsScreen({super.key, required this.mode});
 
   @override
   State<ItemsScreen> createState() => _ItemsScreenState();
@@ -111,8 +114,16 @@ class _ItemsScreenState extends State<ItemsScreen> {
                                     tailing: items[index].price.toString(),
                                     onTap: () {
                                       Item currentItem = items[index];
-                                      context.push('/newItemScreen',
-                                          extra: currentItem);
+                                      print('mode: ${widget.mode}');
+                                      if (widget.mode == ScreenMode.select) {
+                                        print(
+                                            'mode select--------------: ${widget.mode}');
+                                        context.pop(currentItem);
+                                      } else {
+                                        print('mode navigate: ${widget.mode}');
+                                        context.push('/newItemScreen',
+                                            extra: currentItem);
+                                      }
                                     },
                                     onDelete: () {
                                       context

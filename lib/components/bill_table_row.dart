@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
-import '../constants/styles.dart';
 
 class BillTableRow extends StatelessWidget {
   final String product;

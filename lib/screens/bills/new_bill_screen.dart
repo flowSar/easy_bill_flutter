@@ -4,6 +4,7 @@ import 'package:easy_bill_flutter/components/custom_modal_Bottom_sheet.dart';
 import 'package:easy_bill_flutter/components/empty.dart';
 import 'package:easy_bill_flutter/components/error_dialog.dart';
 import 'package:easy_bill_flutter/components/selected_item_card.dart';
+import 'package:easy_bill_flutter/constants/g_constants.dart';
 import 'package:easy_bill_flutter/constants/styles.dart';
 import 'package:easy_bill_flutter/modules/bill.dart';
 import 'package:easy_bill_flutter/providers/settings_provider.dart';
@@ -20,6 +21,7 @@ import '../../modules/item.dart';
 import '../../providers/data_provider.dart';
 import 'package:intl/intl.dart';
 import '../items/new_item_screen.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 var uuid = Uuid();
 
@@ -253,6 +255,41 @@ class _NewBillScreenState extends State<NewBillScreen> {
                         subTitle: 'Add new Item by scanning the barCode',
                       ),
               ),
+              InkWell(
+                onTap: () {
+                  context
+                      .push('/itemsScreen', extra: ScreenMode.select)
+                      .then((selectedItem) async {
+                    if (selectedItem != null) {
+                      Item item = selectedItem as Item;
+                      // print('item selected ${item.barCode}');
+                      barCode = item.barCode;
+                      Item? newItem = await displayBottomModal(item);
+                      // initialize the barcode
+
+                      if (newItem != null) {
+                        setState(() {
+                          selectedItems.add(newItem);
+                        });
+                      }
+                    }
+                  });
+                },
+                child: DottedBorder(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: greyLight,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 6,
+                    ),
+                    child: Text(
+                      'Add item',
+                      style: kTextStyle2b.copyWith(color: Colors.black),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -261,7 +298,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: EdgeInsets.symmetric(
-                  vertical: 12,
+                  vertical: 6,
                 ),
                 child: Text(
                   'Total: $billTotal $currency',
