@@ -262,10 +262,9 @@ class _NewBillScreenState extends State<NewBillScreen> {
                       .then((selectedItem) async {
                     if (selectedItem != null) {
                       Item item = selectedItem as Item;
-                      // print('item selected ${item.barCode}');
+                      // initialize the barcode
                       barCode = item.barCode;
                       Item? newItem = await displayBottomModal(item);
-                      // initialize the barcode
 
                       if (newItem != null) {
                         setState(() {
